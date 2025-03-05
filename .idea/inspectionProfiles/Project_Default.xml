@@ -1,0 +1,165 @@
+<component name="InspectionProjectProfileManager">
+  <profile version="1.0">
+    <option name="myName" value="Project Default" />
+    <inspection_tool class="CssUnknownProperty" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myCustomPropertiesEnabled" value="true" />
+      <option name="myIgnoreVendorSpecificProperties" value="false" />
+      <option name="myCustomPropertiesList">
+        <value>
+          <list size="2">
+            <item index="0" class="java.lang.String" itemvalue="line-style" />
+            <item index="1" class="java.lang.String" itemvalue="transform" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="HtmlUnknownAttribute" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="53">
+            <item index="0" class="java.lang.String" itemvalue="pys-onclick" />
+            <item index="1" class="java.lang.String" itemvalue="hx-on:htmx:response" />
+            <item index="2" class="java.lang.String" itemvalue="x-transition:enter" />
+            <item index="3" class="java.lang.String" itemvalue="x-transition:enter-start" />
+            <item index="4" class="java.lang.String" itemvalue="x-transition:enter-end" />
+            <item index="5" class="java.lang.String" itemvalue="x-bind:class" />
+            <item index="6" class="java.lang.String" itemvalue="x-data" />
+            <item index="7" class="java.lang.String" itemvalue="@click" />
+            <item index="8" class="java.lang.String" itemvalue="@click.away" />
+            <item index="9" class="java.lang.String" itemvalue="x-show" />
+            <item index="10" class="java.lang.String" itemvalue="x-for" />
+            <item index="11" class="java.lang.String" itemvalue="x-text" />
+            <item index="12" class="java.lang.String" itemvalue=":key" />
+            <item index="13" class="java.lang.String" itemvalue=":style" />
+            <item index="14" class="java.lang.String" itemvalue="@change" />
+            <item index="15" class="java.lang.String" itemvalue="@focus" />
+            <item index="16" class="java.lang.String" itemvalue="@blur" />
+            <item index="17" class="java.lang.String" itemvalue="x-model" />
+            <item index="18" class="java.lang.String" itemvalue="@input" />
+            <item index="19" class="java.lang.String" itemvalue=":maxlength" />
+            <item index="20" class="java.lang.String" itemvalue="@keydown.escape" />
+            <item index="21" class="java.lang.String" itemvalue="x-init" />
+            <item index="22" class="java.lang.String" itemvalue="x-ref" />
+            <item index="23" class="java.lang.String" itemvalue="@keydown.enter.stop.prevent" />
+            <item index="24" class="java.lang.String" itemvalue="@keydown.arrow-up.prevent" />
+            <item index="25" class="java.lang.String" itemvalue="@keydown.arrow-down.prevent" />
+            <item index="26" class="java.lang.String" itemvalue="@mouseenter" />
+            <item index="27" class="java.lang.String" itemvalue="@mouseleave" />
+            <item index="28" class="java.lang.String" itemvalue=":class" />
+            <item index="29" class="java.lang.String" itemvalue=":aria-selected" />
+            <item index="30" class="java.lang.String" itemvalue="x-transition:leave" />
+            <item index="31" class="java.lang.String" itemvalue="x-transition:leave-start" />
+            <item index="32" class="java.lang.String" itemvalue="x-transition:leave-end" />
+            <item index="33" class="java.lang.String" itemvalue=":aria-expanded" />
+            <item index="34" class="java.lang.String" itemvalue=":aria-haspopup" />
+            <item index="35" class="java.lang.String" itemvalue=":id" />
+            <item index="36" class="java.lang.String" itemvalue=":name" />
+            <item index="37" class="java.lang.String" itemvalue="x-bind:name" />
+            <item index="38" class="java.lang.String" itemvalue=":value" />
+            <item index="39" class="java.lang.String" itemvalue="x-if" />
+            <item index="40" class="java.lang.String" itemvalue="@keydown.enter" />
+            <item index="41" class="java.lang.String" itemvalue=":aria-checked" />
+            <item index="42" class="java.lang.String" itemvalue=":max" />
+            <item index="43" class="java.lang.String" itemvalue=":aria-valuetext" />
+            <item index="44" class="java.lang.String" itemvalue=":src" />
+            <item index="45" class="java.lang.String" itemvalue=":alt" />
+            <item index="46" class="java.lang.String" itemvalue=":min" />
+            <item index="47" class="java.lang.String" itemvalue=":aria-valuemin" />
+            <item index="48" class="java.lang.String" itemvalue=":aria-valuemax" />
+            <item index="49" class="java.lang.String" itemvalue=":aria-valuenow" />
+            <item index="50" class="java.lang.String" itemvalue=":step" />
+            <item index="51" class="java.lang.String" itemvalue=":placeholder" />
+            <item index="52" class="java.lang.String" itemvalue=":disabled" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
+    <inspection_tool class="HtmlUnknownTag" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="myValues">
+        <value>
+          <list size="12">
+            <item index="0" class="java.lang.String" itemvalue="nobr" />
+            <item index="1" class="java.lang.String" itemvalue="noembed" />
+            <item index="2" class="java.lang.String" itemvalue="comment" />
+            <item index="3" class="java.lang.String" itemvalue="noscript" />
+            <item index="4" class="java.lang.String" itemvalue="embed" />
+            <item index="5" class="java.lang.String" itemvalue="script" />
+            <item index="6" class="java.lang.String" itemvalue="py-config" />
+            <item index="7" class="java.lang.String" itemvalue="py-env" />
+            <item index="8" class="java.lang.String" itemvalue="py-script" />
+            <item index="9" class="java.lang.String" itemvalue="hero" />
+            <item index="10" class="java.lang.String" itemvalue="content" />
+            <item index="11" class="java.lang.String" itemvalue="mobileSidebarNav" />
+          </list>
+        </value>
+      </option>
+      <option name="myCustomValuesEnabled" value="true" />
+    </inspection_tool>
+    <inspection_tool class="PyPackageRequirementsInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredPackages">
+        <value>
+          <list size="42">
+            <item index="0" class="java.lang.String" itemvalue="slugify" />
+            <item index="1" class="java.lang.String" itemvalue="urllib3" />
+            <item index="2" class="java.lang.String" itemvalue="httpx" />
+            <item index="3" class="java.lang.String" itemvalue="httpcore" />
+            <item index="4" class="java.lang.String" itemvalue="charset-normalizer" />
+            <item index="5" class="java.lang.String" itemvalue="django" />
+            <item index="6" class="java.lang.String" itemvalue="bcrypt" />
+            <item index="7" class="java.lang.String" itemvalue="pydantic_core" />
+            <item index="8" class="java.lang.String" itemvalue="typing_extensions" />
+            <item index="9" class="java.lang.String" itemvalue="email_validator" />
+            <item index="10" class="java.lang.String" itemvalue="PyYAML" />
+            <item index="11" class="java.lang.String" itemvalue="python-dotenv" />
+            <item index="12" class="java.lang.String" itemvalue="h11" />
+            <item index="13" class="java.lang.String" itemvalue="MarkupSafe" />
+            <item index="14" class="java.lang.String" itemvalue="Jinja2" />
+            <item index="15" class="java.lang.String" itemvalue="sniffio" />
+            <item index="16" class="java.lang.String" itemvalue="httptools" />
+            <item index="17" class="java.lang.String" itemvalue="markdown-it-py" />
+            <item index="18" class="java.lang.String" itemvalue="exceptiongroup" />
+            <item index="19" class="java.lang.String" itemvalue="Pygments" />
+            <item index="20" class="java.lang.String" itemvalue="starlette" />
+            <item index="21" class="java.lang.String" itemvalue="certifi" />
+            <item index="22" class="java.lang.String" itemvalue="mdurl" />
+            <item index="23" class="java.lang.String" itemvalue="anyio" />
+            <item index="24" class="java.lang.String" itemvalue="uvicorn" />
+            <item index="25" class="java.lang.String" itemvalue="websockets" />
+            <item index="26" class="java.lang.String" itemvalue="annotated-types" />
+            <item index="27" class="java.lang.String" itemvalue="watchfiles" />
+            <item index="28" class="java.lang.String" itemvalue="dnspython" />
+            <item index="29" class="java.lang.String" itemvalue="pydantic" />
+            <item index="30" class="java.lang.String" itemvalue="fastapi-cli" />
+            <item index="31" class="java.lang.String" itemvalue="typer" />
+            <item index="32" class="java.lang.String" itemvalue="orjson" />
+            <item index="33" class="java.lang.String" itemvalue="rich" />
+            <item index="34" class="java.lang.String" itemvalue="python-multipart" />
+            <item index="35" class="java.lang.String" itemvalue="click" />
+            <item index="36" class="java.lang.String" itemvalue="fastapi" />
+            <item index="37" class="java.lang.String" itemvalue="colorama" />
+            <item index="38" class="java.lang.String" itemvalue="idna" />
+            <item index="39" class="java.lang.String" itemvalue="shellingham" />
+            <item index="40" class="java.lang.String" itemvalue="ujson" />
+            <item index="41" class="java.lang.String" itemvalue="jupyter" />
+          </list>
+        </value>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyShadowingBuiltinsInspection" enabled="true" level="WEAK WARNING" enabled_by_default="true">
+      <option name="ignoredNames">
+        <list>
+          <option value="input" />
+        </list>
+      </option>
+    </inspection_tool>
+    <inspection_tool class="PyUnresolvedReferencesInspection" enabled="true" level="WARNING" enabled_by_default="true">
+      <option name="ignoredIdentifiers">
+        <list>
+          <option value="flask.wrappers.Response.*" />
+          <option value="typing.AsyncGenerator.*" />
+        </list>
+      </option>
+    </inspection_tool>
+  </profile>
+</component>
