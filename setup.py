@@ -1,3 +1,4 @@
+import setuptools
 from distutils.core import setup
 
 setup(
@@ -15,5 +16,10 @@ setup(
     install_requires=[
         'markdown',
         'frontmatter',
+        'jinja2'
     ],
+    include_package_data=True,  # 중요!
+    package_data={
+        'markdown_renderer': ['md_templates/**/*']
+    }
 )

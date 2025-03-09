@@ -1,0 +1,2 @@
+recursive-include markdown_renderer/md_templates *
+recursive-include markdown_renderer/md_templates/static *
