@@ -1,14 +1,21 @@
 {% extends "base.html" %}
-
-{% block title -%}{{ title }}{%- endblock %}
-
+{% block title %}{{title}}{% endblock %}
 
 {% block content %}
-<ul>
-    {% for post in posts -%}
-    <li><a href="{{ post['attributes']['path'] }}">{{ post['attributes']['title']}}</a></li>
+<div class="posts-index">
+    {% for post in posts[0:5] -%}
+    <div class="post">
+        <div class="title">
+            <a href="{{ post['attributes']['path'] }}">{{ post['attributes']['title']}}</a>
+        </div>
+        {% if post['attributes'].get('date_parsed') %}
+            <div class="date">
+                {{ post['attributes']['date_parsed'].strftime('%Y년 %m월 %d일') }}
+            </div>
+        {% else %}
+
+        {% endif %}
+    </div>
     {% endfor %}
-</ul>
-
-
+</div>
 {% endblock %}

@@ -2,5 +2,81 @@
 
 html, body {
     font-family: 'Roboto', sans-serif;
-    background: green;
+    margin: 0;
+    font-size: 100%;
+    line-height: 1.65;
 }
+
+
+/* base.html */
+/* sticky footer */
+#page-container {
+    position: relative;
+    min-height: 100vh;
+}
+
+#content-wrap {
+    padding-bottom: 5em;
+}
+
+.nav {
+    background-color: #1ECECB;
+    padding: 1em;
+    color: white;
+
+    & a {
+        color: inherit;
+    }
+
+    & a#title {
+        font-weight: bold;
+        text-decoration: none;
+        font-size: 150%;
+    }
+
+    & .links {
+        display: inline-block;
+        list-style-type: none;
+        padding-left: inherit;
+
+        & li {
+            display: inline-block;
+            padding: 0 1em;
+        }
+
+        & li a {
+            text-decoration: none;
+        }
+    }
+}
+
+.nav, .nav #title {
+    display: flex;
+    align-items: center;
+}
+
+.nav #logo {
+    margin-right: 0.4em;
+    height: 2em;
+}
+
+
+.content {
+    margin: 1em;
+}
+
+
+/* index.html */
+.posts-index {
+    & .post {
+        padding: 0.5em 0;
+    }
+
+    & .post .title {
+        font-size: 150%;
+    }
+}
+
+
+/* archive.html -> archive/index.html */
+

@@ -5,6 +5,7 @@ import shutil
 import frontmatter
 import jinja2
 import markdown
+import yaml
 
 from markdown_renderer.lib import get_relative_root_path
 
@@ -12,6 +13,8 @@ if __name__ == '__main__':
     SOURCE_DIR = '../docs'  # 여기서 실행
 else:
     SOURCE_DIR = 'docs'  # 패키지 설치후 mdr명령어로 사용자 실행
+
+CONFIG_DIR = '.mdr'  # SOURCE_DIR 내부의 config 폴더
 
 # OUTPUT_DIR = '../html'  # 상대경로
 OUTPUT_DIR = 'build'  # 빌드는 패키지 내부/build 폴더 -> 패키지설치후 root의 build폴더
@@ -31,9 +34,23 @@ def cli_entry_point():
 
     files_full_path_to_render = get_full_path_of_files_to_render()
 
-    # 14) build폴더 삭제 미리 해놓기
+    ## build폴더 삭제 미리 해놓기
     if os.path.exists(OUTPUT_DIR):
         shutil.rmtree(OUTPUT_DIR)
+
+    ## Load Config
+    # - docs > .mdr > config.yml 읽기. 없으면 설치패키지 내부 폴더에서 가져오기
+    config_file_path = os.path.join(SOURCE_DIR, CONFIG_DIR, 'config.yml')
+    if not os.path.exists(config_file_path):
+        config_file_path = os.path.join(TEMPLATE_DIR, 'default_config.yml')
+
+    # 내부 실행: config_file_path  >> ../docs\.mdr\config.yml
+    # 외부 실행: config_file_path  >> docs\.mdr\config.yml
+
+    with open(config_file_path, 'r', encoding='utf-8') as f:
+        config = yaml.safe_load(f)
+        # print(f"config  >> {config}") # config  >> {'title': '상세질환 디자인(외부)'}
+
 
     posts = []  #
 
@@ -77,7 +94,9 @@ def cli_entry_point():
                     post['attributes']['date_parsed'] = datetime.datetime.strptime(post['attributes']['date'],
                                                                                    '%Y-%m-%d')
                 else:
-                    post['attributes']['date_parsed'] = post['attributes']['date']
+                    # q: 아래 값은 datetime.date이다. 이것을 datetime.datetime이면서 '%Y-%m-%d'으로 변환 by combine
+                    # post['attributes']['date_parsed'] = post['attributes']['date'] # date
+                    post['attributes']['date_parsed'] = datetime.datetime.combine(post['attributes']['date'], datetime.datetime.min.time()) # datetime
 
                 # 15-4) 근데, 발행날짜가 미래면, 무시하도록 한다.
                 # 오늘 00시 발행법: datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
@@ -148,7 +167,11 @@ def cli_entry_point():
         # html = markdown.markdown(post['body'])
         post['body'] = markdown.markdown(post['body'])
 
-        relative_root_path = get_relative_root_path(relative_path)
+        # 배포 전, 내부 실행 -> is_test=True -> 내부에서 ../ 갯수 줄이는 것 안함.
+        if __name__ == '__main__':
+            relative_root_path = get_relative_root_path(relative_path, is_test=True)
+        else:
+            relative_root_path = get_relative_root_path(relative_path)
 
         # 내부/외부 달라서
         # - 내부 package_dir > template_dir > static_dir은 패캐지파일복사 절대경로라 X
@@ -162,9 +185,9 @@ def cli_entry_point():
             print(f"외부빌드 static_path  >> {static_path}")
             # 외부빌드 static_path  >> ../static
 
-
-
         content = content_template.render(
+            config=config,
+
             # static_dir='../md_templates/static',  # build폴더 path없는 것 기준 static 상대주소 경로
             root_path=relative_root_path,
             static_path=static_path,
@@ -172,38 +195,59 @@ def cli_entry_point():
             post=post,
             prev_post=prev_post,
             next_post=next_post,
-            body=post['body'],
 
-            title=post['attributes'].get('title', None),
-            subtitle=post['attributes'].get('subtitle', None),
-            date=post['attributes'].get('date', None),
+            # title=post['attributes'].get('title', None),
+            # subtitle=post['attributes'].get('subtitle', None),
+            # date=post['attributes'].get('date', None),
         )
         with open(output_file_full_path, 'w', encoding='utf-8') as f:
             f.write(content)
 
-    ## render index -> posts 전체 + index페이지 제목을 넘겨준다.
-    index_template = env.get_template('index.html')
-    
-    # index.html의 루트 -> 내부/외부 동일하여 따로 작성하여 넘겨줌
-    index_relative_root_path = get_relative_root_path('index.html')
-    # print(f"index_relative_root_path  >> {index_relative_root_path}")
-    # index_relative_root_path  >> ./
-    
-    index = index_template.render(
-        root_path=index_relative_root_path,
-        static_path=os.path.join(index_relative_root_path, 'static'),
-        title='상세질환정보 디자인',
-        posts=posts,
-    )
 
-    index_file = os.path.join(OUTPUT_DIR, 'index.html')
-    with open(index_file, 'w', encoding='utf-8') as f:
+    # def render_html(page, config, env, posts, title = 'Home')
+    ## render index -> posts 전체 + index페이지 제목을 넘겨준다.
+    index = render_html('index.html', config, env, posts, title='상세질환 디자인')
+    index_path = os.path.join(OUTPUT_DIR, 'index.html')
+    with open(index_path, 'w', encoding='utf-8') as f:
         f.write(index)
+
+    ## render archive -> posts 전체 + index페이지 제목을 넘겨준다.
+    archive = render_html('archive.html', config, env, posts, title='아카이브')
+    # 새 페이지 -> path1개/index.htmlㅇ이어야한다.
+    # 새 페이지 -> 경로가 없을 수 있으니 path1개의 경로도 만들어놔야한다.
+    # archive_path = os.path.join(OUTPUT_DIR, 'archive.html')
+    os.makedirs(os.path.join(OUTPUT_DIR, 'archive'), exist_ok=True)
+    archive_path = os.path.join(OUTPUT_DIR, 'archive', 'index.html')
+    with open(archive_path, 'w', encoding='utf-8') as f:
+        f.write(archive)
+
+
 
     ## copy static files
     # - 외부에서 패키지로 사용시(main X) static도 build폴더>static으로 복사
     if __name__ != '__main__':
         shutil.copytree(STATIC_DIR, os.path.join(OUTPUT_DIR, 'static'))
+
+
+def render_html(page, config, env, posts, title='Home'):
+
+    html_template = env.get_template(page)
+
+    if __name__ == '__main__':
+        index_relative_root_path = get_relative_root_path(page, is_test=True)
+        static_path = os.path.join(index_relative_root_path, 'md_templates', 'static')
+    else:
+        index_relative_root_path = get_relative_root_path(page)
+        static_path = os.path.join(index_relative_root_path, 'static')
+
+    html = html_template.render(
+        config=config,
+        root_path=index_relative_root_path,
+        static_path=static_path,
+        title=title,
+        posts=posts,
+    )
+    return html
 
 
 def get_full_path_of_files_to_render():

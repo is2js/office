@@ -4,15 +4,27 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-
     <link rel="stylesheet" href="{{ static_path }}/style.css">
-
-    <title>{% block title %}{% endblock %}</title>
-
+    <title>{% block title %}{% endblock %} | {{ config['title'] }}</title>
 </head>
 <body>
-    {% block content %}
-    {% endblock %}
+<div id="page-container">
+    <div id="content-wrap">
+        <div class="nav">
+            <a id="title" href="{{ root_path }}">
+                <img id="logo" src="{{ static_path }}/img/logo.png"/>{{ config['title'] }}
+            </a>
+            <ul class="links">
+                <li><a href="{{ root_path }}">Home</a></li>
+                <li><a href="{{ root_path }}blog">피부이상</a></li>
+                <li><a href="{{ root_path }}archive">Archive</a></li>
+            </ul>
+        </div>
+        <div class="content">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </div>
+</div>
 </body>
 </html>
