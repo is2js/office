@@ -58,11 +58,12 @@ def cli_entry_point():
     # 4) 랜더할 md file들을 순회하면서, frontmatter 추출
     for file_full_path in files_full_path_to_render:
         with open(file_full_path, 'r', encoding='utf-8') as f:
-            content = f.read()
-            post = frontmatter.Frontmatter.read(content)  # c = frontmatter.loads(content) # 버전 차이?
+            post = f.read()
+            post = frontmatter.Frontmatter.read(post)  # c = frontmatter.loads(content) # 버전 차이?
 
             # 5) frontmatter없는 파일은 pass
-            if 'attributes' not in post:
+            # if 'attributes' not in post:
+            if post.get('attributes') is None:
                 # {'attributes': None, 'body': '', 'frontmatter': '',
                 # 'date', 'date_parsed', 'path' : '/blog/nested/post',
                 # }
@@ -120,7 +121,7 @@ def cli_entry_point():
     # }
     # 12) 순회하며 f.read()할텐데, 그 전에, jinja2 env파일을 만들고, env.get_template()을 이용하여 채울 템플릿을 가져온다.
     env = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR))
-    content_template = env.get_template('contents.html')
+    content_template = env.get_template('post.html')
 
     # 16) render하기 전, post를 date_parsed로 정렬. 속성 없을 수도 있으니, .get()으로 가져온다.
     sorted(
@@ -129,7 +130,7 @@ def cli_entry_point():
         reverse=True,
     )
 
-    # render
+    ## render post
     for i, post in enumerate(posts):
         # 17-1) init prev/next
         prev_post = next_post = None
@@ -185,7 +186,7 @@ def cli_entry_point():
             print(f"외부빌드 static_path  >> {static_path}")
             # 외부빌드 static_path  >> ../static
 
-        content = content_template.render(
+        post_html = content_template.render(
             config=config,
 
             # static_dir='../md_templates/static',  # build폴더 path없는 것 기준 static 상대주소 경로
@@ -201,7 +202,7 @@ def cli_entry_point():
             # date=post['attributes'].get('date', None),
         )
         with open(output_file_full_path, 'w', encoding='utf-8') as f:
-            f.write(content)
+            f.write(post_html)
 
 
     # def render_html(page, config, env, posts, title = 'Home')

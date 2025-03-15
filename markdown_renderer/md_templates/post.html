@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}{{ post['attributes'].get('title', None) }}{% endblock %}
+
+{% block content %}
+<!-- 제목 -->
+<h1>{{ post['attributes']['title'] }}</h1>
+
+<!-- 작성자 -->
+{% if 'authors' in post['attributes'] %}
+<div>
+    <!-- 작성자가 2명 이상인 경우 -->
+    {% if (post['attributes']['authors'] | length) > 1 %}
+    작성자들:
+    {% else %}
+    작성자:
+    {% endif %}
+    <!-- 작성자들이 config의 authors에 포함되어 있다면, config내 name값 아니면 frontmatter 입력값 -->
+    {% for author in post['attributes']['authors'] %}
+    {% if author in config['authors'] %}
+    {{ config['authors'][author]['name'] }}
+    {% else %}
+    {{ author }}
+    {% endif %}
+    {% endfor %}
+</div>
+{% endif %}
+
+
+<!-- youtube -->
+{% if 'youtube' in post['attributes'] %}
+<div class="youtube">
+    <!--<iframe width="100%" style="aspect-ratio: 16 / 9;"-->
+    <iframe
+            src="https://www.youtube.com/embed/{{ post['attributes']['youtube'] }}"
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            frameborder="none"
+            allowfullscreen>
+    </iframe>
+</div>
+{% endif %}
+
+
+<!-- 내용 -->
+{{ post['body'] | safe }}
+
+<!-- 이전 post / 다음 post -->
+{% if prev_post %}
+<div>
+    이전:
+    <a href="{{root_path}}{{ prev_post['attributes']['path'] }}">{{ prev_post['attributes']['title'] }}</a>
+</div>
+{% endif %}
+{% if next_post %}
+<div>
+    다음:
+    <a href="{{root_path}}{{ next_post['attributes']['path'] }}">{{ next_post['attributes']['title'] }}</a>
+</div>
+{% endif %}
+
+{% endblock content %}

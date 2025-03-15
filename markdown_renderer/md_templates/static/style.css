@@ -1,5 +1,9 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
 
+:root {
+    --greyf1: #f1f3f6;
+}
+
 html, body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
@@ -62,7 +66,33 @@ html, body {
 
 
 .content {
-    margin: 1em;
+    & .layout-center {
+        /*margin: 1em;*/
+        width: 1185px;
+        /*margin: 0 auto;*/
+        /* 기본 위쪽 여백 추가 */
+        margin: 60px auto 0;
+
+        /*@media (max-width: 767px) {*/
+        @media (max-width: 991px) {
+            margin: 0;
+            width: 100%;
+            /* w100%에  추가로 padding을 주면, box-sizing: border-box 안주면 가로스크롤이 생긴다.*/
+            /* -> 여기선 bootstrap reboot에서 처리해줘서 생략했다.*/
+            box-sizing: border-box;
+            /* header 모바일 패딩과 동일한 값 */
+            /*padding: 0 15px 0 ;*/
+            /* 모바일에서 section mt까지 대체 */
+            /* 특히 section-border도 반영하려면, margin대신 padding으로 */
+            padding: 20px;
+        }
+    }
+
+    .section-border {
+        @media (min-width: 0px) and (max-width: 991px) {
+            border-bottom: .8rem solid var(--greyf1);
+        }
+    }
 }
 
 
@@ -80,3 +110,36 @@ html, body {
 
 /* archive.html -> archive/index.html */
 
+
+/* post.html */
+.youtube {
+    position: relative;
+    height: 0;
+    overflow: hidden;
+    /* 영상 크기 조절 */
+    padding-bottom: 50%;
+    @media (max-width: 991px) {
+        padding-bottom: 56.25%;
+    }
+    /*padding-top: 30px;*/
+
+    & iframe, object, embed {
+        position: absolute;
+        /*top: 0;*/
+        /*left: 0;*/
+        /* 가운데 정렬*/
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 83%;
+        height: 90%;
+        @media (max-width: 991px) {
+            width: 99%;
+            height: 95%;
+        }
+
+        /* 꾸미기 */
+        border-radius: 1em;
+        background-color: lightgray;
+    }
+}
