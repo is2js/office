@@ -1,0 +1,141 @@
+/* post.html */
+
+.article {
+    /* markdown 이미지 처리 */
+
+    /*img {*/
+
+    figure:has(img) {
+        /* 가운데 정렬 */
+        display: block;
+        margin: 1em auto;
+        @media (max-width: 991px) {
+            margin: 0.5em auto;
+        }
+
+        /* 꾸미기 */
+        border-radius: 1em;
+        border: 1px solid var(--greyf1);
+        overflow: hidden; /* new */
+
+        /* new */
+
+        img {
+            width: 100%;
+            object-fit: cover; /* 이미지가 비율을 유지하면서 꽉 차도록 설정 */
+            object-position: center; /* 중앙 정렬 */
+
+            display: block; /* 🔥 img<->caption 엽개 해결: inline 요소의 여백 제거 */
+        }
+
+        /* new2 캡션 디자인 */
+
+        figcaption {
+            padding: 1em 1.25em;
+            text-align: center;
+            /*font-weight: bold;*/
+
+            /*color: var(--grey3c);*/
+            /*background-color: var(--greyf2);*/
+            color: #fff;
+            background-color: #88827b;
+
+            font-size: 1.063em;
+            @media (max-width: 991px) {
+                font-size: 0.938em;
+            }
+
+            /* 긴 텍스트 줄임 (...) 적용 */
+            white-space: nowrap; /* 텍스트 한 줄 유지 */
+            overflow: hidden; /* 넘치는 부분 숨김 */
+            text-overflow: ellipsis; /* 생략 (...) 처리 */
+        }
+    }
+
+    /*img[alt$="-fullwidth"] {*/
+
+    figure:has(img[alt$="-fullwidth"]) {
+        width: 93%;
+    }
+
+    figure:has(img[alt$="-halfwidth"]) {
+        width: 50%;
+    }
+
+    figure:has(img[alt$="-quarterwidth"]) {
+        width: 25%;
+    }
+
+    /* 다중 이미지 */
+
+    figure:has(img[alt$="-2inline"]) {
+        display: inline-block;
+        /*width: 44%; !* Adjust width to fit two images inline *!*/
+        /*margin: 2%; !* Adjust margin to create space between images *!*/
+        width: calc(50% - 4%); /* Adjust width to fit two images inline with 2% margin on each side */
+        margin: 0 2%; /* Left and right margin of 2% */
+
+    }
+
+    figure:has(img[alt$="-3inline"]) {
+        /*width: 31%; !* Adjust width to fit three images inline *!*/
+        /*margin: 1%; !* Adjust margin to create space between images *!*/
+        width: calc(33.33% - 4%); /* Adjust width to fit three images inline with 2% margin on each side */
+        margin: 0 2%; /* Left and right margin of 2% */
+    }
+
+    p:has(img[alt$="-2inline"], img[alt$="-3inline"], img[alt$="-4inline"], img[alt$="-5inline"]) {
+        white-space: nowrap;
+        /* 가운데 정렬 for 자식img태그들 */
+        text-align: center;
+
+        /*> img {*/
+
+        > figure {
+            display: inline-block;
+            border-radius: 1em;
+            border: 1px solid var(--greyf1);
+
+
+        }
+
+        /* p의 상하마진이 이미지 3개짜리의 상하마진이 된다. */
+        margin: 1em 0;
+        @media (max-width: 991px) {
+            margin: 0.5em 0;
+        }
+    }
+}
+
+
+.youtube {
+    position: relative;
+    height: 0;
+    overflow: hidden;
+    /* 영상 크기 조절 */
+    padding-bottom: 50%;
+    @media (max-width: 991px) {
+        padding-bottom: 56.25%;
+    }
+    /*padding-top: 30px;*/
+
+    & iframe, object, embed {
+        position: absolute;
+        /*top: 0;*/
+        /*left: 0;*/
+        /* 가운데 정렬*/
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 83%;
+        height: 90%;
+        @media (max-width: 991px) {
+            width: 99%;
+            height: 95%;
+        }
+
+        /* 꾸미기 */
+        border-radius: 1em;
+        background-color: lightgray;
+    }
+}

@@ -1,13 +1,16 @@
 import datetime
 import os.path
+import re
 import shutil
 
 import frontmatter
 import jinja2
 import markdown
 import yaml
+from pygments.formatters.html import HtmlFormatter
 
 from markdown_renderer.lib import get_relative_root_path
+from markdown_renderer.md_extensions import AlberandTagsExtension
 
 if __name__ == '__main__':
     SOURCE_DIR = '../docs'  # 여기서 실행
@@ -32,7 +35,8 @@ def cli_entry_point():
         print(f"'{SOURCE_DIR}' 폴더가 존재하지 않습니다.")
         return
 
-    files_full_path_to_render = get_full_path_of_files_to_render()
+    # files_full_path_to_render = get_full_path_of_files_to_render_and_images()
+    files_full_path_to_render, image_files_full_path = get_full_path_of_files_to_render_and_images()
 
     ## build폴더 삭제 미리 해놓기
     if os.path.exists(OUTPUT_DIR):
@@ -50,7 +54,6 @@ def cli_entry_point():
     with open(config_file_path, 'r', encoding='utf-8') as f:
         config = yaml.safe_load(f)
         # print(f"config  >> {config}") # config  >> {'title': '상세질환 디자인(외부)'}
-
 
     posts = []  #
 
@@ -97,7 +100,8 @@ def cli_entry_point():
                 else:
                     # q: 아래 값은 datetime.date이다. 이것을 datetime.datetime이면서 '%Y-%m-%d'으로 변환 by combine
                     # post['attributes']['date_parsed'] = post['attributes']['date'] # date
-                    post['attributes']['date_parsed'] = datetime.datetime.combine(post['attributes']['date'], datetime.datetime.min.time()) # datetime
+                    post['attributes']['date_parsed'] = datetime.datetime.combine(post['attributes']['date'],
+                                                                                  datetime.datetime.min.time())  # datetime
 
                 # 15-4) 근데, 발행날짜가 미래면, 무시하도록 한다.
                 # 오늘 00시 발행법: datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
@@ -166,13 +170,56 @@ def cli_entry_point():
 
         # 20) render template
         # html = markdown.markdown(post['body'])
-        post['body'] = markdown.markdown(post['body'])
 
         # 배포 전, 내부 실행 -> is_test=True -> 내부에서 ../ 갯수 줄이는 것 안함.
         if __name__ == '__main__':
             relative_root_path = get_relative_root_path(relative_path, is_test=True)
         else:
             relative_root_path = get_relative_root_path(relative_path)
+
+        ## 외부 패키지 render시 이미지 경로 바꿔놓기
+        # docs/조원장_증명사진.png ->  (현 blog/4) .. / .. /static/img/조원장_증명사진.png
+        # ==> ..(blog) /..(build) / static / img / 조원장_증명사진.png
+        if __name__ != '__main__':
+            # post['body'] = re.sub(
+            #     r"\!\[(.+)\]\((.+)\)",
+            #     f'![\\1]({os.path.dirname(os.path.dirname(relative_root_path))}/static/img/\\2)',
+            #     post['body']
+            # )
+
+            # http로 시작하는 경우는 제외
+            post['body'] = re.sub(
+                r"!\[(.+?)\]\((?!http)([^)]+)\)",
+                lambda
+                    m: f'![{m.group(1)}]({os.path.join(os.path.dirname(os.path.dirname(relative_root_path)), "static/img", m.group(2))})'
+                if m.group(2) else m.group(0),
+                post['body']
+            )
+
+        # post['body'] = markdown.markdown(post['body']
+        #                                  , extensions=['fenced_code', 'codehilite'],
+        #                                  extension_configs={
+        #                                      'mdx_math': {
+        #                                          'enable_dollar_delimiter': True,
+        #                                      },
+        #                                  },
+        #                                  )
+
+
+        MARKDOWN_EXTENSIONS = {
+            # 'extensions': [AlberandTagsExtension(), 'extra', 'toc'], # extra 넣어야 테이블 가능.
+            'extensions': ['extra', 'toc', 'fenced_code', 'codehilite'], # extra 넣어야 테이블 가능.
+            'extension_configs': {
+                'markdown.extensions.extra': {},
+                'markdown.extensions.meta': {},
+            },
+            'output_format': 'html5',
+        }
+
+        post['body'] = markdown.markdown(post['body'],
+                                         **MARKDOWN_EXTENSIONS,
+                                         )
+        # post['body'] = mistune.html(post['body'])
 
         # 내부/외부 달라서
         # - 내부 package_dir > template_dir > static_dir은 패캐지파일복사 절대경로라 X
@@ -204,7 +251,6 @@ def cli_entry_point():
         with open(output_file_full_path, 'w', encoding='utf-8') as f:
             f.write(post_html)
 
-
     # def render_html(page, config, env, posts, title = 'Home')
     ## render index -> posts 전체 + index페이지 제목을 넘겨준다.
     index = render_html('index.html', config, env, posts, title='상세질환 디자인')
@@ -222,16 +268,37 @@ def cli_entry_point():
     with open(archive_path, 'w', encoding='utf-8') as f:
         f.write(archive)
 
-
-
-    ## copy static files
-    # - 외부에서 패키지로 사용시(main X) static도 build폴더>static으로 복사
+    ## copy static files and images
+    # 외부에서 패키지로 사용시에만 == main실행 X:
     if __name__ != '__main__':
+        # 1) 패키지실행 속 static(대문자STATIC_DIR) 파일들: build폴더 > static으로 복사
         shutil.copytree(STATIC_DIR, os.path.join(OUTPUT_DIR, 'static'))
+
+        # 2) docs의 image파일들: build폴더> static > img폴더 > 파일명으로 복사
+        os.makedirs(os.path.join(STATIC_DIR, 'img'), exist_ok=True)
+        # 파일명은 1개만 있어야 한다.
+        images_copied = {}
+        for image_file_path in image_files_full_path:
+            # Make sure the image name is unique
+            image_filename = os.path.basename(image_file_path)
+            if image_filename in images_copied:
+                raise ValueError(
+                    '중복된 이름의 이미지 파일이 있습니다: 변경해주세요',
+                    image_file_path,
+                    images_copied[image_filename])
+            else:
+                images_copied[image_filename] = image_file_path
+
+            shutil.copy(image_file_path, os.path.join(OUTPUT_DIR, 'static', 'img', os.path.basename(image_file_path)))
+
+        ## codehiligt css를 pygments 모듈에서 가져와서 새로쓰기 (외부 전용ㄴ)
+        formatter = HtmlFormatter()
+        code_highlight_css = formatter.get_style_defs()
+        with open(os.path.join(OUTPUT_DIR, 'static', 'code-highlights.css'), 'w') as f:
+            f.write(code_highlight_css)
 
 
 def render_html(page, config, env, posts, title='Home'):
-
     html_template = env.get_template(page)
 
     if __name__ == '__main__':
@@ -251,9 +318,12 @@ def render_html(page, config, env, posts, title='Home'):
     return html
 
 
-def get_full_path_of_files_to_render():
+# def get_full_path_of_files_to_render():
+def get_full_path_of_files_to_render_and_images():
     full_path_of_files_to_render = []
     files_to_render_ignore = get_filenames_to_ignore()
+
+    full_path_of_image_files = []
 
     # 2) os.walk로 root, 내부dirs, files를 가져온다.
     for root, inner_dirs, file_names in os.walk(SOURCE_DIR):
@@ -272,6 +342,12 @@ def get_full_path_of_files_to_render():
             if file_basename == '.renderignore':
                 continue
 
+            ## 이미지 파일도 복사해놓기 (md파일 필터링 전)
+            for image_type in ['.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp']:
+                if file_basename.lower().endswith(image_type):
+                    print(f'  이미지 파일 >> {file_basename}')
+                    full_path_of_image_files.append(full_path)
+
             # 11-2) md파일도 아니면서 .renderignore도 아닌 것 -> pass
             if not file_basename.lower().endswith('.md'):
                 print(f'  SOURCE_DIR 폴더에 md파일이 아닌 것이 존재 >> {file_basename}')
@@ -287,7 +363,7 @@ def get_full_path_of_files_to_render():
             full_path_of_files_to_render.append(full_path)
 
         print(f"files_to_render  >> {full_path_of_files_to_render}")
-    return full_path_of_files_to_render
+    return full_path_of_files_to_render, full_path_of_image_files
 
 
 def get_filenames_to_ignore():

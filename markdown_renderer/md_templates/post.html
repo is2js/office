@@ -43,13 +43,15 @@
 
 
 <!-- 내용 -->
+<div class="article">
 {{ post['body'] | safe }}
+</div>
 
 <!-- 이전 post / 다음 post -->
 {% if prev_post %}
 <div>
     이전:
-    <a href="{{root_path}}{{ prev_post['attributes']['path'] }}">{{ prev_post['attributes']['title'] }}</a>
+    <a href="{{root_path}}{{ prev_post['attributes']['path']  }}">{{ prev_post['attributes']['title'] }}</a>
 </div>
 {% endif %}
 {% if next_post %}
@@ -60,3 +62,8 @@
 {% endif %}
 
 {% endblock content %}
+
+
+{% block extra_js %}
+<script src="{{ static_path }}/article.js"></script>
+{% endblock %}
