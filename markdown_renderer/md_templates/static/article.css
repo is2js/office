@@ -1,9 +1,85 @@
 /* post.html */
+.post-title {
+    font-size: 2em;
+    font-weight: 700;
+    line-height: 2em;
+    color: #3c3c3c;
+    margin: 0;
+    word-break: keep-all;
+}
+
 
 .article {
+
+    /* 가운데 정렬 소제목들 */
+
+    & h3 {
+        display: block;
+        line-height: 1.4;
+        letter-spacing: 2px;
+        margin: 0 auto 1.8em;
+        font-size: 2em;
+        font-weight: 800;
+        text-align: center;
+
+        @media (max-width: 991px) {
+            font-size: 1.5em;
+        }
+    }
+
+    /* 좌측 마크 h5  */
+
+    h5 {
+        line-height: 1.2;
+        margin: 0.5em 0 1em;
+        padding: 0 0 0 1.414em;
+        font-size: 1.125em;
+
+
+        display: inline-block;
+        position: relative;
+        color: #3c3c3c;
+        font-weight: 800;
+        word-break: keep-all;
+
+        &::before {
+
+            position: absolute;
+            content: '';
+            display: inline-block;
+            top: 0;
+            left: 0;
+
+            width: 18px;
+            height: 18px;
+
+            box-sizing: border-box;
+            border-radius: 50%;
+            /*background: linear-gradient(135deg, #4995ba 0, #495c65 18%, #ba8749 85%, #88827b 100%);*/
+            background: linear-gradient(135deg, var(--main) 0, var(--green) 18%, #FC5230 85%, #FF6D62FF 100%);
+        }
+
+        &::after {
+            position: absolute;
+            content: '';
+            display: inline-block;
+            top: 5px;
+            left: 5px;
+
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            box-sizing: border-box;
+
+            background: #fff;
+            box-shadow: 1px 1px 1px rgba(0, 0, 0, .2);
+        }
+    }
+
+
     /* markdown 이미지 처리 */
 
-    /*img {*/
+    /* alt -xxx가 있는 이미지 -> js에서 figure를 부모로 만듦 */
 
     figure:has(img) {
         /* 가운데 정렬 */
@@ -31,18 +107,24 @@
         /* new2 캡션 디자인 */
 
         figcaption {
-            padding: 1em 1.25em;
             text-align: center;
+            padding: 1em 1.25em;
+            font-size: 1.5em;
+            letter-spacing: 1.5px;
             /*font-weight: bold;*/
 
-            /*color: var(--grey3c);*/
             /*background-color: var(--greyf2);*/
-            color: #fff;
-            background-color: #88827b;
+            /*color: #fff;*/
+            font-weight: 650;
+            /*background-color: #88827b;*/
+            /*color: var(--grey3c);*/
+            /*background-color: var(--green);*/
+            background: #f2f2f2;
 
-            font-size: 1.063em;
             @media (max-width: 991px) {
-                font-size: 0.938em;
+                padding: 0.75em 1.25em;
+                font-size: 1.2em;
+                letter-spacing: 1.1px;
             }
 
             /* 긴 텍스트 줄임 (...) 적용 */
@@ -105,6 +187,300 @@
             margin: 0.5em 0;
         }
     }
+
+
+    /* 테이블 */
+
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+
+        margin: 1em auto;
+        width: 100%;
+        @media (max-width: 991px) {
+            margin: 0.8em auto;
+            width: 97%;
+        }
+
+        text-align: center;
+
+        /*border: 1px solid #d5d5d5;*/
+        border-top: 3px solid var(--green);
+        background: #fff;
+
+        & tr > th {
+            padding: 15px 14px;
+            @media (max-width: 991px) {
+                padding: 5px 8px;
+            }
+            min-height: 40px;
+            background: #f6f6f6;
+            border-left: 1px solid #d5d5d5;
+            border-right: 1px solid #d5d5d5;
+            border-bottom: 1px solid #d5d5d5;
+            font-weight: 700;
+            vertical-align: middle;
+            word-break: keep-all;
+        }
+
+        & tr > td {
+            padding: 12px 14px;
+            @media (max-width: 991px) {
+                padding: 5px 8px;
+            }
+            line-height: 1.4;
+            border-left: 1px solid #d5d5d5;
+            border-right: 1px solid #d5d5d5;
+            border-bottom: 1px solid #d5d5d5;
+            word-break: keep-all;
+            vertical-align: middle;
+        }
+
+        & tr > th:first-child,
+        & tr > td:first-child {
+            @media (max-width: 991px) {
+                border-left: none;
+            }
+        }
+
+        & tr > th:last-child,
+        & tr > td:last-child {
+            @media (max-width: 991px) {
+                border-right: none;
+            }
+        }
+    }
+
+
+    /* 숫자 list */
+    /* https://www.ansclinic.co.kr/01/02.php */
+
+    > ul, > ol {
+        margin: 0 auto 1em;
+        padding: 0;
+
+        display: flex;
+        flex-wrap: wrap;
+        gap: .5em 1em;
+
+
+        border: 0;
+        list-style: none;
+        vertical-align: baseline;
+
+
+        > li {
+            flex: 1 1 100%;
+            margin: 0 auto;
+            padding-left: 10px;
+
+            border: 0;
+            list-style: none;
+
+            line-height: 1.4;
+            font-size: 1em;
+
+
+            position: relative;
+            word-break: keep-all;
+
+            > p {
+                /*margin-bottom: 0.75em;*/
+                margin: 0 auto 0; /* li 자식p의 기본 마진 삭제 */
+                line-height: 1.5;
+
+                display: inline-block;
+
+                &:last-child {
+                    line-height: 1.5;
+                    word-break: keep-all
+                }
+            }
+        }
+
+    }
+
+    > ul > li::before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 0;
+        top: 8px;
+
+        width: 4px;
+        height: 4px;
+        background: #4995ba;
+        border-radius: 50%;
+    }
+
+
+    > ol {
+        counter-reset: my-counter;
+
+        > li {
+            list-style: none;
+            counter-increment: my-counter; /* 🔥 각 항목마다 카운터 증가 */
+        }
+
+        > li::before {
+
+            content: counter(my-counter) ". ";
+            display: inline-block; /* 추가 */
+            width: 15px;
+            height: 15px;
+            /*border-radius: 50%;*/
+            /*border: 1px solid var(--green);*/
+
+            margin: 0 5px 5px 0;
+
+            font-weight: 600;
+            color: #4995ba;
+            text-align: center;
+        }
+    }
+
+    /* 2단계 li 부터는 그림으로 */
+    /* https://www.ansclinic.co.kr/03/01.php */
+
+    > ul > li, > ol > li {
+        > ul, > ol {
+            list-style: none;
+            margin: 0.2em auto 0;
+            padding-left: 20px;
+            width: 100%;
+
+            > li {
+                line-height: 1.4;
+                margin: 0px auto 0.5em;
+
+                position: relative;
+                padding-left: 20px;
+
+                &::before {
+                    content: '';
+                    display: block;
+                    position: absolute;
+                    left: 0;
+                    top: 3px;
+
+
+                    width: 15px;
+                    height: 13px;
+
+                    background: url(./img/list_check.png) no-repeat;
+
+                    > p {
+                        margin: 0 auto; /* li 자식p의 기본 마진 삭제 */
+                        line-height: 1.5;
+                        font-size: 1em;
+
+
+                    }
+                }
+            }
+        }
+    }
+
+    /* 글자들 */
+
+    :not(pre) > code {
+        letter-spacing: 1px;
+
+        font-weight: 700;
+        padding: 0 0.25em;
+        color: var(--submain);
+        background: #fdf5e2;
+
+        line-height: 1.4;
+        font-size: 1em;
+
+        border-radius: 4px;
+    }
+
+    strong {
+        letter-spacing: 1px;
+
+        font-weight: 700;
+        background: var(--green);
+        padding: 0 0.25em;
+        color: white;
+
+        border-radius: 4px;
+
+        /* 이탈릭 */
+
+        > em {
+            border-radius: 4px;
+            font-style: normal;
+
+            margin: 0 -0.25em; /* 부모 strong의 padding을 상쇄 */
+            padding: 0 0.25em;
+
+            background: #fdf5e2;
+            color: var(--green);
+        }
+    }
+
+    /* 링크 */
+
+    a {
+
+        text-decoration: none;
+
+        &:visited, &:active {
+            text-decoration: none;
+        }
+
+        &:before {
+            content: '🔗';
+            display: inline-block;
+            margin-right: .25em;
+            border-radius: 50%;
+            color: inherit;
+            font-size: .875em;
+        }
+
+        padding: .063em .313em;
+        background: #e2e9eb;
+        color: #495c65;
+        font-weight: 600;
+
+        display: inline-block;
+        border-radius: 4px;
+        transition: .3s;
+    }
+
+
+    /* 인용구 */
+
+    blockquote {
+        margin: 0 auto 1em;
+        padding: 1.125em;
+
+        background: rgba(233, 232, 230, .5);
+        border-radius: 16px;
+        box-shadow: 2px 2px 12px rgba(184, 181, 177, .1);
+
+    }
+
+    /* --- hr 줄바꿈 */
+
+    hr {
+        border: 0;
+        border-bottom: .8rem solid var(--greyf1);
+        margin: 1.5em auto;
+    }
+
+    /* 드래그시 색깔 */
+
+    ::selection {
+        /*background: var(--main);*/
+        /*color: var(--submain);*/
+        background: var(--purple6f);
+        color: white;
+        font-weight: 1000;
+    }
+
 }
 
 
@@ -132,6 +508,7 @@
         @media (max-width: 991px) {
             width: 99%;
             height: 95%;
+            border-radius: 1em;
         }
 
         /* 꾸미기 */

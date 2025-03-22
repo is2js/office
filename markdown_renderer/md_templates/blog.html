@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+{% for post in posts[0:5] -%}
+<div class="post-preview">
+    <div class="title">
+        <a href="{{ post['attributes']['path'] }}">{{ post['attributes']['title']}}</a>
+    </div>
+    {% if post['attributes'].get('date_parsed') %}
+    <div class="date">
+        {{ post['attributes']['date_parsed'].strftime('%Y년 %m월 %d일') }}
+    </div>
+    {% endif %}
+    <!-- 작성자 -->
+    {% if 'authors' in post['attributes'] %}
+    {% include "components/authors.html" %}
+    {% endif %}
+    <!-- 내용 -->
+    <div class="article">
+        {% if 'summary' in post %}
+        {{ post['summary'] | safe }}
+        {% else %}
+        {{ post['body'] | safe }}
+        {% endif %}
+    </div>
+</div>
+{% endfor %}
+
+{% endblock %}

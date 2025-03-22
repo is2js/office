@@ -27,6 +27,13 @@ PACKAGE_DIR = os.path.dirname(__file__)  # 패키지 폴더이름 (내/외부 �
 TEMPLATE_DIR = os.path.join(PACKAGE_DIR, 'md_templates')  # 템플릿도 패키지내부 폴더에서 제공할 것으로 지정
 STATIC_DIR = os.path.join(TEMPLATE_DIR, 'static')
 
+TRUNCATE_STRING = [
+    '<!-- truncate -->', '<!--truncate-->',
+    '<!--summary-->', '<!-- summary -->'
+    '<!-- TRUNCATE -->', '<!--TRUNCATE-->',
+    '<!--SUMMARY-->', '<!-- SUMMARY -->'
+]
+
 
 def cli_entry_point():
     print(f"start ")
@@ -219,7 +226,13 @@ def cli_entry_point():
         post['body'] = markdown.markdown(post['body'],
                                          **MARKDOWN_EXTENSIONS,
                                          )
-        # post['body'] = mistune.html(post['body'])
+
+
+        if any(truncate_tag in post['body'] for truncate_tag in TRUNCATE_STRING):
+            for truncate_tag in TRUNCATE_STRING:
+                if truncate_tag in post['body']:
+                    post['summary'] = post['body'].split(truncate_tag)[0]
+                    break
 
         # 내부/외부 달라서
         # - 내부 package_dir > template_dir > static_dir은 패캐지파일복사 절대경로라 X
@@ -267,6 +280,14 @@ def cli_entry_point():
     archive_path = os.path.join(OUTPUT_DIR, 'archive', 'index.html')
     with open(archive_path, 'w', encoding='utf-8') as f:
         f.write(archive)
+
+
+    ## render blog -> posts 전체 + index페이지 제목 + post에 있던 내용들
+    blog = render_html('blog.html', config, env, posts, title='블로그')
+    os.makedirs(os.path.join(OUTPUT_DIR, 'blog'), exist_ok=True)
+    archive_path = os.path.join(OUTPUT_DIR, 'blog', 'index.html')
+    with open(archive_path, 'w', encoding='utf-8') as f:
+        f.write(blog)
 
     ## copy static files and images
     # 외부에서 패키지로 사용시에만 == main실행 X:

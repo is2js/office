@@ -4,6 +4,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- font -->
+    <link rel="stylesheet" as="style" crossorigin
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200..900&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="{{ static_path }}/code-highlights.css">
     <link rel="stylesheet" href="{{ static_path }}/style.css">
     <link rel="stylesheet" href="{{ static_path }}/article.css">
@@ -18,7 +23,7 @@
             </a>
             <ul class="links">
                 <li><a href="{{ root_path }}">Home</a></li>
-                <li><a href="{{ root_path }}blog">피부이상</a></li>
+                <li><a href="{{ root_path }}blog">블로그</a></li>
                 <li><a href="{{ root_path }}archive">Archive</a></li>
             </ul>
         </div>
@@ -29,9 +34,22 @@
             </div>
         </div>
     </div>
+    <div class="footer">
+        {% if config['footer']['copyright']['enabled'] %}
+        <div id="copyright">
+            Copyright &copy; <span id="year"></span>{{ config['footer']['copyright']['company'] }}
+        </div>
+        {% endif %}
+        {% if config['footer']['give_credit'] %}
+        <div id="credit">
+            Made with <a href="https://github.com/pagekeytech/markdown-sitegen">MDR</a> from <a
+                href="https://www.pagekeytech.com/">남룡북매</a>
+        </div>
+        {% endif %}
+    </div>
 </div>
 
-{% block extra_js %}
-{% endblock %}
+<script src="{{ static_path }}/main.js"></script>
+{% block extra_js %}{% endblock %}
 </body>
 </html>

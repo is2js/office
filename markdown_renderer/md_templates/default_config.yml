@@ -1,3 +1,10 @@
-title: 상세질환 디자인
+title: Your Website
+authors:
+  your_name:
+    name: Your Name
 
-
+footer:
+  copyright:
+    enabled: true
+    company: Your Comp
+  give_credit: true
