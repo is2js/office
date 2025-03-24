@@ -29,7 +29,7 @@ STATIC_DIR = os.path.join(TEMPLATE_DIR, 'static')
 
 TRUNCATE_STRING = [
     '<!-- truncate -->', '<!--truncate-->',
-    '<!--summary-->', '<!-- summary -->'
+    '<!--summary-->', '<!-- summary -->',
     '<!-- TRUNCATE -->', '<!--TRUNCATE-->',
     '<!--SUMMARY-->', '<!-- SUMMARY -->'
 ]
@@ -212,10 +212,9 @@ def cli_entry_point():
         #                                  },
         #                                  )
 
-
         MARKDOWN_EXTENSIONS = {
             # 'extensions': [AlberandTagsExtension(), 'extra', 'toc'], # extra 넣어야 테이블 가능.
-            'extensions': ['extra', 'toc', 'fenced_code', 'codehilite'], # extra 넣어야 테이블 가능.
+            'extensions': ['extra', 'toc', 'fenced_code', 'codehilite'],  # extra 넣어야 테이블 가능.
             'extension_configs': {
                 'markdown.extensions.extra': {},
                 'markdown.extensions.meta': {},
@@ -226,7 +225,6 @@ def cli_entry_point():
         post['body'] = markdown.markdown(post['body'],
                                          **MARKDOWN_EXTENSIONS,
                                          )
-
 
         if any(truncate_tag in post['body'] for truncate_tag in TRUNCATE_STRING):
             for truncate_tag in TRUNCATE_STRING:
@@ -281,13 +279,47 @@ def cli_entry_point():
     with open(archive_path, 'w', encoding='utf-8') as f:
         f.write(archive)
 
-
     ## render blog -> posts 전체 + index페이지 제목 + post에 있던 내용들
-    blog = render_html('blog.html', config, env, posts, title='블로그')
-    os.makedirs(os.path.join(OUTPUT_DIR, 'blog'), exist_ok=True)
-    archive_path = os.path.join(OUTPUT_DIR, 'blog', 'index.html')
-    with open(archive_path, 'w', encoding='utf-8') as f:
-        f.write(blog)
+
+    # blog = render_html('blog.html', config, env, posts, title='블로그')
+    # blog_path = os.path.join(OUTPUT_DIR, 'blog')
+    # os.makedirs(blog_path, exist_ok=True)
+    # blog_path = os.path.join(OUTPUT_DIR, 'blog', 'index.html')
+    # with open(blog_path, 'w', encoding='utf-8') as f:
+    #     f.write(blog)
+
+    # pagination
+    PAGINATION = config['pagination']
+    for i in range(0, len(posts), PAGINATION):
+        target_posts = posts[i:i + PAGINATION]
+        prev_index = i - 1
+        next_index = i + 1
+        has_prev = prev_index >= 0
+        has_next = next_index * PAGINATION < len(posts)
+        pagination = {
+            'prev_index': prev_index + 1, # jinja에서는 1이 첫페이지
+            'next_index': next_index + 1,
+            'has_prev': has_prev,
+            'has_next': has_next,
+        }
+
+        # i = 0 일 때는 그냥 blog
+        if i == 0:
+            blog_path = os.path.join(OUTPUT_DIR, 'blog')
+            blog = render_html('blog.html', config, env, target_posts, title='블로그',
+                               **pagination,
+                               )
+        else:
+            blog_path = os.path.join(OUTPUT_DIR, 'blog', f'{i // PAGINATION + 1}')
+            # 강제로 중간path를 넣어줬다면, jinja에 쓰일 static도 / root_path도 한칸씩 이동 해야한다.
+            blog = render_html('blog.html', config, env, target_posts, title='블로그', root_path_back_level=1,
+                               **pagination,
+                               )
+
+        os.makedirs(blog_path, exist_ok=True)
+        blog_path = os.path.join(blog_path, 'index.html')
+        with open(blog_path, 'w', encoding='utf-8') as f:
+            f.write(blog)
 
     ## copy static files and images
     # 외부에서 패키지로 사용시에만 == main실행 X:
@@ -319,7 +351,7 @@ def cli_entry_point():
             f.write(code_highlight_css)
 
 
-def render_html(page, config, env, posts, title='Home'):
+def render_html(page, config, env, posts, title='Home', root_path_back_level=0, **others):
     html_template = env.get_template(page)
 
     if __name__ == '__main__':
@@ -329,12 +361,19 @@ def render_html(page, config, env, posts, title='Home'):
         index_relative_root_path = get_relative_root_path(page)
         static_path = os.path.join(index_relative_root_path, 'static')
 
+    # 강제로 중간에 path를 추가한다면 ex> pagination으로 blog/1 blog/2
+    # static은 한칸 뒤로, 링크도 {{ root_path }} /원래 path가 연결되려면 현재에서 1칸 뒤로
+    if root_path_back_level:
+        index_relative_root_path = os.path.join('../' * root_path_back_level, index_relative_root_path)
+        static_path = os.path.join('../' * root_path_back_level, index_relative_root_path, 'static')
+
     html = html_template.render(
         config=config,
         root_path=index_relative_root_path,
         static_path=static_path,
         title=title,
         posts=posts,
+        **others if others else {}
     )
     return html
 

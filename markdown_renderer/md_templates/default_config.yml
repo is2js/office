@@ -8,3 +8,5 @@ footer:
     enabled: true
     company: Your Comp
   give_credit: true
+
+pagination: 3

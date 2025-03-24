@@ -11,3 +11,6 @@ footer:
     enabled: true
     company: (주) 김석영 주식회사
   give_credit: true
+
+
+pagination: 3

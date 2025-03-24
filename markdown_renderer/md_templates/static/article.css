@@ -272,7 +272,9 @@
         > li {
             flex: 1 1 100%;
             margin: 0 auto;
-            padding-left: 10px;
+
+            /*padding-left: 10px;*/
+            padding-left: 20px;
 
             border: 0;
             list-style: none;
@@ -282,7 +284,8 @@
 
 
             position: relative;
-            word-break: keep-all;
+            /*word-break: keep-all;*/
+            word-break: break-word;
 
             > p {
                 /*margin-bottom: 0.75em;*/
@@ -320,9 +323,15 @@
         > li {
             list-style: none;
             counter-increment: my-counter; /* 🔥 각 항목마다 카운터 증가 */
+
+            position: relative;
         }
 
         > li::before {
+            position: absolute;
+            left: 0;
+            top: 7.5px; /* height 의 절반 */
+            transform: translateY(-50%);
 
             content: counter(my-counter) ". ";
             display: inline-block; /* 추가 */

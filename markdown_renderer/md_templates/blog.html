@@ -2,7 +2,7 @@
 {% block title %}{{title}}{% endblock %}
 
 {% block content %}
-{% for post in posts[0:5] -%}
+{% for post in posts -%}
 <div class="post-preview">
     <div class="title">
         <a href="{{ post['attributes']['path'] }}">{{ post['attributes']['title']}}</a>
@@ -26,5 +26,19 @@
     </div>
 </div>
 {% endfor %}
+
+{% if  has_prev %}
+ {% if prev_index == 1 %}
+<a class="btn-seemore" href="{{root_path}}blog/">최신 POST</a>
+
+ {% else %}
+<a class="btn-seemore" href="{{root_path}}blog/{{prev_index}}">최신 POST</a>
+
+ {% endif %}
+{% endif %}
+
+{% if  has_next %}
+<a class="btn-seemore" href="{{root_path}}blog/{{next_index}}">이전 POST</a>
+{% endif %}
 
 {% endblock %}
