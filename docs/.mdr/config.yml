@@ -2,9 +2,21 @@ title: 조재성 원장
 authors:
   조재성:
     name: 조재성 원장
+    comment: 재활, 통계, 프로그래밍을 전공한 수석졸업 한의사입니다.
+    email: tingstyle1@gmail.com
+    kakaotalk: tingstyle@hanmail.net
+    profileImg: https://front.chojaeseong.com/images/png/profile/sub/02.png
   김석영:
     name: 김석영 원장
+    comment: 20년이상 저와 가족, 지인들에게 한약을 통한 치료를 제공해온 한의사입니다.
+    email: daisykim88@gmail.com
+    kakaotalk: tingstyle@hanmail.net
+    profileImg: https://front.chojaeseong.com/images/png/profile/sub/01.png
 
+
+theme:
+  primary: "#1ECECB"
+  secondary: "#FC5230"
 
 footer:
   copyright:
@@ -13,4 +25,4 @@ footer:
   give_credit: true
 
 
-pagination: 3
+pagination: 5

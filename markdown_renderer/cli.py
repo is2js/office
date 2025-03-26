@@ -63,8 +63,8 @@ def cli_entry_point():
         # print(f"config  >> {config}") # config  >> {'title': '상세질환 디자인(외부)'}
 
     posts = []  #
-
     post_paths = {}  # 모든 post에 대한 path들을 모은다. TODO: DB에서 검사
+    redirects = []  # 기본paht외 추가로 갈 수 있는 path들을 모은다.
     # 4) 랜더할 md file들을 순회하면서, frontmatter 추출
     for file_full_path in files_full_path_to_render:
         with open(file_full_path, 'r', encoding='utf-8') as f:
@@ -86,12 +86,20 @@ def cli_entry_point():
             if 'path' in post['attributes']:
                 # 15-2) path는 중복이 아니여야 한다. TODO: 현재는 path별 index.html 1개밖에 못만듬.
                 if post['attributes']['path'] in post_paths:
-                    # raise ValueError(f'중복된 path가 있습니다: {post["path"]}')
-                    print(f'🤣 중복된 path를 가진 파일 : {file_full_path}')
-                    print(f'post_paths >> {post_paths}')
-                    continue
+                    # print(f'🤣 중복된 path를 가진 파일 : {file_full_path}')
+                    # print(f'post_paths >> {post_paths}')
+                    # continue
+                    raise ValueError(f'중복된 path가 있습니다: {post["attributes"]["path"]}')
                 # 15-3) 중복이 아닌 path는 True로 체크해서 추후 중복이 안되게 한다.
                 post_paths[post['attributes']['path']] = True
+
+                # path를 가져 등록되었다면, redirects도 검사해서, 중복이 없으면 post_paths에 등록한다.
+                if 'redirects' in post['attributes']:
+                    for redirect in post['attributes']['redirects']:
+                        if redirect in post_paths:
+                            raise ValueError(f'중복된 redirect가 있습니다: {redirect}')
+                        post_paths[redirect] = True
+
             else:
                 # 15-4) path가 없으면, 파일명 .md ->.html 변경 기존 로직이 적용하는 file_full_path를 나중에 쓰기 위해
                 #       file_full_path로 저장해놓는다.
@@ -121,6 +129,11 @@ def cli_entry_point():
                     continue
 
             posts.append(post)
+            # 추가가 되는 post에 대해서는, tuple로 redirect_path와 기존 path를 넣어놓는다.
+            if 'redirects' in post['attributes']:
+                for redirect in post['attributes']['redirects']:
+                    redirects.append((redirect, post['attributes']['path']))
+    print(f"redirects  >> {redirects}")
 
     ## Render markdown to html
     # {
@@ -260,6 +273,8 @@ def cli_entry_point():
             # date=post['attributes'].get('date', None),
         )
         with open(output_file_full_path, 'w', encoding='utf-8') as f:
+            print(f" post 당첨 >> output_file_full_path")
+
             f.write(post_html)
 
     # def render_html(page, config, env, posts, title = 'Home')
@@ -291,13 +306,14 @@ def cli_entry_point():
     # pagination
     PAGINATION = config['pagination']
     for i in range(0, len(posts), PAGINATION):
+        # i = 0, 4, 7 ...
         target_posts = posts[i:i + PAGINATION]
         prev_index = i - 1
         next_index = i + 1
         has_prev = prev_index >= 0
         has_next = next_index * PAGINATION < len(posts)
         pagination = {
-            'prev_index': prev_index + 1, # jinja에서는 1이 첫페이지
+            'prev_index': prev_index + 1,  # jinja에서는 1이 첫페이지
             'next_index': next_index + 1,
             'has_prev': has_prev,
             'has_next': has_next,
@@ -310,9 +326,12 @@ def cli_entry_point():
                                **pagination,
                                )
         else:
-            blog_path = os.path.join(OUTPUT_DIR, 'blog', f'{i // PAGINATION + 1}')
+            # blog_path = os.path.join(OUTPUT_DIR, 'blog', f'{i // PAGINATION + 1}')
+            # 이대로 가면 /blog/4 post와 /blog/4 페이지네이션이 똑같아져버린다.
+            blog_path = os.path.join(OUTPUT_DIR, 'blog', 'page', f'{i // PAGINATION + 1}')
             # 강제로 중간path를 넣어줬다면, jinja에 쓰일 static도 / root_path도 한칸씩 이동 해야한다.
-            blog = render_html('blog.html', config, env, target_posts, title='블로그', root_path_back_level=1,
+            # blog = render_html('blog.html', config, env, target_posts, title='블로그', root_path_back_level=1,
+            blog = render_html('blog.html', config, env, target_posts, title='블로그', root_path_back_level=2,
                                **pagination,
                                )
 
@@ -320,6 +339,31 @@ def cli_entry_point():
         blog_path = os.path.join(blog_path, 'index.html')
         with open(blog_path, 'w', encoding='utf-8') as f:
             f.write(blog)
+
+    ## render redirects
+    for redirect_path, target_path in redirects:
+        relative_redirect_path = redirect_path + '/index.html'
+        # 상대경로에선, 맨 앞에 '/'를 제거한다.
+        if relative_redirect_path.startswith('\\') or relative_redirect_path.startswith('/'):
+            relative_redirect_path = relative_redirect_path[1:]
+        if target_path.startswith('\\') or target_path.startswith('/'):
+            target_path = target_path[1:]
+
+        redirect_output_file_full_path = os.path.join(OUTPUT_DIR, relative_redirect_path)
+        os.makedirs(os.path.dirname(redirect_output_file_full_path), exist_ok=True)
+
+        if __name__ == '__main__':
+            relative_root_path = get_relative_root_path(relative_redirect_path, is_test=True)
+        else:
+            relative_root_path = get_relative_root_path(relative_redirect_path)
+
+        redirect_template = env.get_template('redirect.html')
+        redirect = redirect_template.render(
+            root_path=relative_root_path,
+            target_path=target_path,
+        )
+        with open(redirect_output_file_full_path, 'w') as f:
+            f.write(redirect)
 
     ## copy static files and images
     # 외부에서 패키지로 사용시에만 == main실행 X:

@@ -1,0 +1,39 @@
+{% set author = post['attributes']['author'] %}
+<div class="authorContent">
+    <div class="contentWrapper">
+        <div class="textContent">
+            {% if author in config['authors'] %}
+            <h2 class="medium">안녕하세요. <span class="highlight">{{ config['authors'][author]['name'] }}</span>입니다.<br>
+                무엇이든 편하게 여쭤보세요.
+            </h2>
+            <div class="paragraph">{{ config['authors'][author]['comment'] }}<br>전문적인 지식을 바탕으로 상담과 의료서비스를 제공해드리겠습니다.
+            </div>
+            {% else %}
+            <h2 class="medium">무엇이든 궁금한 것을,<br>편하게 여쭤보세요.</h2>
+            <div class="paragraph">저희 병원은 양질의 서비스를 제공하기 위해 <br>지속적인 연구와 학습, 세미나를 진행하고 있습니다.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    {% if author in config['authors'] %}
+    <div class="linkBtns">
+        {% if 'email' in config['authors'][author] %}
+        <a target="_self" href="mailto:{{ config['authors'][author]['email'] }}"
+           class="emailBtn">
+            <div class="content">이메일</div>
+        </a>
+        {% endif %}
+        {% if 'kakao' in config['authors'][author] %}
+        <a target="_self" href="mailto:{{ config['authors'][author]['kakaotalk'] }}"
+           class="chatBtn">
+            <div class="content">카카오톡</div>
+        </a>
+        {% endif %}
+    </div>
+    {% if 'profileImg' in config['authors'][author] %}
+    <img alt="Hostman's Support" title="Hostman's Support Team"
+         class="imgAbsoluteBottomRight"
+         src="{{ config['authors'][author]['profileImg'] }}">
+    {% endif %}
+    {% endif %}
+</div>

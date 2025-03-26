@@ -1,9 +1,10 @@
 ---
 title: 'test4 youtube'
 path: /blog/4
-date: '2025-03-12'
-authors: [조재성]
-youtube: P_06Nvmunrk
+date: '2025-03-13'
+author: 김석영
+youtube: 5P9bZCHE-iE
+redirects: [/치료/1, /치료/디스크]
 ---
 
 

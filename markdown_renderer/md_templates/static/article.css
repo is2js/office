@@ -56,7 +56,8 @@
             box-sizing: border-box;
             border-radius: 50%;
             /*background: linear-gradient(135deg, #4995ba 0, #495c65 18%, #ba8749 85%, #88827b 100%);*/
-            background: linear-gradient(135deg, var(--main) 0, var(--green) 18%, #FC5230 85%, #FF6D62FF 100%);
+            /*background: linear-gradient(135deg, var(--main) 0, var(--green) 18%, #FC5230 85%, #FF6D62FF 100%);*/
+            background: linear-gradient(135deg, var(--theme-primary) 0, var(--green) 18%, #FC5230 85%, #FF6D62FF 100%);
         }
 
         &::after {
@@ -397,7 +398,8 @@
 
         font-weight: 700;
         padding: 0 0.25em;
-        color: var(--submain);
+        /*color: var(--submain);*/
+        color: var(--theme-secondary);
         background: #fdf5e2;
 
         line-height: 1.4;
@@ -523,5 +525,158 @@
         /* 꾸미기 */
         border-radius: 1em;
         background-color: lightgray;
+    }
+}
+
+
+/* authors */
+.authorContent {
+    /*background: #181f38;*/
+    background: var(--green);
+
+    border-radius: 24px;
+
+    position: relative;
+    align-content: space-between;
+    display: grid;
+
+    box-sizing: border-box;
+    /*margin: 0;*/
+
+    /*padding: 62px 66px !important;*/
+    margin: 12px 0 !important;
+    padding: 45px 66px !important;
+    height: 100%;
+    gap: 32px;
+
+    @media (max-width: 991px) {
+        margin: 8px 0 !important;
+        padding: 28px 22px !important;
+        gap: 24px;
+    }
+
+    & .contentWrapper {
+        display: grid;
+        gap: 16px;
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+
+        & .medium {
+            font-style: normal;
+            font-size: 36px;
+            line-height: 42px;
+            @media (max-width: 991px) {
+                font-size: 24px;
+                line-height: 32px;
+            }
+            color: #fff;
+
+            font-weight: 500;
+            letter-spacing: -.8px;
+
+            & .highlight {
+                /*background: linear-gradient(to top, #FFEFC2 15%, transparent 15%);*/
+                background: linear-gradient(to top, var(--green-bold) 25%, transparent 25%);
+                width: fit-content;
+            }
+        }
+
+        & .paragraph {
+            /*color: #78819d;*/
+            color: #d5d5da;
+            font-weight: 400;
+            font-style: normal;
+
+            font-size: 19px;
+            line-height: 24px;
+            letter-spacing: -.5px;
+            @media (max-width: 991px) {
+                font-size: 14px;
+                line-height: 20px;
+            }
+        }
+    }
+
+    /* 모바일이상에선 abs이미지에 대한 길이 제한*/
+
+    & .medium, & .paragraph {
+        /*max-width: 60%;*/
+        max-width: 70%; /* abs이미지는 45%지만 겹치게*/
+        @media (max-width: 991px) {
+            max-width: 100%;
+        }
+    }
+
+    & .linkBtns {
+        --transition-all: all 200ms ease-in-out;
+        transition: var(--transition-all);
+
+        display: flex;
+        gap: 8px;
+        @media (max-width: 991px) {
+            flex-direction: column;
+        }
+
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+
+        & .emailBtn, & .chatBtn {
+            text-decoration: none;
+            cursor: pointer;
+
+            font-weight: 600;
+            color: #fff;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border: none;
+            border-radius: 12px;
+            padding: 0 20px;
+
+            font-size: 16px;
+            letter-spacing: -.5px;
+            line-height: 24px;
+            height: 56px;
+
+            @media (max-width: 991px) {
+                font-size: 15px;
+                line-height: 22px;
+                height: 48px;
+                padding: 0 16px;
+            }
+
+            &:hover {
+                opacity: 0.7;
+            }
+        }
+
+        & .emailBtn {
+            /*background: #0452f2;*/
+            /*background: #181f38;*/
+            background: var(--green-bold);
+        }
+
+        & .chatBtn {
+            /*background: #181f38;*/
+            background: #FEE500;
+            color: #3A1D1D;
+        }
+    }
+
+    & .imgAbsoluteBottomRight {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+
+        /*max-width: 30%;*/
+        max-width: 45%;
+        @media (max-width: 991px) {
+            max-width: 40%;
+        }
+        z-index: 1;
     }
 }

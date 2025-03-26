@@ -6,9 +6,10 @@
 
     /* font */
     --grey3c: #3c3c3c;
-    --main: #1ECECB;
+    /*--main: #1ECECB;*/
     --green: #00b5b2;
-    --submain: #FC5230;
+    --green-bold: #047e7c;
+    /*--submain: #FC5230;*/
     --submain-25: rgba(252, 82, 48, 0.25);
     --purple6f: #6f49fa;
 }
@@ -34,19 +35,34 @@ html, body, code {
 }
 
 .nav {
-    background-color: var(--main);
+    display: flex;
+    align-items: center;
+
+
+    /*background-color: var(--main);*/
+    background-color: var(--theme-primary);
     padding: 1em;
     color: white;
+
 
     & a {
         color: inherit;
     }
 
     & a#title {
+        display: flex;
+        align-items: center;
+
         font-weight: bold;
         text-decoration: none;
         font-size: 150%;
     }
+
+    & img#logo {
+        height: 2em;
+        margin-right: 0.4em;
+    }
+
 
     & .links {
         display: inline-block;
@@ -62,16 +78,6 @@ html, body, code {
             text-decoration: none;
         }
     }
-}
-
-.nav, .nav #title {
-    display: flex;
-    align-items: center;
-}
-
-.nav #logo {
-    margin-right: 0.4em;
-    height: 2em;
 }
 
 
@@ -124,6 +130,7 @@ html, body, code {
         color: inherit;
 
     }
+
     & #credit {
         margin-top: 0.75em;
         font-size: 80%;
@@ -152,6 +159,7 @@ html, body, code {
     text-decoration: none;
     display: inline-block;
 }
+
 .btn-seemore:hover {
     filter: brightness(85%);
 }
@@ -162,6 +170,7 @@ html, body, code {
 /* blog.html -> blog/index.html */
 .post-preview .title {
     font-size: 2em;
+
     a {
         color: var(--green);
     }

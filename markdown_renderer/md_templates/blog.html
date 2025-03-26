@@ -16,29 +16,31 @@
     {% if 'authors' in post['attributes'] %}
     {% include "components/authors.html" %}
     {% endif %}
+
     <!-- 내용 -->
     <div class="article">
         {% if 'summary' in post %}
         {{ post['summary'] | safe }}
         {% else %}
-        {{ post['body'] | safe }}
+
+        요약글이 없는 post입니다.
         {% endif %}
     </div>
 </div>
 {% endfor %}
 
 {% if  has_prev %}
- {% if prev_index == 1 %}
+{% if prev_index == 1 %}
 <a class="btn-seemore" href="{{root_path}}blog/">최신 POST</a>
 
- {% else %}
-<a class="btn-seemore" href="{{root_path}}blog/{{prev_index}}">최신 POST</a>
+{% else %}
+<a class="btn-seemore" href="{{root_path}}blog/page/{{prev_index}}">최신 POST</a>
 
- {% endif %}
+{% endif %}
 {% endif %}
 
 {% if  has_next %}
-<a class="btn-seemore" href="{{root_path}}blog/{{next_index}}">이전 POST</a>
+<a class="btn-seemore" href="{{root_path}}blog/page/{{next_index}}">이전 POST</a>
 {% endif %}
 
 {% endblock %}

@@ -9,6 +9,12 @@
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200..900&display=swap" rel="stylesheet">
 
+    <style>
+        :root {
+            --theme-primary: {{ config['theme']['primary'] }};
+            --theme-secondary: {{ config['theme']['secondary'] }};
+        }
+    </style>
     <link rel="stylesheet" href="{{ static_path }}/code-highlights.css">
     <link rel="stylesheet" href="{{ static_path }}/style.css">
     <link rel="stylesheet" href="{{ static_path }}/article.css">

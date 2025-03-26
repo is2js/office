@@ -1,7 +1,14 @@
 title: Your Website
 authors:
   your_name:
-    name: Your Name
+    name: your_name 원장
+    comment: 나는 한의사 입니다.
+    email: your@mail.com
+    kakaotalk: your@kakao.talk
+
+theme:
+  primary: "#1ECECB"
+  secondary: "#FC5230"
 
 footer:
   copyright:
