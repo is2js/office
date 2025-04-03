@@ -6,6 +6,31 @@ author: 김석영
 youtube: 5P9bZCHE-iE
 redirects: [/치료/1, /치료/디스크]
 ---
+- youtbe든 shorts는 아무것도 안주면 width 100% 이 기본이며, short의 경우 너무 길진다.
+<shorts id="5P9bZCHE-iE"/>
+- shorts  width 50%
+<shorts id="5P9bZCHE-iE" width="50%"/>
+- shorts width 100px
+<shorts id="5P9bZCHE-iE" width="100px"/>
+
+- shorts에서는 width가 들어가도 height 준 것이 우선이다.
+    - height 150px width 100px
+<shorts id="5P9bZCHE-iE" height="150px" width="100px" />
+
+- shorts 태그는 height를 우선순으로 한다. width 80% height 150px -> height 150px
+<shorts id="5P9bZCHE-iE" width="80%" height="150px" />
+  - shorts w300px height 200px -> height 200px 
+    <shorts id="5P9bZCHE-iE" width="300px" height="200px" />
+- youtube
+<youtube id="5P9bZCHE-iE" width="50%"/>
+<youtube id="5P9bZCHE-iE" width="100%"/>
+- 쇼츠는 아싸리 표안에 3~4개를 넣는게 낳은 것 같다 
+
+    | 무릎                          | 발목                         | 팔꿈치                        |
+    |-----------------------------|----------------------------|----------------------------|
+    | <shorts id="5P9bZCHE-iE"/> | <shorts id="9GCgfnwNXIY"/> | <shorts id="5P9bZCHE-iE"/> |{:.table}
+    
+
 
 
 유튜브

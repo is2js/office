@@ -68,3 +68,5 @@ class AlberandTagsExtension(Extension):
         md.inlinePatterns.deregister('image_link')
         md.inlinePatterns.register(
             ImageInlineProcessor(IMAGE_LINK_RE, md), 'image_link', 150)
+
+

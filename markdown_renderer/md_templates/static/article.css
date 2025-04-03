@@ -206,8 +206,13 @@
         text-align: center;
 
         /*border: 1px solid #d5d5d5;*/
-        border-top: 3px solid var(--green);
-        background: #fff;
+        /*border-top: 3px solid var(--green);*/
+        /*background: #fff;*/
+
+        &:has(thead) {
+            border-top: 3px solid var(--green);
+            background: #fff;
+        }
 
         & tr > th {
             padding: 15px 14px;
@@ -356,7 +361,8 @@
         > ul, > ol {
             list-style: none;
             margin: 0.2em auto 0;
-            padding-left: 20px;
+            /*padding-left: 20px;*/
+            padding-left: 0px;
             width: 100%;
 
             > li {
@@ -377,7 +383,8 @@
                     width: 15px;
                     height: 13px;
 
-                    background: url(./img/list_check.png) no-repeat;
+                    /*background: url(./img/list_check.png) no-repeat;*/
+                    background: url(./img/list_check.svg) no-repeat;
 
                     > p {
                         margin: 0 auto; /* li 자식p의 기본 마진 삭제 */
@@ -494,6 +501,18 @@
 
 }
 
+
+.ytp-title, .ytp-show-cards-title {
+    display: none !important;
+}
+
+.shorts {
+    & iframe, object, embed {
+        /* 꾸미기 */
+        border-radius: 1em;
+        background-color: lightgray;
+    }
+}
 
 .youtube {
     position: relative;

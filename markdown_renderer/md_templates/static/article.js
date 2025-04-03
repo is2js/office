@@ -71,6 +71,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 lastWrapper.style.alignItems = "center";
                 lastWrapper.style.flexWrap = "wrap";
                 lastWrapper.style.margin = "0.5em auto";
+
                 // lastWrapper.style.width = "100%";
                 // wrapper가 table속에 있다면 100% 말고, auto로
                 // ✅ 테이블 내부인지 확인하고 width 조정
@@ -134,8 +135,6 @@ document.addEventListener("DOMContentLoaded", function () {
                     img.style.width = "100%"; // 이미지 너비 100% 설정
                 }
             }
-
-
         }
     });
 });

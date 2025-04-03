@@ -11,6 +11,7 @@ from pygments.formatters.html import HtmlFormatter
 
 from markdown_renderer.lib import get_relative_root_path
 from markdown_renderer.md_extensions import AlberandTagsExtension
+from markdown_renderer.youtube_extentions import YouTubeEmbedExtension
 
 if __name__ == '__main__':
     SOURCE_DIR = '../docs'  # 여기서 실행
@@ -65,15 +66,19 @@ def cli_entry_point():
     posts = []  #
     post_paths = {}  # 모든 post에 대한 path들을 모은다. TODO: DB에서 검사
     redirects = []  # 기본paht외 추가로 갈 수 있는 path들을 모은다.
+
+    categories = set()  # 1번째 path를 카테고리를 모아놓는다.
     # 4) 랜더할 md file들을 순회하면서, frontmatter 추출
     for file_full_path in files_full_path_to_render:
         with open(file_full_path, 'r', encoding='utf-8') as f:
             post = f.read()
             post = frontmatter.Frontmatter.read(post)  # c = frontmatter.loads(content) # 버전 차이?
 
+            attributes = post.get('attributes')
             # 5) frontmatter없는 파일은 pass
             # if 'attributes' not in post:
-            if post.get('attributes') is None:
+            # if post.get('attributes') is None:
+            if attributes is None:
                 # {'attributes': None, 'body': '', 'frontmatter': '',
                 # 'date', 'date_parsed', 'path' : '/blog/nested/post',
                 # }
@@ -81,24 +86,38 @@ def cli_entry_point():
                 print(f'🤣 frontmatter가 없는 파일 수정 요망: {file_full_path}')
                 continue
 
+            print(f"attributes  >> {attributes}")
+
+
             ## front용 path지정(백엔드 달리면 필요 없을 듯)
             # 15-1) path 속성이 있다면, 파일명이 아니라, [path].html로 상대 경로를 지정한다.
-            if 'path' in post['attributes']:
+            # if 'path' in post['attributes']:
+            if 'path' in attributes:
                 # 15-2) path는 중복이 아니여야 한다. TODO: 현재는 path별 index.html 1개밖에 못만듬.
-                if post['attributes']['path'] in post_paths:
+                if attributes['path'] in post_paths:
                     # print(f'🤣 중복된 path를 가진 파일 : {file_full_path}')
                     # print(f'post_paths >> {post_paths}')
                     # continue
-                    raise ValueError(f'중복된 path가 있습니다: {post["attributes"]["path"]}')
+                    raise ValueError(f'중복된 path가 있습니다: {attributes["path"]}')
                 # 15-3) 중복이 아닌 path는 True로 체크해서 추후 중복이 안되게 한다.
-                post_paths[post['attributes']['path']] = True
+                post_paths[attributes['path']] = True
+
+
+                ## 1번째 path를 카테고리로 모아놓기
+                # path가 존재하고 "/" 단독이 아닌 경우 처리
+                path = attributes.get('path')
+                if path and path != "/":
+                    path_parts = path.strip("/").split("/")  # 슬래시 제거 후 분할
+                    if path_parts:
+                        categories.add(path_parts[0])  # 첫 번째 요소를 카테고리로 추가
 
                 # path를 가져 등록되었다면, redirects도 검사해서, 중복이 없으면 post_paths에 등록한다.
-                if 'redirects' in post['attributes']:
-                    for redirect in post['attributes']['redirects']:
+                if 'redirects' in attributes:
+                    for redirect in attributes['redirects']:
                         if redirect in post_paths:
                             raise ValueError(f'중복된 redirect가 있습니다: {redirect}')
                         post_paths[redirect] = True
+
 
             else:
                 # 15-4) path가 없으면, 파일명 .md ->.html 변경 기존 로직이 적용하는 file_full_path를 나중에 쓰기 위해
@@ -106,17 +125,19 @@ def cli_entry_point():
                 post['attributes']['file_full_path'] = file_full_path
 
             # 15-3) 'date' 속성을 검사하여 있다면, 'date_parsed' 속성으로 str -> datetime으로 바꿔 넣어놓는다.
-            if 'date' in post['attributes']:
+            # if 'date' in post['attributes']:
+            if 'date' in attributes:
                 # 'date': 2023-02-20 -> datetime.date
                 # 'date': '2023-02-20' -> string
-                if isinstance(post['attributes']['date'], str):
-                    post['attributes']['date_parsed'] = datetime.datetime.strptime(post['attributes']['date'],
-                                                                                   '%Y-%m-%d')
+                if isinstance(attributes['date'], str):
+                    post['attributes']['date_parsed'] = datetime.datetime.strptime(attributes['date'], '%Y-%m-%d')
                 else:
                     # q: 아래 값은 datetime.date이다. 이것을 datetime.datetime이면서 '%Y-%m-%d'으로 변환 by combine
                     # post['attributes']['date_parsed'] = post['attributes']['date'] # date
-                    post['attributes']['date_parsed'] = datetime.datetime.combine(post['attributes']['date'],
-                                                                                  datetime.datetime.min.time())  # datetime
+                    post['attributes']['date_parsed'] = datetime.datetime.combine(
+                        attributes['date'],
+                        datetime.datetime.min.time()
+                    )  # datetime
 
                 # 15-4) 근데, 발행날짜가 미래면, 무시하도록 한다.
                 # 오늘 00시 발행법: datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
@@ -133,7 +154,11 @@ def cli_entry_point():
             if 'redirects' in post['attributes']:
                 for redirect in post['attributes']['redirects']:
                     redirects.append((redirect, post['attributes']['path']))
-    print(f"redirects  >> {redirects}")
+
+
+
+    print(f"list(categories)  >> {list(categories)}")
+
 
     ## Render markdown to html
     # {
@@ -227,7 +252,8 @@ def cli_entry_point():
 
         MARKDOWN_EXTENSIONS = {
             # 'extensions': [AlberandTagsExtension(), 'extra', 'toc'], # extra 넣어야 테이블 가능.
-            'extensions': ['extra', 'toc', 'fenced_code', 'codehilite'],  # extra 넣어야 테이블 가능.
+            # 'extensions': ['extra', 'toc', 'fenced_code', 'codehilite'],  # extra 넣어야 테이블 가능.
+            'extensions': [YouTubeEmbedExtension(), 'extra', 'toc', 'fenced_code', 'codehilite'],  # extra 넣어야 테이블 가능.
             'extension_configs': {
                 'markdown.extensions.extra': {},
                 'markdown.extensions.meta': {},
