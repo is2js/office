@@ -60,6 +60,8 @@ class YouTubeEmbedPattern(Pattern):
         iframe = etree.Element("iframe")
         iframe.set("src", video_url)
         iframe.set("title", "YouTube video player")
+
+
         # youtube는 width가 있으면 반영 없으면 100%
         if video_type == "youtube":
             if has_width:
@@ -82,7 +84,7 @@ class YouTubeEmbedPattern(Pattern):
             aspect_ratio = "9 / 16"
 
         # iframe.set("style", f"aspect-ratio: {aspect_ratio}; display: {display_style};")
-        iframe.set("style", f"aspect-ratio: {aspect_ratio}; display: block; margin: 0 auto;")
+        iframe.set("style", f"aspect-ratio: {aspect_ratio}; max-width:100%; display: block; margin: 0 auto;")
 
         iframe.set("allow", "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture")
         iframe.set("frameborder", "0")

@@ -15,8 +15,8 @@ authors:
 
 
 theme:
-  primary: "#1ECECB"
-  secondary: "#FC5230"
+  primary: "#FC5230"
+  secondary: "#1ECECB"
 
 footer:
   copyright:

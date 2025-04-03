@@ -99,7 +99,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
             // ✅ 이미지 스타일 설정
 
-            img.style.maxWidth = "fit-content";
+            // img.style.maxWidth = "fit-content";
+            img.style.maxWidth = "100%";
             img.style.borderRadius = "1em";
             img.style.border = "1px solid #f1f3f6";
 

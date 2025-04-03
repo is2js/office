@@ -198,10 +198,14 @@
 
         margin: 1em auto;
         width: 100%;
+        max-width: 100%;
+        table-layout: fixed; /* 테이블의 너비를 고정 */
         @media (max-width: 991px) {
             margin: 0.8em auto;
             width: 97%;
+            max-width: 97%;
         }
+
 
         text-align: center;
 
@@ -210,7 +214,8 @@
         /*background: #fff;*/
 
         &:has(thead) {
-            border-top: 3px solid var(--green);
+            /*border-top: 3px solid var(--green);*/
+            border-top: 3px solid var(--theme-primary);
             background: #fff;
         }
 
@@ -316,9 +321,10 @@
         left: 0;
         top: 8px;
 
-        width: 4px;
-        height: 4px;
-        background: #4995ba;
+        width: 7px;
+        height: 7px;
+        /*background: #4995ba;*/
+        background: var(--theme-primary);
         border-radius: 50%;
     }
 
@@ -349,7 +355,8 @@
             margin: 0 5px 5px 0;
 
             font-weight: 600;
-            color: #4995ba;
+            /*color: #4995ba;*/
+            color: var(--theme-primary);
             text-align: center;
         }
     }
@@ -381,10 +388,17 @@
 
 
                     width: 15px;
-                    height: 13px;
+                    height: 15px;
 
                     /*background: url(./img/list_check.png) no-repeat;*/
-                    background: url(./img/list_check.svg) no-repeat;
+                    /* svg내부 stroke색을 아래 mask 이미지 기법으로 적용 */
+                    background-color: var(--theme-primary); /* 색상 적용 */
+                    -webkit-mask-image: url(./img/list_check.svg);
+                    mask-image: url(./img/list_check.svg);
+                    -webkit-mask-repeat: no-repeat;
+                    mask-repeat: no-repeat;
+                    -webkit-mask-size: contain;
+                    mask-size: contain;
 
                     > p {
                         margin: 0 auto; /* li 자식p의 기본 마진 삭제 */
@@ -400,42 +414,68 @@
 
     /* 글자들 */
 
+    /* 블럭 */
+
     :not(pre) > code {
         letter-spacing: 1px;
 
         font-weight: 700;
-        padding: 0 0.25em;
-        /*color: var(--submain);*/
-        color: var(--theme-secondary);
-        background: #fdf5e2;
-
-        line-height: 1.4;
-        font-size: 1em;
-
-        border-radius: 4px;
-    }
-
-    strong {
-        letter-spacing: 1px;
-
-        font-weight: 700;
-        background: var(--green);
+        /*background: var(--green);*/
+        background: var(--theme-primary);
         padding: 0 0.25em;
         color: white;
 
         border-radius: 4px;
 
+
+    }
+
+    /* 진하게 */
+
+    strong {
+        letter-spacing: 1px;
+        padding: 0 0.25em;
+
+        font-weight: 700;
+        /*color: var(--submain);*/
+        /*color: var(--theme-secondary);*/
+        /*color: var(--theme-primary);*/
+
+        /*background: #fdf5e2;*/
+        /*border-radius: 4px;*/
+
+        line-height: 1.4;
+        font-size: 1em;
+
+        color: inherit;
         /* 이탈릭 */
 
         > em {
-            border-radius: 4px;
             font-style: normal;
 
-            margin: 0 -0.25em; /* 부모 strong의 padding을 상쇄 */
-            padding: 0 0.25em;
+            /*border-radius: 4px;*/
 
+            /*margin: 0 -0.25em; !* 부모 strong의 padding을 상쇄 *!*/
+            /*padding: 0 0.25em;*/
+
+            /*background: #fdf5e2;*/
+            /*!*color: var(--green);*!*/
+            /*color: var(--theme-primary);*/
+
+
+            letter-spacing: 1px;
+
+            font-weight: 700;
+            padding: 0 0.25em;
+            /*color: var(--submain);*/
+            /*color: var(--theme-secondary);*/
+            color: var(--theme-primary);
             background: #fdf5e2;
-            color: var(--green);
+
+            line-height: 1.4;
+            font-size: 1em;
+
+            border-radius: 4px;
         }
     }
 
