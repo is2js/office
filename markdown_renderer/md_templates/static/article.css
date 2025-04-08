@@ -15,15 +15,83 @@
 
     & h3 {
         display: block;
+
         line-height: 1.4;
-        letter-spacing: 2px;
-        margin: 0 auto 1.8em;
+        letter-spacing: 1.2px;
+        /*margin: 1em auto 1.8em;*/
+        /* before 로고그림을 포함한 margin 2em + @*/
+        margin: 6em auto 1.8em;
         font-size: 2em;
         font-weight: 800;
         text-align: center;
 
+        color: var(--theme-primary);
+
         @media (max-width: 991px) {
-            font-size: 1.5em;
+            letter-spacing: 0.8px;
+            font-size: 1.15em;
+            /* before 로고그림을 포함한 margin 1.5em + @*/
+            margin: 5.5em auto 1.8em;
+        }
+
+
+        /* 로고 추가 */
+        position: relative;
+        text-align: center;
+        overflow: visible; /* 중요: ::before가 밖으로 나가도 잘리면 안 됨 */
+
+        &::before {
+            content: '';
+            position: absolute;
+            height: 4.1em;
+            width: 250px;
+            @media (max-width: 991px) {
+                height: 3.8em;
+                width: 200px;
+            }
+
+            bottom: 110%; /* h3 바로 위에 붙임 */
+            left: 50%;
+            transform: translateX(-50%);
+
+            background-image: var(--h3-title-logo-url);
+            /*background-position: center;*/
+            background-position: bottom;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+
+        /* 로고 그림 밑줄 */
+
+        &::after {
+            content: '';
+            position: absolute;
+            /* 1412 136 */
+            width: 141.2px;
+            height: 136px;
+            /*top: 100%; !* h3 바로 위에 붙임 *!*/
+            top: -25%; /* 위에로고가 사람인 경우, 아랫줄을 가림 */
+            @media (max-width: 991px) {
+                /* 3/4 크기로 줄여줘 */
+                width: 105.9px;
+                height: 102px;
+                top: -40%; /* 위에로고가 사람인 경우, 아랫줄을 가림 */
+            }
+
+            z-index: 1;
+
+            left: 50%;
+            transform: translateX(-50%);
+
+
+            background-color: var(--theme-primary); /* 색상 적용 */
+            background-position: center;
+            -webkit-mask-image: url(./img/h3_underline.svg);
+            mask-image: url(./img/h3_underline.svg);
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-size: contain;
+            mask-size: contain;
         }
     }
 
@@ -57,7 +125,8 @@
             border-radius: 50%;
             /*background: linear-gradient(135deg, #4995ba 0, #495c65 18%, #ba8749 85%, #88827b 100%);*/
             /*background: linear-gradient(135deg, var(--main) 0, var(--green) 18%, #FC5230 85%, #FF6D62FF 100%);*/
-            background: linear-gradient(135deg, var(--theme-primary) 0, var(--green) 18%, #FC5230 85%, #FF6D62FF 100%);
+            /*background: linear-gradient(135deg, var(--theme-primary) 0, var(--green) 18%, #FC5230 85%, #FF6D62FF 100%);*/
+            background: linear-gradient(135deg, var(--theme-secondary) 0, var(--theme-primary) 18%, var(--theme-secondary-dark) 85%, var(--theme-primary-dark) 100%);
         }
 
         &::after {
@@ -217,49 +286,50 @@
             /*border-top: 3px solid var(--green);*/
             border-top: 3px solid var(--theme-primary);
             background: #fff;
+
+            & tr > th {
+                padding: 15px 14px;
+                @media (max-width: 991px) {
+                    padding: 5px 8px;
+                }
+                min-height: 40px;
+                background: #f6f6f6;
+                border-left: 1px solid #d5d5d5;
+                border-right: 1px solid #d5d5d5;
+                border-bottom: 1px solid #d5d5d5;
+                font-weight: 700;
+                vertical-align: middle;
+                word-break: keep-all;
+            }
+
+            & tr > td {
+                padding: 12px 14px;
+                @media (max-width: 991px) {
+                    padding: 5px 8px;
+                }
+                line-height: 1.4;
+                border-left: 1px solid #d5d5d5;
+                border-right: 1px solid #d5d5d5;
+                border-bottom: 1px solid #d5d5d5;
+                word-break: keep-all;
+                vertical-align: middle;
+            }
+
+            & tr > th:first-child,
+            & tr > td:first-child {
+                @media (max-width: 991px) {
+                    border-left: none;
+                }
+            }
+
+            & tr > th:last-child,
+            & tr > td:last-child {
+                @media (max-width: 991px) {
+                    border-right: none;
+                }
+            }
         }
 
-        & tr > th {
-            padding: 15px 14px;
-            @media (max-width: 991px) {
-                padding: 5px 8px;
-            }
-            min-height: 40px;
-            background: #f6f6f6;
-            border-left: 1px solid #d5d5d5;
-            border-right: 1px solid #d5d5d5;
-            border-bottom: 1px solid #d5d5d5;
-            font-weight: 700;
-            vertical-align: middle;
-            word-break: keep-all;
-        }
-
-        & tr > td {
-            padding: 12px 14px;
-            @media (max-width: 991px) {
-                padding: 5px 8px;
-            }
-            line-height: 1.4;
-            border-left: 1px solid #d5d5d5;
-            border-right: 1px solid #d5d5d5;
-            border-bottom: 1px solid #d5d5d5;
-            word-break: keep-all;
-            vertical-align: middle;
-        }
-
-        & tr > th:first-child,
-        & tr > td:first-child {
-            @media (max-width: 991px) {
-                border-left: none;
-            }
-        }
-
-        & tr > th:last-child,
-        & tr > td:last-child {
-            @media (max-width: 991px) {
-                border-right: none;
-            }
-        }
     }
 
 
@@ -318,11 +388,11 @@
         content: '';
         display: block;
         position: absolute;
-        left: 0;
+        left: 4px;
         top: 8px;
 
-        width: 7px;
-        height: 7px;
+        width: 6px;
+        height: 6px;
         /*background: #4995ba;*/
         background: var(--theme-primary);
         border-radius: 50%;
@@ -419,7 +489,7 @@
     :not(pre) > code {
         letter-spacing: 1px;
 
-        font-weight: 700;
+        font-weight: 600;
         /*background: var(--green);*/
         background: var(--theme-primary);
         padding: 0 0.25em;
@@ -436,18 +506,39 @@
         letter-spacing: 1px;
         padding: 0 0.25em;
 
-        font-weight: 700;
-        /*color: var(--submain);*/
-        /*color: var(--theme-secondary);*/
-        /*color: var(--theme-primary);*/
-
-        /*background: #fdf5e2;*/
-        /*border-radius: 4px;*/
-
+        font-weight: 600;
         line-height: 1.4;
         font-size: 1em;
 
         color: inherit;
+
+        position: relative;
+
+        &:not(:has(em))::after {
+            content: '';
+            position: absolute;
+            bottom: -0.075rem;
+            /*left: -0.5rem;*/
+            /*right: -0.5rem;*/
+            left: 0.1rem;
+            right: 0.1rem;
+            height: 0.65rem;
+
+            z-index: -1;
+
+            background-repeat: no-repeat;
+            /*background-image: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/664131/underline.svg');*/
+            /*background-size: cover;*/
+            background-color: var(--theme-primary); /* 색상 적용 */
+            -webkit-mask-image: url(./img/strong_underline.svg);
+            mask-image: url(./img/strong_underline.svg);
+            -webkit-mask-repeat: no-repeat;
+            mask-repeat: no-repeat;
+            -webkit-mask-size: cover;
+            mask-size: cover;
+        }
+
+
         /* 이탈릭 */
 
         > em {
@@ -465,7 +556,7 @@
 
             letter-spacing: 1px;
 
-            font-weight: 700;
+            font-weight: 600;
             padding: 0 0.25em;
             /*color: var(--submain);*/
             /*color: var(--theme-secondary);*/
@@ -589,9 +680,11 @@
 
 
 /* authors */
+
 .authorContent {
     /*background: #181f38;*/
-    background: var(--green);
+    /*background: var(--green);*/
+    background: var(--theme-primary);
 
     border-radius: 24px;
 
@@ -636,7 +729,8 @@
 
             & .highlight {
                 /*background: linear-gradient(to top, #FFEFC2 15%, transparent 15%);*/
-                background: linear-gradient(to top, var(--green-bold) 25%, transparent 25%);
+                /*background: linear-gradient(to top, var(--green-bold) 25%, transparent 25%);*/
+                background: linear-gradient(to top, var(--theme-primary-dark) 25%, transparent 25%);
                 width: fit-content;
             }
         }
@@ -716,7 +810,7 @@
         & .emailBtn {
             /*background: #0452f2;*/
             /*background: #181f38;*/
-            background: var(--green-bold);
+            background: var(--theme-primary-dark);
         }
 
         & .chatBtn {

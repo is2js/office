@@ -118,7 +118,8 @@ html, body, code {
     height: 5em;
     width: 100%;
 
-    background-color: var(--green);
+    /*background-color: var(--green);*/
+    background-color: var(--theme-primary);
     color: white;
     text-align: center;
 
@@ -152,7 +153,8 @@ html, body, code {
 
 .btn-seemore {
     color: white;
-    background-color: var(--green);
+    /*background-color: var(--green);*/
+    background-color: var(--theme-primary);
     margin: 1em auto;
     padding: 1em;
     font-weight: bold;
@@ -172,7 +174,8 @@ html, body, code {
     font-size: 2em;
 
     a {
-        color: var(--green);
+        /*color: var(--green);*/
+        color: var(--theme-primary);
     }
 
     img {

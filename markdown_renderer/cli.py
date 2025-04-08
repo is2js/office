@@ -9,6 +9,7 @@ import markdown
 import yaml
 from pygments.formatters.html import HtmlFormatter
 
+from markdown_renderer.custom_table_extensions import CustomTableExtension
 from markdown_renderer.lib import get_relative_root_path
 from markdown_renderer.md_extensions import AlberandTagsExtension
 from markdown_renderer.youtube_extentions import YouTubeEmbedExtension
@@ -253,7 +254,8 @@ def cli_entry_point():
         MARKDOWN_EXTENSIONS = {
             # 'extensions': [AlberandTagsExtension(), 'extra', 'toc'], # extra 넣어야 테이블 가능.
             # 'extensions': ['extra', 'toc', 'fenced_code', 'codehilite'],  # extra 넣어야 테이블 가능.
-            'extensions': [YouTubeEmbedExtension(), 'extra', 'toc', 'fenced_code', 'codehilite'],  # extra 넣어야 테이블 가능.
+            # 'extensions': [YouTubeEmbedExtension(), 'extra', 'toc', 'fenced_code', 'codehilite'],  # extra 넣어야 테이블 가능.
+            'extensions': [YouTubeEmbedExtension(), CustomTableExtension(), 'extra', 'toc', 'fenced_code', 'codehilite'],  # extra 넣어야 테이블 가능.
             'extension_configs': {
                 'markdown.extensions.extra': {},
                 'markdown.extensions.meta': {},

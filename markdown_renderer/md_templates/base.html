@@ -13,6 +13,15 @@
         :root {
             --theme-primary: {{ config['theme']['primary'] }};
             --theme-secondary: {{ config['theme']['secondary'] }};
+                /* --theme-primary를 80% 유지하고 검은색 20% 섞어서 어둡게 */
+            --theme-primary-dark: color-mix(in srgb, var(--theme-primary) 80%, black 20%);
+
+            /* --theme-secondary도 동일하게 적용 */
+            --theme-secondary-dark: color-mix(in srgb, var(--theme-secondary) 80%, black 20%);
+
+            /* 로고 주소 */
+
+            --h3-title-logo-url: url("{{ static_path }}/img/title_logo.png");
         }
     </style>
     <link rel="stylesheet" href="{{ static_path }}/code-highlights.css">
