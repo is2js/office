@@ -30,10 +30,9 @@
         </a>
         {% endif %}
     </div>
-    {% if 'profileImg' in config['authors'][author] %}
+
     <img alt="Hostman's Support" title="Hostman's Support Team"
          class="imgAbsoluteBottomRight"
-         src="{{ config['authors'][author]['profileImg'] }}">
-    {% endif %}
+         src="{% if 'profileImg' in config['authors'][author] %}{{ config['authors'][author]['profileImg'] }}{% else %}{{ static_path }}/img/default_doctor_profile.png{% endif %}">
     {% endif %}
 </div>

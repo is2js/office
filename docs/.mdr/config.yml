@@ -1,4 +1,5 @@
 title: 조재성 원장
+logoImg: http://hani.chojaeseong.com/images/logo.png
 
 authors:
   조재성:
@@ -12,7 +13,7 @@ authors:
     comment: 20년이상 저와 가족, 지인들에게 한약을 통한 치료를 제공해온 한의사입니다.
     email: daisykim88@gmail.com
     kakaotalk: tingstyle@hanmail.net
-    profileImg: https://front.chojaeseong.com/images/png/profile/sub/01.png
+#    profileImg: https://front.chojaeseong.com/images/png/profile/sub/01.png # 없으면 default_doctor_profile.png
 
 
 theme:
@@ -25,5 +26,7 @@ footer:
     company: (주) 김석영 주식회사
   give_credit: true
 
+blog:
+  titleLogoImg: https://front.chojaeseong.com/images/png/profile/sub/02.png # 없으면, default_title_logo.png
 
 pagination: 5

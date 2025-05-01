@@ -1,10 +1,12 @@
 title: Your Website
+#logoImg: http://hani.chojaeseong.com/images/logo.png # 없으면, default_logo.png
 authors:
   your_name:
     name: your_name 원장
     comment: 나는 한의사 입니다.
     email: your@mail.com
     kakaotalk: your@kakao.talk
+    #profileImg: https://front.chojaeseong.com/images/png/profile/sub/02.png # 없으면 default_doctor_profile.png
 
 theme:
   primary: "#1ECECB"
@@ -15,5 +17,11 @@ footer:
     enabled: true
     company: Your Comp
   give_credit: true
+
+
+
+blog:
+  #titleLogoImg: https://front.chojaeseong.com/images/png/profile/sub/02.png # 없으면, default_title_logo.png
+
 
 pagination: 3

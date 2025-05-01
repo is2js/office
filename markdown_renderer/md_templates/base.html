@@ -21,7 +21,7 @@
 
             /* 로고 주소 */
 
-            --h3-title-logo-url: url("{{ static_path }}/img/title_logo.png");
+            --h3-title-logo-url: url("{% if 'titleLogoImg' in config['blog'] %}{{config['blog']['titleLogoImg']}}{% else %}{{ static_path }}/img/default_title_logo.png{% endif %}");
         }
     </style>
     <link rel="stylesheet" href="{{ static_path }}/code-highlights.css">
@@ -34,7 +34,7 @@
     <div id="content-wrap">
         <div class="nav">
             <a id="title" href="{{ root_path }}">
-                <img id="logo" src="{{ static_path }}/img/logo.png"/>{{ config['title'] }}
+                <img id="logo" src="{% if 'logoImg' in config %}{{config['logoImg']}}{% else %}{{ static_path }}/img/default_logo.png{% endif %}"/>{{ config['title'] }}
             </a>
             <ul class="links">
                 <li><a href="{{ root_path }}">Home</a></li>
