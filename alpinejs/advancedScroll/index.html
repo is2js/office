@@ -37,9 +37,19 @@ fixedCircle 변수를 t/f가 현재 스크롤숫자 > 시작요소의 point보�
     @scroll.window="
         scrollNumber = window.pageYOffset,
         stopPoint = $refs.stop.offsetTop,
-        fixedCircle = (scrollNumber > startPoint) ? true : false
+        fixedCircle = (scrollNumber > startPoint && scrollNumber < stopPoint) ? true : false,
+        (scrollNumber > stopPoint) ? ($refs.circle.style.transform = `translateY(${stopPoint - startPoint}px)`) : ($refs.circle.style.transform = `translateY(0px)`)
     "
 >
+<!-- 8. fixedCircle true의 조건에 stopPoint보다 작을때를 추가하여, scrollNumber >= stopPoint 의 상황 :
+서로의 윗대가리가 만나는 것을 넘어서서 더밑으로는 false되게 만든다. -> false로 인해 fixed에서 absolute가 되게 된다.(원래 위치에 떠있음)-->
+
+<!-- 9. scrollNumber > stopPoint 의 상황에선, 그 자리에 멈추게하기 위해
+조건문(현재높이 > 정지요소로서 넘어서면)
+    ? (할당업뎃1: 출발요소의 높이를 정지요소의 높이로 abs상태에서 transform에 반영)
+    : 현재높이 <= 정지요소 -> fixedCircle은 true로서 fixed상태 (할당업뎃2:0px로 출발요소의 높이에 반영)해서 화면 위에 떠있게 만들어다.
+    정지요소를 넘어서면, abs + [원래 출발요소의 높이]에 추가된 translateY 정지요소의 높이라서.... 출발요소의 높이를 다시 빼줘야한다.
+-->
 
 <h1 class="text-center text-5xl font-bold">Scrolling Example</h1>
 
@@ -49,9 +59,11 @@ fixedCircle 변수를 t/f가 현재 스크롤숫자 > 시작요소의 point보�
 </div>
 <!-- 2. 스크롤이 내려가며 움직일 요소를 x-ref="start"를 준다.-->
 <div class="flex justify-center" x-ref="start">
+    <!-- 7. boolean변수를 통한 :class 에 position삽입으로 fixed로 만들기-->
     <div
             x-ref="circle"
             class="w-52 h-52 bg-blue-500 rounded-full flex flex-col items-center justify-center text-white"
+            :class="fixedCircle ? 'fixed top-0 ' : 'absolute'"
     >
         Circle
         <!-- 5. 움직이는 요소의 내부에 현재 스크롤숫자 및 stopPoint(stop요소의 offsetTop)를 x-text로 출력한다. -->
