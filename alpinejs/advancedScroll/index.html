@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+    <title>Scroll Window</title>
+    <link
+            href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css"
+            rel="stylesheet"
+    >
+    <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1"
+    >
+    <!-- <link rel="stylesheet" href="css/styles.css"> -->
+    <script
+            defer
+            src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"
+    ></script>
+
+</head>
+
+<!-- 1. body에 스크롤boolean변수, 현재 스크롤숫자(window.pageYOffset) 상태변수를 선언한다-->
+<!-- 4. x-ref start/stop요소를 애초에 변수로서 .offsetTop 값을 stopPoint로 저장한다.-->
+<!-- 6. 스크롤을 움직일 때마다, pageYOffset을 scrollNumber 상태값에 업데이트시켜주고 +
+stopPoint도 실시간으로 바꾼다.(안바뀐다?!)
+fixedCircle 변수를 t/f가 현재 스크롤숫자 > 시작요소의 point보다 큰지 확인해서 업뎃시킨다.
+-->
+<body
+        class="p-20 bg-gray-100"
+        x-data="{
+        fixedCircle: false,
+        scrollNumber: 0,
+        stopPoint: $refs.stop.offsetTop,
+        startPoint: $refs.start.offsetTop,
+    }"
+    @scroll.window="
+        scrollNumber = window.pageYOffset,
+        stopPoint = $refs.stop.offsetTop,
+        fixedCircle = (scrollNumber > startPoint) ? true : false
+    "
+>
+
+<h1 class="text-center text-5xl font-bold">Scrolling Example</h1>
+
+<div class="flex justify-between mt-52">
+    <div class="h-52 w-52 bg-gray-200"></div>
+    <div class="h-52 w-52 bg-gray-200"></div>
+</div>
+<!-- 2. 스크롤이 내려가며 움직일 요소를 x-ref="start"를 준다.-->
+<div class="flex justify-center" x-ref="start">
+    <div
+            x-ref="circle"
+            class="w-52 h-52 bg-blue-500 rounded-full flex flex-col items-center justify-center text-white"
+    >
+        Circle
+        <!-- 5. 움직이는 요소의 내부에 현재 스크롤숫자 및 stopPoint(stop요소의 offsetTop)를 x-text로 출력한다. -->
+        <div x-text="'scrollNumber: ' + scrollNumber"></div>
+        <div x-text="'stopPoint: ' + stopPoint"></div>
+    </div>
+</div>
+
+<div class="flex justify-between mt-52">
+    <div class="h-52 w-52 bg-gray-200"></div>
+    <div class="h-52 w-52 bg-gray-200"></div>
+</div>
+
+
+<div class="flex justify-between mt-52">
+    <div class="h-52 w-52 bg-gray-200"></div>
+    <div class="h-52 w-52 bg-gray-200"></div>
+</div>
+
+<div class="flex justify-between mt-52">
+    <div class="h-52 w-52 bg-gray-200"></div>
+    <div class="h-52 w-52 bg-gray-200"></div>
+</div>
+
+<div class="flex justify-between mt-52">
+    <div class="h-52 w-52 bg-gray-200"></div>
+    <div class="h-52 w-52 bg-gray-200"></div>
+</div>
+<!-- 3. 스크롤이 내려가며 움직이는 요소가 만나면 멈출 요소에  x-ref="stop"를 준다.-->
+<div
+        class="flex justify-between mt-52"
+        x-ref="stop"
+>
+    <div class="h-52 w-52 bg-red-400"></div>
+    <div class="h-52 w-52 bg-red-400"></div>
+</div>
+
+<div class="flex justify-between mt-52">
+    <div class="h-52 w-52 bg-gray-200"></div>
+    <div class="h-52 w-52 bg-gray-200"></div>
+</div>
+
+<div class="flex justify-between mt-52">
+    <div class="h-52 w-52 bg-gray-200"></div>
+    <div class="h-52 w-52 bg-gray-200"></div>
+</div>
+
+<div class="flex justify-between mt-52">
+    <div class="h-52 w-52 bg-gray-200"></div>
+    <div class="h-52 w-52 bg-gray-200"></div>
+</div>
+
+
+</body>
+
+</html>
