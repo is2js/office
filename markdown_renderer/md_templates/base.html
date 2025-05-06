@@ -32,10 +32,10 @@
     <title>{% block title %}{% endblock %} | {{ config['title'] }}</title>
 </head>
 <body x-data="{navFixed: false}"
-        @scroll.window="navFixed = (window.pageYOffset > 100) ? true : false, console.log(navFixed)">
+        @scroll.window="navFixed = (window.pageYOffset > $refs.nav.getBoundingClientRect().height * 2 ) ? true : false, console.log(navFixed)">
 <div id="page-container">
     <div id="content-wrap">
-        <div class="nav"
+        <div class="nav" x-ref="nav"
              :class="navFixed ? 'position-fixed top-0 left-0 w-100' : 'position-relative'"
         >
             <a id="title" href="{{ root_path }}">
