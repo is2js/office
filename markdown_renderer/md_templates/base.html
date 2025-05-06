@@ -8,7 +8,8 @@
     <link rel="stylesheet" as="style" crossorigin
           href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"/>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200..900&display=swap" rel="stylesheet">
-
+    <!-- alinepjs-->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <style>
         :root {
             --theme-primary: {{ config['theme']['primary'] }};
@@ -25,14 +26,18 @@
         }
     </style>
     <link rel="stylesheet" href="{{ static_path }}/code-highlights.css">
+    <link rel="stylesheet" href="{{ static_path }}/common.css">
     <link rel="stylesheet" href="{{ static_path }}/style.css">
     <link rel="stylesheet" href="{{ static_path }}/article.css">
     <title>{% block title %}{% endblock %} | {{ config['title'] }}</title>
 </head>
-<body>
+<body x-data="{navFixed: false}"
+        @scroll.window="navFixed = (window.pageYOffset > 100) ? true : false, console.log(navFixed)">
 <div id="page-container">
     <div id="content-wrap">
-        <div class="nav">
+        <div class="nav"
+             :class="navFixed ? 'position-fixed top-0 left-0 w-100' : 'position-relative'"
+        >
             <a id="title" href="{{ root_path }}">
                 <img id="logo" src="{% if 'logoImg' in config %}{{config['logoImg']}}{% else %}{{ static_path }}/img/default_logo.png{% endif %}"/>{{ config['title'] }}
             </a>

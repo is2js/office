@@ -13,11 +13,10 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
 </head>
-<!-- scroll은 body에 @scroll.window=""로 주고, console.log()에서 window.pageYOffset을 찍어본 뒤-->
-<!-- > 100 여부를 body 속 x-data변수에 boolean으로 집어넣게 만든 뒤,
-자식요소의 모양을 조건부 :class를 이용하든지
-
- x-data변수로 처리한다.-->
+<!-- scroll시 header고정
+ 1. body에 @scroll.window=""로 주고, console.log()에서 window.pageYOffset을 찍어본 뒤-->
+<!-- 2. 다시 코드를 > 100 여부를 body 속 x-data변수에 boolean으로 집어넣게 만든 뒤,
+3. 자식요소의 모양을 조건부 :class 속에 x-data변수로 fixed 상태를 만든다. -->
 <!--<body class="p-20 bg-gray-100" x-data=""
       @scroll.window="console.log(window.pageYOffset)"
 >-->
