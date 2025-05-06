@@ -9,8 +9,20 @@
 
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <!--<link rel="stylesheet" href="css/style.css">-->
+
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
 </head>
-<body class="p-20 bg-gray-100">
+<body class="p-20 bg-gray-100" x-data="{ count: 0, message: 'Hello Alpine!' }">
+<!-- x-text -->
+<h1 class="text-5xl" x-text="message"></h1>
+
+<!-- x-text + x-on:click -->
+<div >
+
+    <button class="bg-blue-600 px-2 py-5" x-on:click="count++">Increment</button>
+    <span x-text="count"></span>
+</div>
 
 </body>
 </html>
