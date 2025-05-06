@@ -7,5 +7,7 @@
     <orderEntry type="jdk" jdkName="Python 3.11 (markdown)" jdkType="Python SDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="library" name="pretendard" level="application" />
+    <orderEntry type="library" name="tailwindcss" level="application" />
+    <orderEntry type="library" name="alpinejs" level="application" />
   </component>
 </module>

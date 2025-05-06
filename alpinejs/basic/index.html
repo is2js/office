@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <!--<link rel="stylesheet" href="css/style.css">-->
+
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+</head>
+<body class="p-20 bg-gray-100" x-data="{ count: 0, message: 'Hello Alpine!' }">
+<!-- x-text -->
+<h1 class="text-5xl" x-text="message"></h1>
+
+<!-- x-text + x-on:click -->
+<div >
+
+    <button class="bg-blue-600 px-2 py-5" x-on:click="count++">Increment</button>
+    <span x-text="count"></span>
+</div>
+
+<!-- toggle  @click="토글" + x-show/@click.outside="토글"-->
+<div x-data="{ open: false }">
+    <button @click="open = ! open">Toggle</button>
+
+    <div x-show="open" @click.outside="open = false">Contents...</div>
+</div>
+
+
+<!-- search input  x-data list/filtermethod
+input: x-model
+ul> x-for:filtermethod on li-->
+<div
+    x-data="{
+        search: '',
+
+        items: ['foo', 'bar', 'baz'],
+
+        get filteredItems() {
+            return this.items.filter(
+                i => i.startsWith(this.search)
+            )
+        }
+    }"
+>
+    <h1 class="text-5xl">Build a search</h1>
+    <div>
+        <input class="py-2 border border-gray-300 rounded mt-10 px-4"
+                x-model="search"
+               placeholder="Search...">
+    </div>
+
+    <ul class="w-52 shadow rounded mt2 bg-white">
+        <template x-for="item in filteredItems" :key="item">
+            <li class="p-2 border-t border-gray-200" x-text="item"></li>
+        </template>
+    </ul>
+</div>
+
+</body>
+</html>
