@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <!--<link rel="stylesheet" href="css/style.css">-->
+
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+</head>
+<body class="p-20 bg-gray-100" x-data="{ count: 0, message: 'Hello Alpine!' }">
+<!-- 1. x-data에 선언된 텍스트를 x-text로 출력해놓고 button@click에서 할당하여 기본적으로 바꾼다. -->
+<!-- 2. x-data 쪽에 x-effect를 추가하여 일단 콘솔로 해당 변수를 가리키면, 내부 할당업뎃이벤트마다 바뀐 변수값이 나온다.
+x-effect로 어떠한 변화든 내부변화를 감지해서 매번 log를 다 찍어준다.
+-->
+<div x-data="{name: '조재성', covidStatus: 'Negative', modal: false}" x-effect="console.log(name, covidStatus)">
+    <div x-text="name"></div>
+    <div x-text="covidStatus"></div>
+    <!-- 3. x-ignore를 달면, 해당 요소 및 내부요소가 alpine이 인식못하게 되서 x-text 등이 작동안되게 된다..-->
+    <div x-ignore>
+        <div x-text="covidStatus">covidStatus init</div>
+        <button @click="name = '조재성2'">name바꾸기</button>
+    </div>
+    <button @click="covidStatus = 'Positive'">covidStatus 긍정</button>
+    <button @click="covidStatus = 'Negative'">covidStatus 부정</button>
+
+    <!-- 4. x-cloak은 x-show="" 불린으로 보여질 것이, 인식 전 보여지는 것을 아예 방지하게 된다.-->
+    <!-- 4-1. 아래놈은 alpine 초기화로 false가 반영되서 안보이게되일때까지 시간이 좀 걸림-->
+    <!--<div x-show="modal" style="width:200px; height: 200px; background: black; margin-top:50px;"></div>-->
+    <style>
+        [x-cloak] {
+            display: none;
+        }
+    </style>
+    <!-- 4-2. 아래놈은 alpine 초기화와 상관없이 첨부터 안보이게 됨. -->
+    <!--    <div x-cloak x-show="modal" style="width:200px; height: 200px; background: red; margin-top:50px;"></div>-->
+    <!--    <button @click="modal = !modal">모달띄우기</button>-->
+
+    <!-- 5. template x-teleport
+    5-1. modal 부분을 부모template태그로 감싸주고 x-teleport="body"를 달아서 -> x-data 내부가 아니라, html출력이 body의 맨 밑으로 가게 한다.
+     -->
+    <button @click="modal = !modal">모달띄우기</button>
+    <!--<template x-teleport="body">-->
+    <!--5-3. modal 내용은 .modal-container에 x-teleport를 걸어서 출력되게 한다. (출력시 이미 그쪽에 display:none;으로 가있음)-->
+    <template x-teleport=".modal-container">
+        <div x-cloak x-show="modal" style="width:200px; height: 200px; background: red; margin-top:50px;">
+            <!-- 5-4. x-data내부 변수를 출력하지만, 출력시 x-teleport속에 내용이 옮겨져서 가 있다!!-->
+            <div x-text="name"></div>
+        </div>
+    </template>
+
+
+</div>
+<!-- 5-2. 차라리 div.modal-container를 만들어두고-->
+<div class="modal-container"></div>
+</body>
+</html>

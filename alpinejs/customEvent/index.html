@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en" >
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <!--<link rel="stylesheet" href="css/style.css">-->
+
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+</head>
+<body class="p-20 bg-gray-100" x-data="{ count: 0, message: 'Hello Alpine!' }">
+<div x-data="">
+    <!-- 1. x-data속 button의 x-on: or @  click -->
+    <button @click="console.log('button clicked')">
+        clickme
+    </button>
+    <!-- 2. x-data속 input의 x-on: or @   keypress -->
+    <!-- 한글 빼고 다 입력된다.-->
+    <input @keypress="console.log('keypressed')" type="text" placeholder="type here">
+    <!-- 3. @keypress.enter도 영어 + enter 다 인식된다. -->
+    <input @keypress.enter="console.log('keypress.enter')" type="text" placeholder="keypress.enter">
+    <!-- 4. @keyup.enter는 enter 누를때만 작동한다!!!!!!!! -->
+    <input @keyup.enter="console.log('keyup.enter')" type="text" placeholder="keyup.enter">
+    <br>
+    <br>
+    <br>
+    <!-- 5. $event로 이벤트자체를 인식할 수 있다. -->
+    <button @click="console.log($event)">log $event</button>
+    <!-- 6. $event.target.remove() 로 이벤트 실행요소(타겟)을 삭제할 수 있다.-->
+    <button @click="console.log($event.target.remove())">$event.target.remove()</button>
+    <br>
+    <br>
+    <br>
+    <!-- 7. @호출이벤트 = "$dispatch('customEvent')"를 이용하면, custom event를 호출할 수 있고, 요소에 @customEvent=""로 만들면 된다.-->
+    <!-- 기본단위를 @customEvent.window레벨이다??-->
+    <button @click="$dispatch('foo')">$dispatch('foo')</button>
+    <div @foo.window="console.log('Foo event catched')"></div>
+
+
+
+
+
+
+</div>
+</body>
+</html>
