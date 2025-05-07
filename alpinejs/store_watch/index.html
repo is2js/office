@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <!--<link rel="stylesheet" href="css/style.css">-->
+
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+</head>
+<body class="p-20 bg-gray-100" x-data="{ count: 0, message: 'Hello Alpine!' }">
+
+<!-- 2. html에서는 x-data안에서 x-text에 $store.darkMode.속성들을 사용해서 표시한다.-->
+<!-- 5. x-init + watch를 통해, 콘솔에 전역변수를 찍을 수 있게 되면, x-text는 안보여도 된다.-->
+<!-- my) x-init + watch() 조합으로 내부의 변수변화, 특히 전역변수의 변화를 안찍고 확인할 수 있다.-->
+<!--<div x-text="$store.darkMode.on"></div>-->
+
+<!-- 3. button을 이용해서 전역변수를 토글한다. -->
+<!--7. 다크모드시 버튼색도 추가로 변화시켜준다 with 조건부클래스  -->
+<button class="bg-blue-600 text-white px-4 py-2" @click="$store.darkMode.toggle()"
+        :class="$store.darkMode.on && 'bg-purple-600'">
+Toggle Dark Mode</button>
+
+<!-- 6. 조건부class :class를 이용하여, 전역변수를 바탕으로 모양을 바꾼다.
+조건부클래스가 true일 때만 적용시키려면, ? : 대신 &&를 사용한다
+하지만, 배경색은 200 -> 600 순으로 뒤족이 더 우선순위를 가진다.
+-->
+     <!--:class="$store.darkMode.on ? 'bg-green-200' : 'bg-green-600'"-->
+<div class="w-40 h-40 rounded mt-16 bg-green-200"
+     :class="$store.darkMode.on && 'bg-green-600'"
+></div>
+
+
+<!-- 4. x-init에서 watch를 통해, store속 전역 속성을 지켜보며, 바뀌면 어떤 동작을 할 수 있다.
+inline function을 사용하여, 뭔가를 작동하면 된다. 여기서는, 바뀐 변수가 뭔지 확인한다.
+ -->
+<div x-init="$watch('$store.darkMode.on', value => { console.log('Dark Mode is ' + value) })"></div>
+
+<!-- 1. script 태그로 alpine init시 적용될 전역데이터 store를 선언한 뒤 -> 이벤트리스너를 달고 시작한다.-->
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.store('darkMode', {
+            on: false,
+            toggle() {
+                this.on = !this.on
+            },
+        })
+    })
+</script>
+
+</body>
+</html>

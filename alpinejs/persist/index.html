@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <!--<link rel="stylesheet" href="css/style.css">-->
+
+    <!--4. alpinejs 위에 persis 플러그인 추가 -->
+    <!-- Alpine Plugins -->
+    <!--<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>-->
+    <script src="https://cdn.jsdelivr.net/npm/@alpinejs/persist@3.x.x/dist/cdn.min.js"></script>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+</head>
+<!-- 5. 사용방법은 x-data 변수 value에 $persist() 를 씌운다 -->
+<!--<body class="p-20 bg-gray-100" x-data="{ count: 0, message: 'Hello Alpine!' }">-->
+<body class="p-20 bg-gray-100" x-data="{ count: $persist(0), message: 'Hello Alpine!' }">
+
+<!-- 2. 토글과 카운트를 각각의 div로 묶은 뒤, 최종부모로 div로 묶어서, grid 2칼럼짜리로 묶음. -->
+<div class="grid grid-cols-2">
+    <div>
+        <button class="bg-blue-600 text-white px-4 py-2" @click="$store.darkMode.toggle()"
+                :class="$store.darkMode.on && 'bg-purple-600'">
+            Toggle Dark Mode
+        </button>
+
+        <div x-init="$watch('$store.darkMode.on', value => { console.log('Dark Mode is ' + value) })"></div>
+
+        <!-- 3. 다크모드 div에 print by x-text 추가 -->
+        <div class="w-40 h-40 rounded mt-16 bg-green-200"
+             :class="$store.darkMode.on && 'bg-green-600'"
+             x-text="$store.darkMode.on ? '다크모드입니다' : '라이트모드입니다'"
+        ></div>
+
+    </div>
+
+    <div><!-- 증가버튼 및 count 뷰 추가-->
+        <button class="bg-blue-600 px-2 py-5" @click="count++">증가</button>
+        <div>
+            <span x-text="count"></span>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    document.addEventListener('alpine:init', () => {
+        Alpine.store('darkMode', {
+            /* 7. store 변수에도 붙이면 되는데, js안에서는 Alpine. 을 $ 앞에 붙인다. 된다. */
+            /* 이 때, 플러그인 코드가 defer가 붙혀있으면, html부터 작성되고 load되므로 에러가 난다. */
+            /* 8. defer를 지우거나, script코드를 파일로 만들어 persist 플러그인 밑에서 가져온다.*/
+            /* 확인은, local storage에서 _x_변수명 으로 확인하면 된다.*/
+            // on: Alpine.$persist(false),
+            /* 9. 이 때, .as()로 변수명을 붙혀주면, _x_없는 네임으로 알아서 저장된다. */
+            on: Alpine.$persist(false).as('darkMode'),
+            toggle() {
+                this.on = !this.on
+            },
+        })
+    })
+</script>
+
+</body>
+</html>
