@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <!--<link rel="stylesheet" href="css/style.css">-->
+
+    <!-- 1. intersect plugin -->
+    <!-- Alpine Plugins -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- 2. style태그로 필요한 css 미리 작성-->
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+
+        .bg-black {
+            background-color: black;
+        }
+
+        /* 7. secetion이 sticky 효과를 주려면 css로 주면 된다. */
+        .sections {
+            /* body scroll대신 section scroll이 되기 위해선, sections부모에 overflow:auto */
+            overflow: auto;
+            height: 100vh;
+            /* y mandatory로 snapping 효과를 만든다.*/
+            -ms-scroll-snap-type: y mandatory;
+            scroll-snap-type: y mandatory;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            /* 마지막, 자식들은 스냅 align까지 지정해줘야 거기로 정렬된다.*/
+
+            > div {
+                scroll-snap-align: center;
+            }
+        }
+    </style>
+
+</head>
+<!-- 3. body에 active 섹션index 지정 -->
+<!-- 12. 이제 흰/검 테마로 나눠서 작동할 수 있도록 첫번째는 white: true 변수를 초기화하고 -->
+<body class="bg-gray-100" x-data="{ activeSection: 1, white: true }">
+<!-- 7. 이제 점 표시를 위해 div안에 동그라미div를 2개정도 그려놓는다.  처음에는 배경+내용 아무것도 안나타나지만-->
+<!--     부모div에는 bg-green을 임시로 넣어놓는다. div는 block이라서 한줄을 다 차지한다. -->
+<!-- 8. 배경외에 flex flex-col justify-center로 세로가로정렬한 flex를 만들면 쭉 줄어들고 세로로 가운데정렬된다. -->
+<!-- 9. fixed를 추가하여, 아래 section들 위에서 고정되게 한다.-->
+<!-- 10. h-screen을 추가하여, 점 공간들도 세로로 한줄을 다 차지하게 한다. -->
+<!-- 11. space-y-4 로 16px 세로간격을 주고, px-10으로 양쪽 10 여백을 준다.-->
+<div class="bg-green-500 fixed flex flex-col justify-center h-screen space-y-4 px-10">
+    <!-- 13. border-2 두께를 가지며, 조건부class로 white일 땐,   border-black이 될 수 있도록 { : } 로 조건을 준다.-->
+    <!--     추가로 현재순서 dot div와 activeSection이 일치하면, bg-black으로 동그라미를 채운다. -->
+    <div class="w-3 h-3 rounded-full border-2"
+         :class="{ 'border-black' : white , 'bg-black' : activeSection == 1}"></div>
+    <!-- 14. 2번째는 black컨셉일 예정이므로, 활성화시 bg-white가 들어가게 조건을 만든다.-->
+    <div class="w-3 h-3 rounded-full border-2"
+         :class="{ 'border-black' : white , 'bg-white' : activeSection == 2}"></div>
+    <!-- 16. 3번째 doct과 section을 추가한다.-->
+    <div class="w-3 h-3 rounded-full border-2"
+         :class="{ 'border-black' : white , 'bg-white' : activeSection == 3}"></div>
+</div>
+
+<!-- 4. div.sections를 만들고, 내부 div들은 무조건 h-screen + 배경을 style속성으로 여기서 바로 주입 -->
+<div class="sections">
+    <!-- 5. 각 섹션인 .h-screen에 글자를 가운데 정렬하기 위해, 글자를 넣고 flex 수직정렬 -->
+    <!-- 만약, 구체적인 높이를 가진 컨테이너라면 h-full? = height: 100%를 쓰기도 한다. 하지만 최소 높이 100%를 적용해야한다. -->
+    <!-- 15. 이제 x-intersect(바로적용).half(mandatory를 통해 중간으로 바로감) = 할당업뎃을 통해, snap시 white컨셉여부, activeSection이 바뀌도록 한다. -->
+    <div x-intersect.half="activeSection = 1, white = true"
+         class="h-screen flex items-center justify-center text-5xl font-bold"
+         style="background-image: url(section1.png)"
+    >첫번째 페이지입니다.
+    </div>
+    <!-- 6. 2번째 섹션을 복붙하고, 다크섹션으로 생각하며, text-white를 추가한다.-->
+    <div x-intersect.half="activeSection = 2, white = false"
+         class="h-screen flex items-center justify-center text-5xl font-bold text-white"
+         style="background-image: url(section2.png)"
+    >2번째 페이지입니다.
+    </div>
+    <div x-intersect.half="activeSection = 3, white = true"
+         class="h-screen flex items-center justify-center text-5xl font-bold"
+         style="background-image: url(section3.png)"
+    >3번째 페이지입니다.
+    </div>
+</div>
+
+</body>
+</html>
