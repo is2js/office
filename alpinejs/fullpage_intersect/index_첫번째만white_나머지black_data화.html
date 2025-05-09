@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <!--<link rel="stylesheet" href="css/style.css">-->
+
+    <!-- 1. intersect plugin -->
+    <!-- Alpine Plugins -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- 2. style태그로 필요한 css 미리 작성-->
+    <style>
+        [x-cloak] {
+            display: none !important;
+        }
+
+        .bg-black {
+            background-color: black;
+        }
+
+        /* 7. secetion이 sticky 효과를 주려면 css로 주면 된다. */
+        .sections {
+            /* body scroll대신 section scroll이 되기 위해선, sections부모에 overflow:auto */
+            overflow: auto;
+            height: 100vh;
+            /* y mandatory로 snapping 효과를 만든다.*/
+            -ms-scroll-snap-type: y mandatory;
+            scroll-snap-type: y mandatory;
+            -webkit-overflow-scrolling: touch;
+            scroll-behavior: smooth;
+            /* 마지막, 자식들은 스냅 align까지 지정해줘야 거기로 정렬된다.*/
+
+            > div {
+                scroll-snap-align: center;
+            }
+        }
+    </style>
+
+</head>
+<!-- 3. body에 active 섹션index 지정 -->
+<!-- 12. 이제 흰/검 테마로 나눠서 작동할 수 있도록 첫번째는 white: true 변수를 초기화하고 -->
+<body class="bg-gray-100" x-data="{
+        activeSection: 1,
+        slides: [
+            {
+                image: 'section1.png',
+                text: '첫번째 페이지입니다.',
+            },
+            {
+                image: 'section2.png',
+                text: '2번째 페이지입니다.',
+            },
+            {
+                image: 'section3.png',
+                text: '3번째 페이지입니다.',
+            }
+        ]
+    }">
+
+<!-- 1. 점(dot) 네비게이션 -->
+<div class="bg-green-500 fixed flex flex-col justify-center h-screen space-y-4 px-10">
+    <template x-for="(slide, i) in slides" :key="i">
+        <div class="w-3 h-3 rounded-full border-2"
+             :class="{
+            'border-white' : activeSection == 1 ,
+            'bg-white' : activeSection == 1 && activeSection == i + 1 ,
+            'border-black' : activeSection != 1 ,
+            'bg-black' : activeSection != 1 && activeSection == i + 1 ,
+            }"
+        >
+        </div>
+    </template>
+</div>
+
+<!-- 2. 슬라이드 섹션 -->
+<div class="sections">
+    <template x-for="(slide, i) in slides" :key="i">
+        <div x-intersect.half="activeSection = i + 1;"
+             class="h-screen flex items-center justify-center text-5xl font-bold"
+             :style="`
+                background: url(${slide.image});
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+            `">
+            <span :class="{ 'text-white': activeSection == 1 }" x-text="slide.text"></span>
+        </div>
+    </template>
+    <!--<div x-intersect.half="activeSection = 1, white = true"
+         class="h-screen flex items-center justify-center text-5xl font-bold"
+         style="background-image: url(section1.png);
+         background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+"
+    >첫번째 페이지입니다.
+    </div>
+    &lt;!&ndash; 6. 2번째 섹션을 복붙하고, 다크섹션으로 생각하며, text-white를 추가한다.&ndash;&gt;
+    <div x-intersect.half="activeSection = 2, white = false"
+         class="h-screen flex items-center justify-center text-5xl font-bold text-white"
+         style="background-image: url(section2.png);
+background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;"
+    >2번째 페이지입니다.
+    </div>-->
+
+</div>
+
+</body>
+</html>

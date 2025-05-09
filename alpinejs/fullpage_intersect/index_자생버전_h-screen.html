@@ -50,14 +50,17 @@
 <!-- 12. 이제 흰/검 테마로 나눠서 작동할 수 있도록 첫번째는 white: true 변수를 초기화하고 -->
 <body class="bg-gray-100" x-data="{
         activeSection: 1,
-        sections: [
+        slides: [
             {
+                image: 'section1.png',
                 title: '메인',
             },
             {
+                image: 'section2.png',
                 title: '신랑신부 소개',
             },
             {
+                image: 'section3.png',
                 title: '갤러리',
             }
         ],
@@ -123,10 +126,9 @@
                 animation: wheelAni 0.7s infinite;
             }
 
-            &.white::before {
+            &.white::before{
                 background: url(https://www.jaseng.co.kr/images/renewal-v3/mouse-w.png) no-repeat 50% 0;
             }
-
             &.white::after {
                 background: url(https://www.jaseng.co.kr/images/renewal-v3/mouse-w-arr.png) no-repeat 50% 0;
             }
@@ -138,10 +140,10 @@
     floatNav
 ">
     <ul>
-        <template x-for="(section, i) in sections" :key="i+1">
+        <template x-for="(slide, i) in slides" :key="i">
             <!--:style="activeSection === i + 1 ? 'width: auto;' : 'width: 6px;'"-->
             <li class="w-auto">
-                <a :href="`#section-${i+1}`"
+                <a :href="`#section-${i}`"
                    class="cursor flex items-center"
                    x-data="{ hovered: false }"
                    @mouseenter="hovered = true"
@@ -171,7 +173,7 @@
                                 'font-bold': hovered
                                 }"
                           :style="hovered ? 'color: #1ECECB;' : ''"
-                          x-text="section.title"></span>
+                          x-text="slide.title"></span>
                     <!--x-show="activeSection === i + 1"-->
                 </a>
             </li>
@@ -195,32 +197,39 @@
     ></span>
 </div>
 
-<!-- 2. 슬라이드 섹션들 -->
+<!-- 2. 슬라이드 섹션 -->
 <div class="sections">
-    <!-- secetion 1: 메인 -->
-    <div :id="section-1"
-         x-intersect.half="activeSection = 1;"
+    <template x-for="(slide, i) in slides" :key="i">
+        <div x-intersect.half="activeSection = i + 1;"
+             :id="`section-${i}`"
+             class="h-screen flex items-center justify-center text-5xl font-bold"
+             :style="`
+                background: url(${slide.image});
+                background-size: cover;
+                background-repeat: no-repeat;
+                background-position: center;
+            `">
+            <span :class="{ 'text-white': activeSection == 1 }" x-text="slide.title"></span>
+        </div>
+    </template>
+    <!--<div x-intersect.half="activeSection = 1, white = true"
          class="h-screen flex items-center justify-center text-5xl font-bold"
-         style="background: url(section1.png); background-size: cover; background-repeat: no-repeat; background-position: center;"
-        >
-        <span :class="{ 'text-white': activeSection == 1 }" x-text="sections[0].title"></span>
+         style="background-image: url(section1.png);
+         background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+"
+    >첫번째 페이지입니다.
     </div>
-    <!-- secetion 2: 신랑신부 소개 -->
-    <div :id="section-2"
-         x-intersect.half="activeSection = 2;"
-         class="h-screen flex items-center justify-center text-5xl font-bold"
-         style="background: url(section2.png); background-size: cover; background-repeat: no-repeat; background-position: center;"
-        >
-        <span :class="{ 'text-white': activeSection == 1 }" x-text="sections[1].title"></span>
-    </div>
-    <!-- secetion 3: 갤러리 -->
-    <div :id="section-3"
-         x-intersect.half="activeSection = 3;"
-         class="h-screen flex items-center justify-center text-5xl font-bold"
-         style="background: url(section3.png); background-size: cover; background-repeat: no-repeat; background-position: center;"
-        >
-        <span :class="{ 'text-white': activeSection == 1 }" x-text="sections[2].title"></span>
-    </div>
+    &lt;!&ndash; 6. 2번째 섹션을 복붙하고, 다크섹션으로 생각하며, text-white를 추가한다.&ndash;&gt;
+    <div x-intersect.half="activeSection = 2, white = false"
+         class="h-screen flex items-center justify-center text-5xl font-bold text-white"
+         style="background-image: url(section2.png);
+background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;"
+    >2번째 페이지입니다.
+    </div>-->
 
 </div>
 
