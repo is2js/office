@@ -52,18 +52,6 @@
         activeSection: 1,
         slides: [
             {
-                youtubeId: 'UVBfcRFLHJ8',
-                title: '신랑신부 소개',
-                subtitle: '약침치료는 현대 한의원에서 치료효과를 위해 치료에 포함됩니다.',
-
-            },
-            {
-                youtubeId: 'P_06Nvmunrk',
-                title: '신랑신부 소개',
-                subtitle: '약침치료는 현대 한의원에서 치료효과를 위해 치료에 포함됩니다.',
-
-            },
-            {
                 image: 'section1.png',
                 title: '약침치료',
                 subtitle: '약침치료는 현대 한의원에서 치료효과를 위해 치료에 포함됩니다.',
@@ -76,8 +64,8 @@
             },
             {
                 image: 'section3.png',
-            }
 
+            }
         ],
 
     }">
@@ -171,6 +159,17 @@
                           }"
                           :style="hovered? 'width: 6px; left: -1px; background-color: #1ECECB;' : 'width: 4px;'"
                     ></span>
+                    <!--                    <span class="inline-block h-10 relative"-->
+                    <!--                          :class="{-->
+                    <!--                          'bg-white' : activeSection == 1 && activeSection == i + 1,-->
+                    <!--                          'bg-gray-400' : activeSection == 1 && activeSection != i + 1,-->
+
+                    <!--                          'bg-gray-700' : activeSection != 1 && activeSection == i + 1,-->
+                    <!--                          'bg-gray-500' : activeSection != 1 && activeSection != i + 1,-->
+
+                    <!--                          }"-->
+                    <!--                          :style="hovered? 'width: 6px; left: -1px; background-color: #1ECECB;' : 'width: 4px;'"-->
+                    <!--                    ></span>-->
                     <!-- title -->
                     <span class="inline-block pl-3 text-sm"
                           :class="{
@@ -180,15 +179,26 @@
                                 }"
                           :style="hovered ? 'color: #1ECECB;' : ''"
                           x-text="slide.title ? slide.title : '섹션 ' + (i+1) + '' "></span>
+                    <!--                    <span class="inline-block pl-3 text-sm"-->
+                    <!--                          :class="{-->
+                    <!--                                'text-white font-bold': activeSection == 1 && activeSection == i + 1,-->
+                    <!--                                'text-gray-400': activeSection == 1 && activeSection != i + 1,-->
 
+                    <!--                                'text-gray-700 font-bold': activeSection != 1 && activeSection == i + 1,-->
+                    <!--                                'text-gray-500': activeSection != 1 && activeSection != i + 1,-->
+
+                    <!--                                'font-bold': hovered-->
+                    <!--                                }"-->
+                    <!--                          :style="hovered ? 'color: #1ECECB;' : ''"-->
+                    <!--                          x-text="slide.title ? slide.title : '섹션 ' + (i+1) + '' "></span>-->
                 </a>
             </li>
         </template>
     </ul>
 
     <!-- 마우스 스크롤 -->
-    <span class="scroll-down block -ml-1 mt-10 h-8.5"
-          :class="{'white' : activeSection == 1}"
+<!--          :class="{'white' : activeSection == 1}"-->
+    <span class="scroll-down white block -ml-1 mt-10 h-8.5"
     ></span>
 </div>
 
@@ -199,48 +209,16 @@
         > div > a {
             /* 필름은 a태그의 after로 줘서, 내용물보다 제일 아래 깔리게 두고 -> 내부 text만 z-index를 추가로 준다.. */
 
-            &.has-title::after {
+            &::after {
                 content: '';
                 position: absolute;
                 top: 0;
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background-color: rgba(0, 0, 0, 0.3);
-            }
+                /*background-color: rgba(0, 0, 0, 0.3);*/
+                background-color: rgba(71 85 105 / 0.3);
 
-            /*  youtube  */
-            /* 2. 그래서 부모div를 씌워 처리하는데  */
-
-            .video-box {
-                position: relative;
-                /*height: 0;*/
-                /* 유튜브영상 비율을 고려하여 전체화면 되게 하는*/
-                padding-bottom: 56.25%;
-                   /**/
-                   /*padding-bottom: 47.6%;*/
-
-
-                /* 1.iframe을 w100해도 검은화면이 가득참.  */
-
-                iframe {
-                    position: absolute;
-
-                    width: 100%;
-                    /* 전체화면으로 부모 padding-bottom: 56.25%; 일시 -> height 만땅    */
-                    height: 100%;
-                    top: 50%;
-                    left: 50%;
-                    transform: translate(-50%, -50%);
-
-
-
-                    /*  부모 padding-bottom: 47.6%;일시 -> height 일정 100% */
-                    /*     padding-bottom: 65.25vw; */
-                    /*     top:50%; */
-                    /*     left:50%; */
-                    /*     transform: translate(-50%); */
-                }
             }
         }
     }
@@ -251,19 +229,24 @@
              :id="`section-${i}`"
              class="h-screen relative"
         >
-            <a href="#" class="block h-full w-full" :class="{'has-title' : slide.title}">
-                <template x-if="slide.image">
-                    <img :src="slide.image" alt="" class="block w-full h-full object-cover">
-                </template>
-                <template x-if="slide.youtubeId">
-                    <div class="video-box block w-full h-full object-cover">
-                        <iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture;"
-                                :src="`https://www.youtube.com/embed/${slide.youtubeId}?rel=0&autoplay=1&controls=0&disablekb=1&vq=hd1440&mute=1&loop=1&playlist=${slide.youtubeId}`"
-                                allowfullscreen></iframe>
-                    </div>
-                </template>
-
-
+            <!--:style="`
+               background: url(${slide.image});
+               background-size: cover;
+               background-repeat: no-repeat;
+               background-position: center;
+           `"-->
+            <!-- 1. 클릭을 대비해 a를 씌우는데, 내부 img가 block이 될거라서, a요소가 감쌀라면 block-->
+            <!-- 추후, swiper-wrapper/slide(h100) 내부에 들어갈 것이기 때문에 h-100도 추가한다.
+                 여기서는 해당img 높이가 정해져잇지 않을 것이기 때문에 + w100% 추가
+                 참고) 상위 부모에 높이가 정해져있다면, swiper최상위 부모인 .swiper에 h100%을 줘서 맞춰내려가야한다.
+                 -->
+            <a href="#" class="block h-full w-full">
+                <!-- 2. 내부 img도 block + w100%를 걸어준다. img의 높이는 해당 것을 사용해야하나,
+                        h100% + object-cover 추가-->
+                <img :src="slide.image" alt="" class="block w-full h-full object-cover">
+                <!-- 3. 텍스트 작업을 위해, div를 추가한다. 2개box를 위해 p태그를 2개 쓴다.
+                    띄우기 위해 div box를 absolute로 주고 띄운다. 최상위 div에 relative를 추가로 준다.
+                -->
                 <div class="absolute z-10"
                      style="left:150px; bottom:220px;"
                      x-show="slide.title"
