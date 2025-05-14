@@ -185,7 +185,7 @@
 
     <!-- 마우스 스크롤 -->
     <span class="scroll-down block -ml-1 mt-10 h-8.5"
-          :class="{'white' : slides[activeSection- 1].title != undefined }"
+          :class="{'white' : activeSection == 1}"
     ></span>
 </div>
 
@@ -204,7 +204,6 @@
                 width: 100%;
                 height: 100%;
                 background-color: rgba(0, 0, 0, 0.3);
-                @apply bg-black;
             }
 
             /*  youtube  */
@@ -263,7 +262,7 @@
 
 
                 <div class="absolute z-10"
-                     style="left:150px; bottom:150px;"
+                     style="left:150px; bottom:220px;"
                      x-show="slide.title"
                 >
                     <p class="text-white text-5xl font-bold" x-text="slide.title"></p>
