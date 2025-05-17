@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}{{title}}{% endblock %}
 
-{% block content %}
+{% block layout_center %}
 
 <div class="archive">
     {% set posts_sorted = posts | sort(attribute='attributes.date_parsed', reverse=True) %}

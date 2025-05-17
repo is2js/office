@@ -308,6 +308,20 @@ def cli_entry_point():
     # def render_html(page, config, env, posts, title = 'Home')
     ## render index -> posts 전체 + index페이지 제목을 넘겨준다.
     index = render_html('index.html', config, env, posts, title='상세질환 디자인')
+    # print(f"config  >> {config}")
+    # config  >> {'title': '조재성 원장', 'logoImg': 'http://hani.chojaeseong.com/images/logo.png', 'theme': {'primary': '#FC5230', 'sec
+    # ondary': '#1ECECB'}, 'authors': {'조재성': {'name': '조재성 원장', 'comment': '재활, 통계, 프로그래밍을 전공한 수석졸업 한의사입니
+    # 다.', 'email': 'tingstyle1@gmail.com', 'kakaotalk': 'tingstyle@hanmail.net', 'profileImg': 'https://front.chojaeseong.com/images/p
+    # ng/profile/sub/02.png'}, '김석영': {'name': '김석영 원장', 'comment': '20년이상 저와 가족, 지인들에게 한약을 통한 치료를 제공해온
+    # 한의사입니다.', 'email': 'daisykim88@gmail.com', 'kakaotalk': 'tingstyle@hanmail.net'}}, 'ads': {'isAutoPlay': False, 'autoPlayDur
+    # ation': '1500,', 'pauseTimeoutDuration': '3000,', 'contents': {'광고1': {'type': 'image', 'url': 'https://front.chojaeseong.com/im
+    # ages/png/profile/sub/02.png', 'title': '첫번째 영상', 'subtitle': 'ㅋㅋㅋㅋ'}, '광고2': {'type': 'video', 'youtubeId': '2Q0vX1r7g4
+    # E', 'title': '조재성 원장', 'subtitle': '조재성 원장', 'isMute': False}, '광고3': {'url': 'https://front.chojaeseong.com/images/pn
+    # g/profile/sub/02.png', 'title': None, 'subtitle': None}, '광고4': {'type': 'video', 'youtubeId': '2Q0vX1r7g4E', 'title': '조재성
+    # 원장', 'subtitle': '조재성 원장', 'isMute': True}}}, 'footer': {'copyright': {'enabled': True, 'company': '(주) 김석영 주식회사'},
+    #  'give_credit': True}, 'blog': {'titleLogoImg': 'https://front.chojaeseong.com/images/png/profile/sub/02.png'}, 'pagination': 5}
+    # Serving HTTP on :: port 7777 (http://[::]:7777/)
+
     index_path = os.path.join(OUTPUT_DIR, 'index.html')
     with open(index_path, 'w', encoding='utf-8') as f:
         f.write(index)
@@ -392,6 +406,17 @@ def cli_entry_point():
         )
         with open(redirect_output_file_full_path, 'w') as f:
             f.write(redirect)
+
+
+    ## render ads
+    ads = render_html('ads.html', config, env, posts, title='아카이브')
+    # 새 페이지 -> path1개/index.htmlㅇ이어야한다.
+    # 새 페이지 -> 경로가 없을 수 있으니 path1개의 경로도 만들어놔야한다.
+    # ads_path = os.path.join(OUTPUT_DIR, 'ads.html')
+    os.makedirs(os.path.join(OUTPUT_DIR, 'ads'), exist_ok=True)
+    ads_path = os.path.join(OUTPUT_DIR, 'ads', 'index.html')
+    with open(ads_path, 'w', encoding='utf-8') as f:
+        f.write(ads)
 
     ## copy static files and images
     # 외부에서 패키지로 사용시에만 == main실행 X:

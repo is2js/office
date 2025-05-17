@@ -1,6 +1,10 @@
 title: 조재성 원장
 logoImg: http://hani.chojaeseong.com/images/logo.png
 
+theme:
+  primary: "#FC5230"
+  secondary: "#1ECECB"
+
 authors:
   조재성:
     name: 조재성 원장
@@ -16,9 +20,35 @@ authors:
 #    profileImg: https://front.chojaeseong.com/images/png/profile/sub/01.png # 없으면 default_doctor_profile.png
 
 
-theme:
-  primary: "#FC5230"
-  secondary: "#1ECECB"
+ads:
+  isAutoPlay: false
+  autoPlayDuration: 1500, # 자동 슬라이드 전환 간격
+  pauseTimeoutDuration: 3000, # 휠 등으로 일시정지 후 재시작 대기시간
+  contents:
+    광고1:
+      type: image
+      url: https://front.chojaeseong.com/images/png/profile/sub/02.png
+      title: 첫번째 영상
+      subtitle: ㅋㅋㅋㅋ
+    광고2:
+      type: video
+      youtubeId: 2Q0vX1r7g4E
+      title: 조재성 원장
+      subtitle: 조재성 원장
+      isMute: false # 음소거 여부
+    광고3:
+      url: https://front.chojaeseong.com/images/png/profile/sub/02.png
+      title:
+      subtitle:
+    광고4:
+      type: video
+      youtubeId: 2Q0vX1r7g4E
+      title: 조재성 원장
+      subtitle: 조재성 원장
+      isMute: true # 음소거 여부
+
+
+
 
 footer:
   copyright:

@@ -45,13 +45,17 @@
                 <li><a href="{{ root_path }}">Home</a></li>
                 <li><a href="{{ root_path }}blog">블로그</a></li>
                 <li><a href="{{ root_path }}archive">Archive</a></li>
+                {% if 'ads' in config %}<li><a href="{{ root_path }}ads">원내광고</a></li>{% endif %}
             </ul>
         </div>
+
         <div class="content">
-            <div class="layout-center">
                 {% block content %}
+            <div class="layout-center">
+                {% block layout_center %}
                 {% endblock %}
             </div>
+                {% endblock content %}
         </div>
     </div>
     <div class="footer">

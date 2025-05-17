@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<script>
+          const adsData = {{ config['ads'] | tojson | safe }};
+          console.log('adsData', adsData);
+</script>
+    <!--x-data='{ ads: myDataFromJinja }'-->
+<div class="ads"
+    x-data="{ ads:  adsData}"
+>
+
+    <template x-for="(ad, i) in ads['contents']" :key="i">
+        dasdf
+        <div x-text="ad.title" class="p-2 border"></div>
+    </template>
+</div>
+{% endblock %}
