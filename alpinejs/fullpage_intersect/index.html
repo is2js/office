@@ -10,12 +10,23 @@
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <!--<link rel="stylesheet" href="css/style.css">-->
 
-    <!-- 1. intersect plugin -->
+    <!-- intersect plugin -->
     <!-- Alpine Plugins -->
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
-
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <!-- 2. style태그로 필요한 css 미리 작성-->
+    <!-- 1. youtube iframe api 추가 -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+    <script>
+        // 1. iframe api를 사용하기 위해서, window에 onYouTubeIframeAPIReady를 추가한다.
+        // 2. 이 함수는 youtube iframe api가 로드되면 자동으로 호출된다.
+        function onYouTubeIframeAPIReady() {
+            // 3. 이 함수는 iframe api가 로드되면 자동으로 호출된다.
+            console.log('Youtube API is ready');
+        }
+
+
+    </script>
+    <!--  style태그로 필요한 css 미리 작성-->
     <style>
         [x-cloak] {
             display: none !important;
@@ -25,7 +36,7 @@
             background-color: black;
         }
 
-        /* 7. secetion이 sticky 효과를 주려면 css로 주면 된다. */
+        /*   secetion이 sticky 효과를 주려면 css로 주면 된다. */
         .sections {
             /* body scroll대신 section scroll이 되기 위해선, sections부모에 overflow:auto */
             overflow: auto;
@@ -46,43 +57,38 @@
     </style>
 
 </head>
-<!-- 3. body에 active 섹션index 지정 -->
-<!-- 12. 이제 흰/검 테마로 나눠서 작동할 수 있도록 첫번째는 white: true 변수를 초기화하고 -->
-<body class="bg-gray-100" x-data="{
+<!-- body에 active 섹션index 지정 -->
+<!-- 이제 흰/검 테마로 나눠서 작동할 수 있도록 첫번째는 white: true 변수를 초기화하고 -->
+<body class="bg-gray-100"
+      x-data="{
         isAutoPlay: false,
-        autoPlayDuration: 1000, // 자동 슬라이드 전환 간격
-        pauseTimeoutDuration: 3000, // 휠 등으로 일시정지 후 재시작 대기시간
+        autoPlayDuration: 3000, // 자동 슬라이드 전환 간격
+        pauseTimeoutDuration: 5000, // 휠 등으로 일시정지 후 재시작 대기시간
         slides: [
             {
-                youtubeId: 'pbGSI140UPw'
+                youtubeId: 'pbGSI140UPw',
+                title: '첫번째 영상광고',
+                subtitle: '이 영상은 Mute설정이 안되어있습니다.',
+
+            },
+            {
+                //image: 'section1.png',
+                image: 'https://picstargram.s3.ap-northeast-2.amazonaws.com/post/93a4051d-089c-4bbe-bbea-8e2dc8298190_4700.webp',
+                title: '첫번째 사진광고',
+                subtitle: 'title이 들어가면, 화면은 약간 어둡게',
             },
             {
                 youtubeId: 'Vzy1DFfKF4E',
-                title: '부부한의원으로',
+                title: '두번째 영상광고(Muted)',
                 subtitle: '당신을 초대합니다',
-
+                isMute: true,
             },
             {
-                youtubeId: 'P_06Nvmunrk',
-                title: '신랑신부 소개',
-                subtitle: '약침치료는 현대 한의원에서 치료효과를 위해 치료에 포함됩니다.',
-
+                //image: 'section2.png',
+                //title: '두번째 사진광고',
+                //subtitle: '약침치료는 현대 한의원에서 치료효과를 위해 치료에 포함됩니다.',
+                image: 'https://picstargram.s3.ap-northeast-2.amazonaws.com/post/9a6ebc3f-ff00-46d9-b395-248cf7fc1642_4700.webp',
             },
-            {
-                image: 'section1.png',
-                title: '약침치료',
-                subtitle: '약침치료는 현대 한의원에서 치료효과를 위해 치료에 포함됩니다.',
-
-            },
-            {
-                image: 'section2.png',
-                title: '신랑신부 소개',
-                subtitle: '약침치료는 현대 한의원에서 치료효과를 위해 치료에 포함됩니다.',
-            },
-            {
-                image: 'section3.png',
-            }
-
         ],
         activeSection: 1,
         isPaused: false,
@@ -103,9 +109,21 @@
             }, this.autoPlayDuration);
         },
         init() {
+
             if (this.isAutoPlay) {
                 this.startAutoSlide();
             }
+
+
+
+            window.onYouTubeIframeAPIReady = () => this.initYouTubePlayers();
+
+            ['click', 'keydown', 'touchstart'].forEach(event =>
+                window.addEventListener(event, () => {
+                    this.userInteracted = true;
+                    console.log('✅ 사용자 상호작용 등록됨 (Alpine 내부)');
+                }, { once: true })
+            );
         },
 
 
@@ -121,6 +139,22 @@
                 this.init();
             } else {
                 this.isPaused = !this.isPaused;
+            }
+
+
+            //  ✅ 현재 activeSection의 슬라이드가 YouTube 영상이고 isMute가 아닌 경우, unMute
+            // - 첫번재 영상이 mute로 시작되고 있을 때, 자동재생 눌러서 unMute가 되도록
+            const index = this.activeSection - 1;
+            const currentSlide = this.slides[index];
+            const player = this.players[index];
+
+            if (!this.isMutedAll && currentSlide && currentSlide.youtubeId && !currentSlide.isMute && player && typeof player.unMute === 'function') {
+                try {
+                    console.log('🔊 unMuting current video (section:', index, ')');
+                    player.unMute();
+                } catch (e) {
+                    console.warn('⚠️ unMute 실패:', e);
+                }
             }
 
         },
@@ -139,8 +173,61 @@
                     }, this.pauseTimeoutDuration); // 예: 10000ms
                 }
         },
+
+
+
+
+        userInteracted: false,
+        players: [], // YouTube 플레이어 객체 저장용
+        initYouTubePlayers() {
+                this.slides.forEach((slide, i) => {
+                    if (slide.youtubeId && !slide.isMute) {
+                        const iframe = document.querySelector(`#yt-${i}`);
+                        if (iframe ) {
+                            this.players[i] = new YT.Player(iframe, {
+                                events: {
+                                    'onReady': (event) => {
+                                       // // activeSection - 1 (현재 활성 슬라이드면 unmute + play)
+                                       // if (i === this.activeSection - 1) {
+                                       //  console.log('playVideo by onReady', i);
+                                       //     event.target.unMute();
+                                       //     event.target.playVideo();
+                                       // } else {
+                                       //     event.target.mute();
+                                       //     event.target.pauseVideo();
+                                       // }
+                                       // // ✅ 추가된 로직: 첫 번째 섹션이고 아직 activeSection 초기화 안 됐을 수 있는 경우
+                                       // if (i === 0 && this.activeSection === 1 ) {
+                                       //     console.log('playVideo by onReady', i);
+                                       //     event.target.unMute();
+                                       //     event.target.playVideo();
+                                       // }
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+        },
+
+        isMutedAll: false,
+        toggleMuteAll() {
+            this.isMutedAll = !this.isMutedAll;
+            console.log(this.isMutedAll ? '🔇 전체 음소거됨' : '🔊 전체 음소거 해제');
+
+            this.players.forEach(p => {
+                if (p && typeof p.mute === 'function') {
+                    try {
+                        this.isMutedAll ? p.mute() : (this.userInteracted && p.unMute());
+                    } catch (e) {
+                        console.warn('🔁 mute/unMute 실패:', e);
+                    }
+                }
+            });
+        },
+
+
     }"
-      x-init=""
 >
 
 <!-- 점(dot) 네비게이션 -->
@@ -267,6 +354,18 @@
     >
         <span x-text="!isAutoPlay ? '자동재생' : (isPaused ? '다시시작' : '일시정지')"></span>
     </button>
+
+
+    <!-- 🔇 전체 음소거 토글 버튼 -->
+    <button
+        @click="toggleMuteAll"
+        x-data="{hovered: false}"
+        @mouseenter="hovered = true"
+        @mouseleave="hovered = false"
+        class="fixed top-4 right-4 z-12 bg-transparent text-sm px-4 py-2 rounded"
+          :class="hovered ? 'text-white font-bold' : 'text-gray-400'"
+        x-text="isMutedAll ? '🔇 전체 음소거 해제' : '🔈 전체 음소거'"
+    ></button>
 </div>
 
 <!-- 슬라이드 섹션 -->
@@ -333,7 +432,32 @@
 
 <main class="sections" @wheel="pauseOnInteraction" @touchstart="pauseOnInteraction">
     <template x-for="(slide, i) in slides" :key="i">
-        <div x-intersect.half="activeSection = i + 1;"
+        <div x-intersect.half="
+                        activeSection = i + 1;
+
+                        if (players.length > 0) {
+                            console.log('activeSection', activeSection);
+
+                            players.forEach((p, idx) => {
+                                if (p && typeof p.playVideo === 'function') {
+                                    if (idx === i) {
+                                        console.log('playVideo on x-intersect.half', idx);
+                                        p.playVideo();
+                                        if (userInteracted  && !isMutedAll) {
+                                                console.log('isMutedAll', isMutedAll);
+                                                console.log('🔊 unMute 시도 (사용자 상호작용 이후)');
+                                                p.unMute();
+                                            } else {
+                                                console.log('🔇 사용자 상호작용 전이라 mute 유지');
+                                                p.mute();
+                                            }
+                                    } else {
+                                        p.pauseVideo();
+                                    }
+                                }
+                            });
+                        }
+                "
              :id="`section-${i}`"
              class="h-screen relative"
         >
@@ -345,19 +469,21 @@
                 </template>
                 <template x-if="slide.youtubeId">
                     <div class="video-box block w-full h-full object-cover">
-                        <iframe allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture;"
-                                :src="`https://www.youtube.com/embed/${slide.youtubeId}?rel=0&autoplay=1&controls=0&disablekb=1&vq=hd1440&mute=1&loop=1&playlist=${slide.youtubeId}`"
+                        <iframe
+                                :id="`yt-${i}`"
+                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture;"
+                                :src="`https://www.youtube.com/embed/${slide.youtubeId}?enablejsapi=1&rel=0&autoplay=1&controls=0&disablekb=1&vq=hd1440&mute=1&loop=1&playlist=${slide.youtubeId}`"
                                 allowfullscreen></iframe>
                     </div>
                 </template>
 
 
                 <div class="absolute z-10"
-                     style="left:150px; bottom:150px;"
+                     style="left:120px; bottom:100px;"
                      x-show="slide.title"
                 >
                     <p class="text-white text-5xl font-bold" x-text="slide.title"></p>
-                    <p class="text-white mt-3.5 text-3xl" x-text="slide.subtitle"></p>
+                    <p class="text-white mt-5 text-3xl" x-text="slide.subtitle"></p>
                 </div>
             </a>
         </div>
