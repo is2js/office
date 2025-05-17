@@ -16,16 +16,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- 1. youtube iframe api 추가 -->
     <script src="https://www.youtube.com/iframe_api"></script>
-    <script>
-        // 1. iframe api를 사용하기 위해서, window에 onYouTubeIframeAPIReady를 추가한다.
-        // 2. 이 함수는 youtube iframe api가 로드되면 자동으로 호출된다.
-        function onYouTubeIframeAPIReady() {
-            // 3. 이 함수는 iframe api가 로드되면 자동으로 호출된다.
-            console.log('Youtube API is ready');
-        }
 
-
-    </script>
     <!--  style태그로 필요한 css 미리 작성-->
     <style>
         [x-cloak] {
@@ -62,8 +53,8 @@
 <body class="bg-gray-100"
       x-data="{
         isAutoPlay: false,
-        autoPlayDuration: 3000, // 자동 슬라이드 전환 간격
-        pauseTimeoutDuration: 5000, // 휠 등으로 일시정지 후 재시작 대기시간
+        autoPlayDuration: 1500, // 자동 슬라이드 전환 간격
+        pauseTimeoutDuration: 3000, // 휠 등으로 일시정지 후 재시작 대기시간
         slides: [
             {
                 youtubeId: 'pbGSI140UPw',
@@ -72,9 +63,10 @@
 
             },
             {
-                image: 'section1.png',
+                //image: 'section1.png',
+                image: 'https://picstargram.s3.ap-northeast-2.amazonaws.com/post/93a4051d-089c-4bbe-bbea-8e2dc8298190_4700.webp',
                 title: '첫번째 사진광고',
-                subtitle: '약침치료는 현대 한의원에서 치료효과를 위해 치료에 포함됩니다.',
+                subtitle: 'title이 들어가면, 화면은 약간 어둡게',
             },
             {
                 youtubeId: 'Vzy1DFfKF4E',
@@ -83,9 +75,10 @@
                 isMute: true,
             },
             {
-                image: 'section2.png',
-                title: '두번째 사진광고',
-                subtitle: '약침치료는 현대 한의원에서 치료효과를 위해 치료에 포함됩니다.',
+                //image: 'section2.png',
+                //title: '두번째 사진광고',
+                //subtitle: '약침치료는 현대 한의원에서 치료효과를 위해 치료에 포함됩니다.',
+                image: 'https://picstargram.s3.ap-northeast-2.amazonaws.com/post/9a6ebc3f-ff00-46d9-b395-248cf7fc1642_4700.webp',
             },
         ],
         activeSection: 1,
@@ -95,8 +88,12 @@
         scrollToSection(index) {
             const el = document.getElementById(`section-${index}`);
             if (el) el.scrollIntoView({ behavior: 'smooth' });
-            //const isJumpToFirst = (this.activeSection === this.slides.length) && (index === 0);
-            //el.scrollIntoView({ behavior: isJumpToFirst ? 'auto' : 'smooth' });
+        },
+        increaseActiveSection(index) {
+            this.activeSection = (index % this.slides.length) + 1;
+        },
+        isActiveSection(index) {
+            return this.activeSection === index + 1;
         },
         startAutoSlide() {
             this.autoSlideInterval = setInterval(() => {
@@ -107,15 +104,18 @@
             }, this.autoPlayDuration);
         },
         init() {
-
             if (this.isAutoPlay) {
                 this.startAutoSlide();
             }
 
-
-
+            // YouTube API가 로드되면 플레이어 객체 초기화(unMute를 위해 필수)
             window.onYouTubeIframeAPIReady = () => this.initYouTubePlayers();
 
+            // 사용자 상호작용 이벤트 감지 등록
+            this.registerUserInteraction();
+
+        },
+        registerUserInteraction() {
             ['click', 'keydown', 'touchstart'].forEach(event =>
                 window.addEventListener(event, () => {
                     this.userInteracted = true;
@@ -123,7 +123,6 @@
                 }, { once: true })
             );
         },
-
 
         stopAutoSlide() {
             clearInterval(this.autoSlideInterval);
@@ -142,11 +141,14 @@
 
             //  ✅ 현재 activeSection의 슬라이드가 YouTube 영상이고 isMute가 아닌 경우, unMute
             // - 첫번재 영상이 mute로 시작되고 있을 때, 자동재생 눌러서 unMute가 되도록
+            this.unMuteActiveSectionForFirstUnmuteVideoSection();
+        },
+        unMuteActiveSectionForFirstUnmuteVideoSection() {
             const index = this.activeSection - 1;
             const currentSlide = this.slides[index];
             const player = this.players[index];
 
-            if (currentSlide && currentSlide.youtubeId && !currentSlide.isMute && player && typeof player.unMute === 'function') {
+            if (!this.isMutedAll && currentSlide && currentSlide.youtubeId && !currentSlide.isMute && player && typeof player.unMute === 'function') {
                 try {
                     console.log('🔊 unMuting current video (section:', index, ')');
                     player.unMute();
@@ -154,8 +156,8 @@
                     console.warn('⚠️ unMute 실패:', e);
                 }
             }
-
         },
+
 
         pauseOnInteraction() {
                  const wasPlaying = !this.isPaused; // 인터랙션 이전 상태가 재생 중이었는지 체크
@@ -382,7 +384,7 @@
                 background-color: rgba(0, 0, 0, 0.3);
             }
 
-            &.has-no-title:after {
+            &.has-no-title-video:after {
                 content: '';
                 position: absolute;
                 top: 0;
@@ -390,7 +392,18 @@
                 width: 100%;
                 height: 100%;
                 background-color: rgb(71, 85, 105, 0.15);
+                /*background-color: rgb(71, 85, 105, 0.05);*/
             }
+             &.has-no-title-picture:after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                /*background-color: rgb(71, 85, 105, 0.05);*/
+            }
+
 
             /*  youtube  */
             /* 2. 그래서 부모div를 씌워 처리하는데  */
@@ -430,8 +443,11 @@
 
 <main class="sections" @wheel="pauseOnInteraction" @touchstart="pauseOnInteraction">
     <template x-for="(slide, i) in slides" :key="i">
-        <div x-intersect.half="
-                        activeSection = i + 1;
+        <div :id="`section-${i}`"
+                class="h-screen relative"
+                x-intersect.half="
+                        //activeSection = i + 1;
+                        increaseActiveSection(i);
 
                         if (players.length > 0) {
                             console.log('activeSection', activeSection);
@@ -439,10 +455,8 @@
                             players.forEach((p, idx) => {
                                 if (p && typeof p.playVideo === 'function') {
                                     if (idx === i) {
-                                        console.log('playVideo on x-intersect.half', idx);
                                         p.playVideo();
                                         if (userInteracted  && !isMutedAll) {
-                                                console.log('isMutedAll', isMutedAll);
                                                 console.log('🔊 unMute 시도 (사용자 상호작용 이후)');
                                                 p.unMute();
                                             } else {
@@ -456,10 +470,12 @@
                             });
                         }
                 "
-             :id="`section-${i}`"
-             class="h-screen relative"
         >
-            <a href="#" class="block h-full w-full" :class="slide.title ? 'has-title' : 'has-no-title'"
+<!--               :class="slide.title ? 'has-title' : 'has-no-title'"-->
+            <a href="#" class="block h-full w-full"
+               :class="slide.title
+                               ? 'has-title'
+                               : (slide.youtubeId ? 'has-no-title-video' : 'has-no-title-picture')"
                @click="pauseOnInteraction"
             >
                 <template x-if="slide.image">
@@ -477,11 +493,11 @@
 
 
                 <div class="absolute z-10"
-                     style="left:150px; bottom:150px;"
+                     style="left:120px; bottom:100px;"
                      x-show="slide.title"
                 >
                     <p class="text-white text-5xl font-bold" x-text="slide.title"></p>
-                    <p class="text-white mt-3.5 text-3xl" x-text="slide.subtitle"></p>
+                    <p class="text-white mt-5 text-3xl" x-text="slide.subtitle"></p>
                 </div>
             </a>
         </div>

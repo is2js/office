@@ -16,16 +16,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <!-- 1. youtube iframe api 추가 -->
     <script src="https://www.youtube.com/iframe_api"></script>
-    <script>
-        // 1. iframe api를 사용하기 위해서, window에 onYouTubeIframeAPIReady를 추가한다.
-        // 2. 이 함수는 youtube iframe api가 로드되면 자동으로 호출된다.
-        function onYouTubeIframeAPIReady() {
-            // 3. 이 함수는 iframe api가 로드되면 자동으로 호출된다.
-            console.log('Youtube API is ready');
-        }
 
-
-    </script>
     <!--  style태그로 필요한 css 미리 작성-->
     <style>
         [x-cloak] {
@@ -62,8 +53,8 @@
 <body class="bg-gray-100"
       x-data="{
         isAutoPlay: false,
-        autoPlayDuration: 3000, // 자동 슬라이드 전환 간격
-        pauseTimeoutDuration: 5000, // 휠 등으로 일시정지 후 재시작 대기시간
+        autoPlayDuration: 1500, // 자동 슬라이드 전환 간격
+        pauseTimeoutDuration: 3000, // 휠 등으로 일시정지 후 재시작 대기시간
         slides: [
             {
                 youtubeId: 'pbGSI140UPw',
@@ -97,8 +88,16 @@
         scrollToSection(index) {
             const el = document.getElementById(`section-${index}`);
             if (el) el.scrollIntoView({ behavior: 'smooth' });
-            //const isJumpToFirst = (this.activeSection === this.slides.length) && (index === 0);
-            //el.scrollIntoView({ behavior: isJumpToFirst ? 'auto' : 'smooth' });
+        },
+        increaseActiveSection(index) {
+            this.activeSection = (index % this.slides.length) + 1;
+        },
+        isActiveSection(index) {
+            return this.activeSection === index + 1;
+        },
+        hasActiveSectionTitle() {
+            const currentSlide = this.slides[this.activeSection - 1];
+            return currentSlide && currentSlide.title && currentSlide.title != undefined;
         },
         startAutoSlide() {
             this.autoSlideInterval = setInterval(() => {
@@ -109,15 +108,18 @@
             }, this.autoPlayDuration);
         },
         init() {
-
             if (this.isAutoPlay) {
                 this.startAutoSlide();
             }
 
-
-
+            // YouTube API가 로드되면 플레이어 객체 초기화(unMute를 위해 필수)
             window.onYouTubeIframeAPIReady = () => this.initYouTubePlayers();
 
+            // 사용자 상호작용 이벤트 감지 등록
+            this.registerUserInteraction();
+
+        },
+        registerUserInteraction() {
             ['click', 'keydown', 'touchstart'].forEach(event =>
                 window.addEventListener(event, () => {
                     this.userInteracted = true;
@@ -126,10 +128,35 @@
             );
         },
 
-
         stopAutoSlide() {
             clearInterval(this.autoSlideInterval);
             this.autoSlideInterval = null;
+        },
+
+
+        controlVideoSection(index) {
+            // 현재 activeSection의 슬라이드가, userInteract후 & 전체음소거가 아니면, 소리를 켜고,  나머지 슬라이드는 일시정지한다.
+
+              if (this.players.length > 0) {
+                    console.log('activeSection', this.activeSection);
+
+                    this.players.forEach((p, idx) => {
+                        if (p && typeof p.playVideo === 'function') {
+                            if (idx === index) {
+                                p.playVideo();
+                                if (this.userInteracted  && !this.isMutedAll) {
+                                        console.log('🔊 unMute 시도 (사용자 상호작용 이후)');
+                                        p.unMute();
+                                    } else {
+                                        console.log('🔇 사용자 상호작용 전이라 mute 유지');
+                                        p.mute();
+                                    }
+                            } else {
+                                p.pauseVideo();
+                            }
+                        }
+                    });
+                }
         },
 
         togglePause() {
@@ -144,6 +171,9 @@
 
             //  ✅ 현재 activeSection의 슬라이드가 YouTube 영상이고 isMute가 아닌 경우, unMute
             // - 첫번재 영상이 mute로 시작되고 있을 때, 자동재생 눌러서 unMute가 되도록
+            this.unMuteActiveSectionForFirstUnmuteVideoSection();
+        },
+        unMuteActiveSectionForFirstUnmuteVideoSection() {
             const index = this.activeSection - 1;
             const currentSlide = this.slides[index];
             const player = this.players[index];
@@ -156,8 +186,8 @@
                     console.warn('⚠️ unMute 실패:', e);
                 }
             }
-
         },
+
 
         pauseOnInteraction() {
                  const wasPlaying = !this.isPaused; // 인터랙션 이전 상태가 재생 중이었는지 체크
@@ -318,18 +348,18 @@
                     <!-- bar -->
                     <span class="inline-block h-10 relative"
                           :class="{
-                          'bg-white' : activeSection == i + 1,
-                          'bg-gray-400' : activeSection != i + 1,
+                          'bg-white' : isActiveSection(i),
+                          'bg-gray-400' : !isActiveSection(i),
                           }"
                           :style="hovered? 'width: 6px; left: -1px; background-color: #1ECECB;' : 'width: 4px;'"
                     ></span>
                     <!-- title -->
                     <span class="inline-block pl-3 text-sm"
                           :class="{
-                                'text-white font-bold': activeSection == i + 1,
-                                'text-gray-400': activeSection != i + 1,
+                                'text-white font-bold': isActiveSection(i),
+                                'text-gray-400': !isActiveSection(i),
                                 'font-bold': hovered,
-                                'bounce': activeSection == i + 1
+                                'bounce': isActiveSection(i)
                                 }"
                           :style="hovered ? 'color: #1ECECB;' : ''"
                           x-text="slide.title ? slide.title : '섹션 ' + (i+1) + '' "></span>
@@ -341,7 +371,7 @@
 
     <!-- 마우스 스크롤 -->
     <span class="scroll-down block -ml-1 mt-10 h-8.5"
-          :class="{'white' : slides[activeSection- 1].title != undefined }"
+          :class="{'white' : hasActiveSectionTitle() }"
     ></span>
 
     <!-- 재생여부 -->
@@ -384,7 +414,7 @@
                 background-color: rgba(0, 0, 0, 0.3);
             }
 
-            &.has-no-title:after {
+            &.has-no-title-video:after {
                 content: '';
                 position: absolute;
                 top: 0;
@@ -392,7 +422,18 @@
                 width: 100%;
                 height: 100%;
                 background-color: rgb(71, 85, 105, 0.15);
+                /*background-color: rgb(71, 85, 105, 0.05);*/
             }
+             &.has-no-title-picture:after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                /*background-color: rgb(71, 85, 105, 0.05);*/
+            }
+
 
             /*  youtube  */
             /* 2. 그래서 부모div를 씌워 처리하는데  */
@@ -432,36 +473,19 @@
 
 <main class="sections" @wheel="pauseOnInteraction" @touchstart="pauseOnInteraction">
     <template x-for="(slide, i) in slides" :key="i">
-        <div x-intersect.half="
-                        activeSection = i + 1;
-
-                        if (players.length > 0) {
-                            console.log('activeSection', activeSection);
-
-                            players.forEach((p, idx) => {
-                                if (p && typeof p.playVideo === 'function') {
-                                    if (idx === i) {
-                                        console.log('playVideo on x-intersect.half', idx);
-                                        p.playVideo();
-                                        if (userInteracted  && !isMutedAll) {
-                                                console.log('isMutedAll', isMutedAll);
-                                                console.log('🔊 unMute 시도 (사용자 상호작용 이후)');
-                                                p.unMute();
-                                            } else {
-                                                console.log('🔇 사용자 상호작용 전이라 mute 유지');
-                                                p.mute();
-                                            }
-                                    } else {
-                                        p.pauseVideo();
-                                    }
-                                }
-                            });
-                        }
+        <div :id="`section-${i}`"
+                class="h-screen relative"
+                x-intersect.half="
+                        increaseActiveSection(i); // +1만 하는게 아니라 length 나눈 값 + 1로 처음부터 시작하게 한다.
+                        // 현재 activeSection의 슬라이드가, userInteract후 & 전체음소거가 아니면, 소리를 켜고,  나머지 슬라이드는 일시정지한다.
+                        controlVideoSection(i);
                 "
-             :id="`section-${i}`"
-             class="h-screen relative"
         >
-            <a href="#" class="block h-full w-full" :class="slide.title ? 'has-title' : 'has-no-title'"
+<!--               :class="slide.title ? 'has-title' : 'has-no-title'"-->
+            <a href="#" class="block h-full w-full"
+               :class="slide.title
+                               ? 'has-title'
+                               : (slide.youtubeId ? 'has-no-title-video' : 'has-no-title-picture')"
                @click="pauseOnInteraction"
             >
                 <template x-if="slide.image">
