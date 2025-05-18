@@ -1,4 +1,4 @@
-python setup.py install && mdr && python -m http.server --directory build
+python setup.py install && mdr && python -m http.server [7777] --directory build
 
 
-python -m http.server --directory alpinejs/xxxx
+python -m http.server 8000 --directory alpinejs/xxxx

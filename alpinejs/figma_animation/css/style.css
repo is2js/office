@@ -1,0 +1,84 @@
+body {
+    background-color: #092554;
+}
+.intro-section {
+    /*@apply h-screen*/
+
+    background-image: url('../img/background.jpg');
+    background-position: top center;
+    /* 내가 추가 */
+    background-repeat: no-repeat;
+
+    /* 처음에 크기 -> 애니메이션으로 줄어들면서 140 -> 100% 로 0.5초동안 변함.  대신 2초있다가 시작. */
+    background-size: 140% auto;
+
+    animation: backgroundSize 1s ease-in-out forwards 1s;
+
+    font-family: Pretendard, "Noto Sans KR", "Malgun Gothic", sans-serif;
+
+    > .foreground {
+        animation: foregroundSize 1s ease-in-out forwards 1s;
+        /*   transform으로 줄어들 때, bottom을 기준으로 top에서부터 줄어든다. */
+        transform-origin: bottom;
+    }
+}
+
+@keyframes backgroundSize {
+    0% {
+        background-size: 140% auto;
+    }
+    100% {
+        background-size: 100% auto;
+    }
+}
+
+/* foreground 바닥의 그림은, scale()로 1-> 0.75로  줄어들게 한다.*/
+@keyframes foregroundSize {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0.65);
+    }
+}
+
+.intro-section-text {
+        /* 투명도 뿐만 아니라 300% y축 내려갔다가 -100%로 복귀 */
+        animation: introText 1s ease-in-out forwards 1.5s;
+}
+@keyframes introText {
+    0% {
+        opacity: 0;
+        transform: translateY(300%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(-100%);
+    }
+}
+
+.container {
+    margin: 0 auto;
+    width: 1368px;
+    max-width: 100%;
+}
+
+header {
+        animation: headerAnimation 1s ease-in-out forwards 2s;
+
+
+        /* 키프레임 0%랑 동일*/
+        opacity: 0;
+        transform: translateY(-300%);
+}
+
+@keyframes headerAnimation {
+    0% {
+        opacity: 0;
+        transform: translateY(-300%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
