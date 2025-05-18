@@ -97,7 +97,7 @@
         },
         hasActiveSectionTitle() {
             const currentSlide = this.slides[this.activeSection - 1];
-            return currentSlide && currentSlide.title && currentSlide.title != undefined;
+            return currentSlide && currentSlide.title;
         },
         startAutoSlide() {
             this.autoSlideInterval = setInterval(() => {
@@ -108,12 +108,22 @@
             }, this.autoPlayDuration);
         },
         init() {
+
+            // YouTube API가 로드되면 플레이어 객체 초기화(unMute를 위해 필수)
+            //window.onYouTubeIframeAPIReady = () => this.initYouTubePlayers();
+
+            // ✅ window 함수 바인딩
+            window.initYouTubePlayers = this.initYouTubePlayers.bind(this);
+            window.onYouTubeIframeAPIReady = () => {
+                console.log('iframe API ready');
+                window.initYouTubePlayers();
+            };
+
+
             if (this.isAutoPlay) {
                 this.startAutoSlide();
             }
 
-            // YouTube API가 로드되면 플레이어 객체 초기화(unMute를 위해 필수)
-            window.onYouTubeIframeAPIReady = () => this.initYouTubePlayers();
 
             // 사용자 상호작용 이벤트 감지 등록
             this.registerUserInteraction();
@@ -424,7 +434,7 @@
                 background-color: rgb(71, 85, 105, 0.15);
                 /*background-color: rgb(71, 85, 105, 0.05);*/
             }
-             &.has-no-title-picture:after {
+             &.has-no-title-image:after {
                 content: '';
                 position: absolute;
                 top: 0;
@@ -485,7 +495,7 @@
             <a href="#" class="block h-full w-full"
                :class="slide.title
                                ? 'has-title'
-                               : (slide.youtubeId ? 'has-no-title-video' : 'has-no-title-picture')"
+                               : (slide.youtubeId ? 'has-no-title-video' : 'has-no-title-image')"
                @click="pauseOnInteraction"
             >
                 <template x-if="slide.image">

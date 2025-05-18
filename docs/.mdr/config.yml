@@ -22,30 +22,31 @@ authors:
 
 ads:
   isAutoPlay: false
-  autoPlayDuration: 1500, # 자동 슬라이드 전환 간격
-  pauseTimeoutDuration: 3000, # 휠 등으로 일시정지 후 재시작 대기시간
-  contents:
+  autoPlayDuration: 1500
+  pauseTimeoutDuration: 3000
+  slides:
     광고1:
-      type: image
-      url: https://front.chojaeseong.com/images/png/profile/sub/02.png
-      title: 첫번째 영상
-      subtitle: ㅋㅋㅋㅋ
+      type: video
+      isMute: false
+      youtubeId: pbGSI140UPw
+      title: 첫번째 영상111111111
+      subtitle: 원내광고 중입니다. 소리 음소거 안한 영상입니다.
     광고2:
       type: video
-      youtubeId: 2Q0vX1r7g4E
-      title: 조재성 원장
-      subtitle: 조재성 원장
-      isMute: false # 음소거 여부
+      isMute: false
+      youtubeId: EMycmLvx9Hc
+      title: 두번째 영상12222222222222222
+      subtitle: 원내광고 중입니다. 소리 음소거 중인 영상입니다.
     광고3:
-      url: https://front.chojaeseong.com/images/png/profile/sub/02.png
-      title:
-      subtitle:
+      type: image
+      url: https://picstargram.s3.ap-northeast-2.amazonaws.com/post/93a4051d-089c-4bbe-bbea-8e2dc8298190_4700.webp
+      title: 첫번째 그림
+      subtitle: ㅋㅋㅋㅋ
     광고4:
-      type: video
-      youtubeId: 2Q0vX1r7g4E
-      title: 조재성 원장
-      subtitle: 조재성 원장
-      isMute: true # 음소거 여부
+      type: image
+      url: https://picstargram.s3.ap-northeast-2.amazonaws.com/post/9a6ebc3f-ff00-46d9-b395-248cf7fc1642_4700.webp
+      title: 2번째 그림
+      subtitle: ㅋㅋㅋㅋ
 
 
 

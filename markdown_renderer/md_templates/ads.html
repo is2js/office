@@ -1,19 +1,158 @@
 {% extends "base.html" %}
+
 {% block title %}{{title}}{% endblock %}
+
+<!-- https://github.dev/Hybridhash/FastAPI-HTMX -->
+<!-- https://github.com/ramintheredmn/fastapi-htmx/blob/main/app/models.py -->
+{% block additional_head %}
+<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+<link href="{{ static_path }}/ads.css" rel="stylesheet">
+
+<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+
+{% endblock %}
 
 {% block content %}
 <script>
-          const adsData = {{ config['ads'] | tojson | safe }};
-          console.log('adsData', adsData);
+    const adsData = {{config['ads'] | tojson | safe}};
 </script>
-    <!--x-data='{ ads: myDataFromJinja }'-->
-<div class="ads"
-    x-data="{ ads:  adsData}"
+<!--x-data='{ ads: adsData }'-->
+<!--<div class="ads fixed inset-0"-->
+<div class="ads relative w-full h-full"
+     x-data="ads"
+     x-init="Object.assign($data, adsData);
+     $data.slides = Object.values($data.slides);
+     console.log($data);
+     console.log('activeSection', activeSection);
+     document.body.style.overflowY = isFullScreen ? 'hidden' : 'auto'
+"
+     x-ref="ads"
+     :class="isFullScreen ? 'overflow-hidden' : 'overflow-auto'"
 >
+<!--      :style="isFullScreen ? 'overflow-y: hidden;' : 'overflow-y: auto;'"-->
 
-    <template x-for="(ad, i) in ads['contents']" :key="i">
-        dasdf
-        <div x-text="ad.title" class="p-2 border"></div>
-    </template>
+    <div class="fixed flex flex-col justify-center space-y-4 px-10
+    floatNav
+">
+        <ul>
+            <template x-for="(slide, i) in slides" :key="i">
+                <li class="w-auto">
+                    <a :href="`#section-${i}`"
+                       class="cursor flex items-center"
+                       x-data="{ hovered: false }"
+                       @mouseenter="hovered = true"
+                       @mouseleave="hovered = false"
+                    >
+                        <!-- bar -->
+                        <span class="inline-block h-10 relative"
+                              :class="{
+                          'bg-white' : isActiveSection(i),
+                          'bg-gray-400' : !isActiveSection(i),
+                          }"
+                              :style="hovered? 'width: 6px; left: -1px; background-color: #1ECECB;' : 'width: 4px;'"
+                        ></span>
+                        <!-- title -->
+                        <span class="inline-block pl-3 text-sm"
+                              :class="{
+                                'text-white font-bold': isActiveSection(i),
+                                'text-gray-400': !isActiveSection(i),
+                                'font-bold': hovered,
+                                'bounce': isActiveSection(i)
+                                }"
+                              :style="hovered ? 'color: #1ECECB;' : ''"
+                              x-text="slide.title ? slide.title : '섹션 ' + (i+1) + '' "></span>
+
+                    </a>
+                </li>
+            </template>
+        </ul>
+
+        <!-- 마우스 스크롤 -->
+        <span class="scroll-down block -ml-1 mt-10 h-8.5"
+              :class="{'white' : hasActiveSectionTitle() }"
+        ></span>
+
+        <!-- 재생여부 -->
+        <button @click="togglePause"
+                x-data="{hovered: false}"
+                @mouseenter="hovered = true"
+                @mouseleave="hovered = false"
+                class="block -ml-2 px-1 py-1 bg-transparent text-sm"
+                :class="hovered ? 'text-white font-bold' : 'text-gray-400'"
+        >
+            <span x-text="!isAutoPlay ? '자동재생' : (isPaused ? '다시시작' : '일시정지')"></span>
+        </button>
+
+        <!-- 🔇 전체 음소거 토글 버튼 -->
+        <button
+                @click="toggleMuteAll"
+                x-data="{hovered: false}"
+                @mouseenter="hovered = true"
+                @mouseleave="hovered = false"
+                class="fixed top-4 right-4 z-12 bg-transparent text-sm px-4 py-2 rounded"
+                :class="hovered ? 'text-white font-bold' : 'text-gray-400'"
+                x-text="isMutedAll ? '🔇 전체 음소거 해제' : '🔈 전체 음소거'"
+        ></button>
+
+        <button
+                @click="toggleFullScreen"
+                class="fixed  right-4 bottom-12 z-12 bg-transparent text-sm px-4 py-2 rounded"
+                :class="hovered ? 'text-white font-bold' : 'text-gray-400', isFullScreen ? 'bottom-4' : 'bottom-12'"
+                x-data="{hovered: false}"
+                @mouseenter="hovered = true"
+                @mouseleave="hovered = false"
+                x-text="isFullScreen ? '닫기' : '전체화면' "
+        ></button>
+    </div>
+
+
+    <main class="sections" @wheel="pauseOnInteraction" @touchstart="pauseOnInteraction" >
+        <template x-for="(slide, i) in slides" :key="i">
+            <div :id="`section-${i}`"
+                 class="h-screen relative"
+                 x-intersect.half="
+                        increaseActiveSection(i); // +1만 하는게 아니라 length 나눈 값 + 1로 처음부터 시작하게 한다.
+                        // 현재 activeSection의 슬라이드가, userInteract후 & 전체음소거가 아니면, 소리를 켜고,  나머지 슬라이드는 일시정지한다.
+                        controlVideoSection(i);
+                "
+            >
+                <!--               :class="slide.title ? 'has-title' : 'has-no-title'"-->
+                <a href="#" class="block h-full w-full"
+                   :class="slide.title
+                               ? 'has-title'
+                               : (slide.youtubeId ? 'has-no-title-video' : 'has-no-title-image')"
+                   @click="pauseOnInteraction"
+                >
+                    <template x-if="slide.type == 'image'">
+                        <img :src="slide.url" alt="" class="block w-full h-full object-cover">
+                    </template>
+                    <template x-if="slide.type == 'video'">
+                        <div class="video-box block w-full h-full object-cover">
+                            <iframe
+                                    :id="`yt-${i}`"
+                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture;"
+                                    :src="`https://www.youtube.com/embed/${slide.youtubeId}?enablejsapi=1&rel=0&autoplay=1&controls=0&disablekb=1&vq=hd1440&mute=1&loop=1&playlist=${slide.youtubeId}`"
+                                    allowfullscreen></iframe>
+                        </div>
+                    </template>
+
+
+                    <div class="absolute z-10"
+                         style="left:120px; bottom:100px;"
+                         x-show="slide.title"
+                    >
+                        <p class="text-white text-5xl font-bold" x-text="slide.title"></p>
+                        <p class="text-white mt-5 text-3xl" x-text="slide.subtitle"></p>
+                    </div>
+                </a>
+            </div>
+        </template>
+    </main>
 </div>
+
+{% endblock %}
+
+{% block additional_js %}
+<script src="{{ static_path }}/ads.js"></script>
 {% endblock %}

@@ -1,3 +1,13 @@
+[x-cloak] {
+            display: none !important;
+        }
+
+/* 색 */
+.bg-black {
+    background-color: black;
+}
+
+/* 포지션 */
 .position-fixed {
     position: fixed;
     z-index: 1000;
