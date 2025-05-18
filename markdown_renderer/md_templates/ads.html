@@ -95,14 +95,16 @@
                 x-text="isMutedAll ? '🔇 전체 음소거 해제' : '🔈 전체 음소거'"
         ></button>
 
+        <!-- 전체화면 토글-->
         <button
                 @click="toggleFullScreen"
-                class="fixed  right-4 bottom-12 z-12 bg-transparent text-sm px-4 py-2 rounded"
-                :class="hovered ? 'text-white font-bold' : 'text-gray-400', isFullScreen ? 'bottom-4' : 'bottom-12'"
+                class="fixed  right-12 bottom-12 z-12 bg-transparent
+                                        fullscreen block  bg-img d-none d-md-block
+                        "
                 x-data="{hovered: false}"
                 @mouseenter="hovered = true"
                 @mouseleave="hovered = false"
-                x-text="isFullScreen ? '닫기' : '전체화면' "
+                :style="`background-image: url('../static/img/fullscreen-${isFullScreen ? 'off' : 'on' }.svg');`"
         ></button>
     </div>
 
