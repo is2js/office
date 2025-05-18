@@ -1,6 +1,12 @@
 body {
     background-color: #092554;
+
+    /* intro-section 이후, 배경사진은 이것으로  + cover or contain 여야지 반복안되고 처리 */
+    background-image: url('../img/stars.png');
+    /*background-size: cover;*/
+    background-size: contain;
 }
+
 .intro-section {
     /*@apply h-screen*/
 
@@ -16,7 +22,7 @@ body {
 
     font-family: Pretendard, "Noto Sans KR", "Malgun Gothic", sans-serif;
 
-    > .foreground {
+    & .foreground {
         animation: foregroundSize 1s ease-in-out forwards 1s;
         /*   transform으로 줄어들 때, bottom을 기준으로 top에서부터 줄어든다. */
         transform-origin: bottom;
@@ -43,9 +49,10 @@ body {
 }
 
 .intro-section-text {
-        /* 투명도 뿐만 아니라 300% y축 내려갔다가 -100%로 복귀 */
-        animation: introText 1s ease-in-out forwards 1.5s;
+    /* 투명도 뿐만 아니라 300% y축 내려갔다가 -100%로 복귀 */
+    animation: introText 1s ease-in-out forwards 1.5s;
 }
+
 @keyframes introText {
     0% {
         opacity: 0;
@@ -64,18 +71,102 @@ body {
 }
 
 header {
-        animation: headerAnimation 1s ease-in-out forwards 2s;
+    animation: headerAnimation 1s ease-in-out forwards 2s;
 
 
-        /* 키프레임 0%랑 동일*/
-        opacity: 0;
-        transform: translateY(-300%);
+    /* 키프레임 0%랑 동일*/
+    opacity: 0;
+    transform: translateY(-300%);
 }
 
 @keyframes headerAnimation {
     0% {
         opacity: 0;
         transform: translateY(-300%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+
+
+.bottom-section-text {
+    animation: bottomText 1s ease-in-out forwards 4s;
+}
+
+@keyframes bottomText {
+    0% {
+        opacity: 0;
+        transform: translateY(300%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
+
+
+.location-box {
+    max-width: 271px;
+
+    /* 일단 모든 박스에 공통 애니메이션이 넣어준다. title보다는 좀 길게 5초있다가 시작.*/
+    /*animation: locationBox 1s ease-in-out forwards 5s;*/
+    opacity: 0;
+    transform: translateY(300%);
+
+    /* 전체 애니메이션을 성공했다면, :nth-child(1)부터 동일한 클래스들을 순서대로 0.5s씩 시간간격을 준다. */
+
+    &:nth-child(1) {
+        animation: locationBox 1s ease-in-out forwards 5s;
+    }
+
+    &:nth-child(2) {
+        animation: locationBox 1s ease-in-out forwards 5.5s;
+    }
+
+    &:nth-child(3) {
+        animation: locationBox 1s ease-in-out forwards 6s;
+    }
+
+    &:nth-child(4) {
+        animation: locationBox 1s ease-in-out forwards 6.5s;
+    }
+
+    &:nth-child(5) {
+        animation: locationBox 1s ease-in-out forwards 7s;
+    }
+
+    /* 내가 조절한 것.*/
+
+    > img {
+        display: block;
+        margin: 0 auto;
+        width: 100%;
+        height: auto;
+
+        max-width: 271px;
+        max-height: 301px;
+
+        object-fit: cover;
+        border-radius: 20px;
+    }
+
+    /* 내가 조절한 것 3줄 제한 */
+
+    > p {
+        line-height: 1.5;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* 최대3줄로 제한 */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+}
+
+@keyframes locationBox {
+    0% {
+        opacity: 0;
+        transform: translateY(300%);
     }
     100% {
         opacity: 1;

@@ -16,9 +16,11 @@
 </head>
 <body>
 <!-- 1편: https://www.youtube.com/watch?v=FVontn7GO1U&t=2180s -->
-<!-- 2편: https://www.youtube.com/watch?v=WQVZ_rOsZV0 -->
-<header class="text-white fixed left-0 top-0 z-10 flex items-center w-full justify-between mt-14">
 
+<!--<header class="text-white fixed left-0 top-0 z-10 flex items-center w-full justify-between">-->
+<header class="text-white fixed left-0 top-0 z-10 flex items-center w-full justify-between mt-14">
+    <!--  width 제한을 두기 위해, header와 a<->ul사이에 div.container를 추가하고 between 옵션을 여기도 추가로 준다.  -->
+    <!--    container는 css에서 너비제한만 두고, justify-between은 html에서 진행-->
     <div class="container flex items-center justify-between">
         <a href="#" class="text-3xl font-bold">부부한의원</a>
         <ul class="flex items-center space-x-8 font-semibold">
@@ -26,25 +28,34 @@
             <li><a href="#">Experience</a></li>
             <li><a href="#">Blog</a></li>
             <li><a href="#">원장단</a></li>
+            <!-- h-14가 적용되려면 block or flex여야 한다. a태그는 block/flex X 높이적용x. 가운데정렬을 위해 flex-->
             <li><a href="#" class="h-14 flex items-center  rounded-full border border-current px-6">원내광고</a></li>
         </ul>
     </div>
 </header>
 
+<!-- 배경 화면전체 + 안에 들어가는 이미지를 밑에서부터 채우기 위해 items-end -->
+<!--<div class="intro-section h-screen flex items-end">-->
+<!-- 텍스트를 채우고나니 foreground는 abs로 띄워서, 텍스트 박스는  items-end을 삭제하고 가운데 정렬-->
 <div class="intro-section h-screen relative flex items-center justify-center  text-white">
+    <!-- 줄어드는 이미지부터 만들고, 위쪽에 text . 5xl = 48px -->
     <div class="intro-section-text text-center opacity-0">
         <h1 class="text-5xl font-bold mb-4">디스크 질환</h1>
         <p class="text-xl">디스크 질환들을 다룹니다.</p>
     </div>
-
+    <!-- 이미지 배치부터 하고나서, 위쪽 텍스트와 별개로서 띄우기 위해 abs + flex 가운데 정렬 => 부모인 section은 relative + 텍스트를 위해 가운데 정렬-->
+    <!--     그림 드래그 이벤트 안 뜨게  pointer-events-none-->
+    <!-- 최종적으로는 w-full div에 abs를 넘김. -->
     <div class="w-full absolute left-0 bottom-0 flex justify-center pointer-events-none">
         <img class="foreground  " src="img/foreground.png" alt="foreGround">
     </div>
 
+    <!-- 스크롤 다운은 foreground의 class를 복사한 div안에 w-full추가줘서 가운데 정렬되게 하고  button 세로flex  img태그 + span글자로 -->
+    <!-- pb-8 로 div에서 아래쪽 여백을 준다. -->
     <div class="w-full absolute left-0 bottom-0 flex justify-center z-10 pb-8">
         <!-- 스크롤 넘기는 것을 위해 button을 a태그로 감싼 뒤 href=""에 맞는 아이디만 주면 된다.-->
         <a href="#bottomScreen">
-        <!-- bounce는 img를 담는 button에 바로 tailwind css를 주면 된다. -->
+            <!-- bounce는 img를 담는 button에 바로 tailwind css를 주면 된다. -->
             <button class="flex flex-col justify-center items-center font-semibold space-y-2 animate-bounce">
                 <img src="img/arrow-down.svg" alt="">
                 <span>Scroll down</span>
@@ -53,20 +64,30 @@
     </div>
 </div>
 
-
-<div id='bottomScreen' class="bottom-section h-screen text-white pt-56">
-
+<!-- 2번째도 항상 h-screen -->
+<!-- fixed header를 고려해서 mt가  아니라 pt-를 준다.-->
+<div id="bottomScreen" class="bottom-section h-screen text-white pt-56">
+    <!-- intro-section-text 복사 후, 부모에 있던 text-white 역만 가져오기 -->
+    <!-- class명 바꾸고, 애니메이션은 intro와 달리, 100% 복귀가 아닌 0%로 복귀-->
     <div class="bottom-section-text text-center opacity-0 text-white">
         <h1 class="text-5xl font-bold mb-4">해당 질환의 치료방법</h1>
         <p class="text-xl">디스크 질환들을 다룹니다.</p>
     </div>
 
+    <!-- 타이틀을 제외하곤 container속에 넣어준다. -->
     <div class="container">
-
+        <!-- 카드(271x301)들은 div.boxes > div. location-box 여러개를 만든다.-->
+        <!-- http://hanchangbone.com/view/sub0301-01.php -->
+        <!-- 카드들을 flex 수직정렬 between으로 준다. -->
+        <!-- 타이틀과의 거리는 container가 아니라 그 내용물 최상위 부모에서 mt로 준다. -->
         <div class="boxes flex items-center  justify-between mt-24">
+            <!-- 내가 수정 -->
+            <!--<div class="boxes flex items-stretch justify-between mt-24 space-x-2 ">-->
+            <!-- css로 개별 box 최상위 부모에 max-width를 준다.  내부 내용물들도 자동으로 wrap된다.-->
+            <!-- css로 애니메이션을 공통으로 넣었다가, &:nth-child()로 애니메이션마다 순서를 준다.-->
             <div class="location-box">
-                <!-- 271 x 301 px-->
                 <img src="img/composition1.jpg" alt="Box 1">
+                <!-- 첫 텍스트에서 mt와 mb를 준다.-->
                 <div class="text-xl font-semibold mt-5 mb-2">근재생 역동추나</div>
                 <p class="opacity-60">잘못된 생활 습관이나 외상 등으로 균형을 잃은 근조직을 역동적으로 교정하는 한창한방병원만의 추나요법</p>
             </div>
@@ -97,6 +118,8 @@
         </div>
     </div>
 
+
 </div>
+
 </body>
 </html>
