@@ -19,16 +19,14 @@
 </script>
 <!--x-data='{ ads: adsData }'-->
 <!--<div class="ads fixed inset-0"-->
-<div class="ads relative w-full h-full"
+<div class="ads relative w-full h-full "
      x-data="ads"
      x-init="Object.assign($data, adsData);
      $data.slides = Object.values($data.slides);
      console.log($data);
      console.log('activeSection', activeSection);
-     document.body.style.overflowY = isFullScreen ? 'hidden' : 'auto'
-"
+    "
      x-ref="ads"
-     :class="isFullScreen ? 'overflow-hidden' : 'overflow-auto'"
 >
 <!--      :style="isFullScreen ? 'overflow-y: hidden;' : 'overflow-y: auto;'"-->
 
@@ -109,7 +107,10 @@
     </div>
 
 
-    <main class="sections" @wheel="pauseOnInteraction" @touchstart="pauseOnInteraction" >
+    <!-- 전체화면일 땐, 세로형스크롤을 감추기( 그전엔 확인용으로는 가지고 있어야할 듯) -->
+    <main class="sections" @wheel="pauseOnInteraction" @touchstart="pauseOnInteraction"
+          :style="isFullScreen ? 'overflow-y: hidden;' : 'overflow-y: auto;'"
+    >
         <template x-for="(slide, i) in slides" :key="i">
             <div :id="`section-${i}`"
                  class="h-screen relative"

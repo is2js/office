@@ -50,7 +50,7 @@
 </head>
 <!-- body에 active 섹션index 지정 -->
 <!-- 이제 흰/검 테마로 나눠서 작동할 수 있도록 첫번째는 white: true 변수를 초기화하고 -->
-<body class="bg-gray-100"
+<body class="bg-gray-100" x-ref="ads"
       x-data="{
         isAutoPlay: false,
         autoPlayDuration: 1500, // 자동 슬라이드 전환 간격
@@ -267,6 +267,42 @@
         },
 
 
+         isFullScreen: false,
+        toggleFullScreen() {
+            const ads = this.$refs.ads;
+
+            if (!document.fullscreenElement) {
+                this.isFullScreen = true;
+                if (ads.requestFullscreen)  return ads.requestFullscreen();
+                if (ads.mozRequestFullScreen) return ads.mozRequestFullScreen();
+                if (ads.webkitRequestFullscreen)  return ads.webkitRequestFullscreen();
+                if (ads.msRequestFullscreen) return ads.msRequestFullscreen();
+            } else {
+                this.isFullScreen = false;
+                if (document.exitFullscreen) return document.exitFullscreen();
+                if (document.mozCancelFullScreen) return document.mozCancelFullScreen();
+                if (document.webkitExitFullscreen) return document.webkitExitFullscreen();
+                if (document.msExitFullscreen) return document.msExitFullscreen();
+            }
+
+
+
+            this.isMutedAll = !this.isMutedAll;
+            console.log(this.isMutedAll ? '🔇 전체 음소거됨' : '🔊 전체 음소거 해제');
+
+            this.players.forEach(p => {
+                if (p && typeof p.mute === 'function') {
+                    try {
+                        this.isMutedAll ? p.mute() : (this.userInteracted && p.unMute());
+                    } catch (e) {
+                        console.warn('🔁 mute/unMute 실패:', e);
+                    }
+                }
+            });
+        },
+
+
+
     }"
 >
 
@@ -342,6 +378,46 @@
         }
 
     }
+
+    .fullscreen {
+        width: 24px;
+        height: 24px;
+
+        opacity: 0.5;
+
+        font-size: 20px;
+        line-height: 40px;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    .bg-img {
+        background: no-repeat var(--bg-x, center) var(--bg-y, center) var(--bg-color, transparent);
+        background-size: var(--bg-img-width, auto) var(--bg-img-height, auto);
+    }
+
+
+    .bg-img-x-center {
+        --bg-x: center;
+    }
+
+
+    .bg-img-y-center {
+        --bg-y: center;
+    }
+
+    .bg-img-color-transparent {
+        --bg-color: transparent;
+    }
+
+    .bg-img-width-auto {
+        --bg-img-width: auto;
+    }
+
+    .bg-img-height-auto {
+        --bg-img-height: auto;
+    }
+
 </style>
 <div class="fixed flex flex-col justify-center space-y-4 px-10
     floatNav
@@ -406,6 +482,19 @@
           :class="hovered ? 'text-white font-bold' : 'text-gray-400'"
         x-text="isMutedAll ? '🔇 전체 음소거 해제' : '🔈 전체 음소거'"
     ></button>
+
+
+    <!-- 전체화면 토글-->
+        <button
+                @click="toggleFullScreen"
+                class="fixed  right-12 bottom-12 z-12 bg-transparent
+                                        fullscreen block  bg-img d-none d-md-block
+                        "
+                x-data="{hovered: false}"
+                @mouseenter="hovered = true"
+                @mouseleave="hovered = false"
+                :style="`background-image: url('./fullscreen-${isFullScreen ? 'off' : 'on' }.svg');`"
+        ></button>
 </div>
 
 <!-- 슬라이드 섹션 -->
