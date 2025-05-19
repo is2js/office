@@ -14,9 +14,11 @@
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 </head>
-<body>
 <!-- 1편: https://www.youtube.com/watch?v=FVontn7GO1U&t=2180s -->
 <!-- 2편: https://www.youtube.com/watch?v=WQVZ_rOsZV0 -->
+<!--<body>-->
+<!-- 1. 수동 딜레시켰던, anmation을 0초후 시작으로 바꾼 뒤, body에 해당 on해당섹션 변수를 둔다. -->
+<body x-data="{onBottomSection: false}">
 <header class="text-white fixed left-0 top-0 z-10 flex items-center w-full justify-between mt-14">
 
     <div class="container flex items-center justify-between">
@@ -44,7 +46,7 @@
     <div class="w-full absolute left-0 bottom-0 flex justify-center z-10 pb-8">
         <!-- 스크롤 넘기는 것을 위해 button을 a태그로 감싼 뒤 href=""에 맞는 아이디만 주면 된다.-->
         <a href="#bottomScreen">
-        <!-- bounce는 img를 담는 button에 바로 tailwind css를 주면 된다. -->
+            <!-- bounce는 img를 담는 button에 바로 tailwind css를 주면 된다. -->
             <button class="flex flex-col justify-center items-center font-semibold space-y-2 animate-bounce">
                 <img src="img/arrow-down.svg" alt="">
                 <span>Scroll down</span>
@@ -53,46 +55,52 @@
     </div>
 </div>
 
+<!-- 2. 해당색션에 x-intersect.half로 절반정도 들어모녀 변수에 true-->
+<div x-intersect.half="onBottomSection = true"
+     id='bottomScreen' class="bottom-section h-screen text-white pt-56">
+    <!-- 3. 섹션부모div에서 intersect가 걸렸으면, 그 이후 최상위자식에서 x-show를 걸어준다.  -->
+    <!-- **애니메이션이 x-show로 작동한다!!! -->
+    <!-- 그렇다면, section-text와 내용물 container를 합한 div.x-show를 만들어서 걸어줘야한다.-->
+    <div x-show="onBottomSection">
 
-<div id='bottomScreen' class="bottom-section h-screen text-white pt-56">
+        <div class="bottom-section-text text-center opacity-0 text-white">
+            <h1 class="text-5xl font-bold mb-4">해당 질환의 치료방법</h1>
+            <p class="text-xl">디스크 질환들을 다룹니다.</p>
+        </div>
 
-    <div class="bottom-section-text text-center opacity-0 text-white">
-        <h1 class="text-5xl font-bold mb-4">해당 질환의 치료방법</h1>
-        <p class="text-xl">디스크 질환들을 다룹니다.</p>
-    </div>
+        <div class="container">
 
-    <div class="container">
-
-        <div class="boxes flex items-center  justify-between mt-24">
-            <div class="location-box">
-                <!-- 271 x 301 px-->
-                <img src="img/composition1.jpg" alt="Box 1">
-                <div class="text-xl font-semibold mt-5 mb-2">근재생 역동추나</div>
-                <p class="opacity-60">잘못된 생활 습관이나 외상 등으로 균형을 잃은 근조직을 역동적으로 교정하는 한창한방병원만의 추나요법</p>
-            </div>
-            <div class="location-box">
-                <img src="img/composition2.jpg" alt="Box 2">
-                <div class="text-xl font-semibold mt-5 mb-2">진근탕</div>
-                <p class="opacity-60">근세포 활성 천연물의
-                    유효성분만을 고농축으로 담은
-                    한창한방병원만의 1:1 맞춤
-                    근골격 강화 기능한약</p>
-            </div>
-            <div class="location-box">
-                <img src="img/composition3.jpg" alt="Box 3">
-                <div class="text-xl font-semibold mt-5 mb-2">진근약침</div>
-                <p class="opacity-60">진근탕의 유효성분을 주입해
-                    빠르게 통증을 해소하고
-                    근육과 관절 기능을 강화하는
-                    인체친화적 약침치료</p>
-            </div>
-            <div class="location-box">
-                <img src="img/composition4.jpg" alt="Box 4">
-                <div class="text-xl font-semibold mt-5 mb-2">근육이완 미세침</div>
-                <p class="opacity-60">머리카락보다 얇은 미세침으로
-                    경직된 근조직의 경혈을 자극하고
-                    기혈의 흐름을 원활하게 하여
-                    근기능을 향상하는 침치료</p>
+            <div class="boxes flex items-center  justify-between mt-24">
+                <div class="location-box">
+                    <!-- 271 x 301 px-->
+                    <img src="img/composition1.jpg" alt="Box 1">
+                    <div class="text-xl font-semibold mt-5 mb-2">근재생 역동추나</div>
+                    <p class="opacity-60">잘못된 생활 습관이나 외상 등으로 균형을 잃은 근조직을 역동적으로 교정하는 한창한방병원만의 추나요법</p>
+                </div>
+                <div class="location-box">
+                    <img src="img/composition2.jpg" alt="Box 2">
+                    <div class="text-xl font-semibold mt-5 mb-2">진근탕</div>
+                    <p class="opacity-60">근세포 활성 천연물의
+                        유효성분만을 고농축으로 담은
+                        한창한방병원만의 1:1 맞춤
+                        근골격 강화 기능한약</p>
+                </div>
+                <div class="location-box">
+                    <img src="img/composition3.jpg" alt="Box 3">
+                    <div class="text-xl font-semibold mt-5 mb-2">진근약침</div>
+                    <p class="opacity-60">진근탕의 유효성분을 주입해
+                        빠르게 통증을 해소하고
+                        근육과 관절 기능을 강화하는
+                        인체친화적 약침치료</p>
+                </div>
+                <div class="location-box">
+                    <img src="img/composition4.jpg" alt="Box 4">
+                    <div class="text-xl font-semibold mt-5 mb-2">근육이완 미세침</div>
+                    <p class="opacity-60">머리카락보다 얇은 미세침으로
+                        경직된 근조직의 경혈을 자극하고
+                        기혈의 흐름을 원활하게 하여
+                        근기능을 향상하는 침치료</p>
+                </div>
             </div>
         </div>
     </div>

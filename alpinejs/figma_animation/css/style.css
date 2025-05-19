@@ -1,3 +1,8 @@
+/* 모든 스크롤이 부드럽게 가려면 html에 속성을 주면 된다.*/
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     background-color: #092554;
 
@@ -13,7 +18,7 @@ body {
     background-image: url('../img/background.jpg');
     background-position: top center;
     /* 내가 추가 */
-    background-repeat: no-repeat;
+    /*background-repeat: no-repeat;*/
 
     /* 처음에 크기 -> 애니메이션으로 줄어들면서 140 -> 100% 로 0.5초동안 변함.  대신 2초있다가 시작. */
     background-size: 140% auto;
@@ -92,7 +97,9 @@ header {
 
 
 .bottom-section-text {
-    animation: bottomText 1s ease-in-out forwards 4s;
+    /*animation: bottomText 1s ease-in-out forwards 4s;*/
+    /* alpinejs intersect를 적용하기 전에 기존 한참있다가 뜨던 것을, 0초로 바로 시작하도록 바꾼다. */
+    animation: bottomText 1s ease-in-out forwards 0s;
 }
 
 @keyframes bottomText {
@@ -110,31 +117,28 @@ header {
 .location-box {
     max-width: 271px;
 
-    /* 일단 모든 박스에 공통 애니메이션이 넣어준다. title보다는 좀 길게 5초있다가 시작.*/
-    /*animation: locationBox 1s ease-in-out forwards 5s;*/
     opacity: 0;
     transform: translateY(300%);
 
-    /* 전체 애니메이션을 성공했다면, :nth-child(1)부터 동일한 클래스들을 순서대로 0.5s씩 시간간격을 준다. */
-
+    /* 타이틀이 0초 -> 나머지요소들은 1초부터 5.s 간격*/
     &:nth-child(1) {
-        animation: locationBox 1s ease-in-out forwards 5s;
+        animation: locationBox 1s ease-in-out forwards 1s;
     }
 
     &:nth-child(2) {
-        animation: locationBox 1s ease-in-out forwards 5.5s;
+        animation: locationBox 1s ease-in-out forwards 1.5s;
     }
 
     &:nth-child(3) {
-        animation: locationBox 1s ease-in-out forwards 6s;
+        animation: locationBox 1s ease-in-out forwards 2s;
     }
 
     &:nth-child(4) {
-        animation: locationBox 1s ease-in-out forwards 6.5s;
+        animation: locationBox 1s ease-in-out forwards 2.5s;
     }
 
     &:nth-child(5) {
-        animation: locationBox 1s ease-in-out forwards 7s;
+        animation: locationBox 1s ease-in-out forwards 3s;
     }
 
     /* 내가 조절한 것.*/
