@@ -17,10 +17,8 @@
 <!-- 1편: https://www.youtube.com/watch?v=FVontn7GO1U&t=2180s -->
 <!-- 2편: https://www.youtube.com/watch?v=WQVZ_rOsZV0 -->
 <!--<body>-->
-<!--  수동 딜레시켰던, anmation을 0초후 시작으로 바꾼 뒤, body에 해당 on해당섹션 변수를 둔다. -->
-<!-- 1. pageOffsetY를 담을 변수를 scrollPosition을 현재값을 초기화한 뒤, @scroll.window로 매번 없데이트 해준다. -->
-<!--<body x-data="{onBottomSection: false}">-->
-<body x-data="{onBottomSection: false, scrollPosition: window.pageYOffset}" @scroll.window="scrollPosition = window.pageYOffset">
+<!-- 1. 수동 딜레시켰던, anmation을 0초후 시작으로 바꾼 뒤, body에 해당 on해당섹션 변수를 둔다. -->
+<body x-data="{onBottomSection: false}">
 <header class="text-white fixed left-0 top-0 z-10 flex items-center w-full justify-between mt-14">
 
     <div class="container flex items-center justify-between">
@@ -35,21 +33,10 @@
     </div>
 </header>
 
-<!--5. intro-section에 들어가던 bacground도  휠 내릴 때, 동적으로 반대방향으로 올라가도록? :style로 동적으로  -->
-<!--<div class="intro-section h-screen relative flex items-center justify-center  text-white overflow-hidden">-->
-<div class="intro-section h-screen relative flex items-center justify-center  text-white overflow-hidden"
-     :style="`background-position: bottom -${scrollPosition / 2 }px center;`">
-
-    <!-- 3. 이제 offset에 따라다닐 친구를, div 한번쏴서 확인 후, :style + transform translateY로 이동시켜본다. -->
-<!--    <div :style="`transform: translateY(${scrollPosition}px)`">-->
-    <!-- 4. 따라오는 것 시간차 효과를 내기 위해선,  transition + ease-linear를주면 된다.-->
-    <div :style="`transform: translateY(${scrollPosition / 4}px)`" class="transition ease-linear">
-        <div class="intro-section-text text-center opacity-0">
-            <!-- 2. 타겟근처에 div.x-text로 찍어본다. 확인되면 바로 삭제할 예정. -->
-            <!--<div x-text="scrollPosition"></div>-->
-            <h1 class="text-5xl font-bold mb-4">디스크 질환</h1>
-            <p class="text-xl">디스크 질환들을 다룹니다.</p>
-        </div>
+<div class="intro-section h-screen relative flex items-center justify-center  text-white">
+    <div class="intro-section-text text-center opacity-0">
+        <h1 class="text-5xl font-bold mb-4">디스크 질환</h1>
+        <p class="text-xl">디스크 질환들을 다룹니다.</p>
     </div>
 
     <div class="w-full absolute left-0 bottom-0 flex justify-center pointer-events-none">
@@ -76,10 +63,10 @@
     <!-- 그렇다면, section-text와 내용물 container를 합한 div.x-show를 만들어서 걸어줘야한다.-->
     <div x-show="onBottomSection">
 
-            <div class="bottom-section-text text-center opacity-0 text-white">
-                <h1 class="text-5xl font-bold mb-4">해당 질환의 치료방법</h1>
-                <p class="text-xl">디스크 질환들을 다룹니다.</p>
-            </div>
+        <div class="bottom-section-text text-center opacity-0 text-white">
+            <h1 class="text-5xl font-bold mb-4">해당 질환의 치료방법</h1>
+            <p class="text-xl">디스크 질환들을 다룹니다.</p>
+        </div>
 
         <div class="container">
 

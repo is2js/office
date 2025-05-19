@@ -1,9 +1,12 @@
 /* 모든 스크롤이 부드럽게 가려면 html에 속성을 주면 된다.*/
 html {
     scroll-behavior: smooth;
+
 }
 
 body {
+    font-family: Pretendard, "Noto Sans KR", "Malgun Gothic", sans-serif;
+
     background-color: #092554;
 
     /* intro-section 이후, 배경사진은 이것으로  + cover or contain 여야지 반복안되고 처리 */
@@ -16,16 +19,17 @@ body {
     /*@apply h-screen*/
 
     background-image: url('../img/background.jpg');
-    background-position: top center;
+    /*background-position: top center;*/
+    /*background-position: bottom center;*/
+    /* :style로 bottom과 center사이에 y좌표값주기 ? */
+    background-size: 140% auto;
     /* 내가 추가 */
     /*background-repeat: no-repeat;*/
 
     /* 처음에 크기 -> 애니메이션으로 줄어들면서 140 -> 100% 로 0.5초동안 변함.  대신 2초있다가 시작. */
-    background-size: 140% auto;
 
     animation: backgroundSize 1s ease-in-out forwards 1s;
 
-    font-family: Pretendard, "Noto Sans KR", "Malgun Gothic", sans-serif;
 
     & .foreground {
         animation: foregroundSize 1s ease-in-out forwards 1s;
