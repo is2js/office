@@ -19,6 +19,9 @@
 
     <!--  style태그로 필요한 css 미리 작성-->
     <style>
+
+
+
         [x-cloak] {
             display: none !important;
         }
@@ -27,24 +30,32 @@
             background-color: black;
         }
 
-        /*   secetion이 sticky 효과를 주려면 css로 주면 된다. */
-        .sections {
-            /* body scroll대신 section scroll이 되기 위해선, sections부모에 overflow:auto */
-            overflow: auto;
+ html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    }
+
+    .sections {
+        /* body scroll대신 section scroll이 되기 위해선, sections부모에 overflow:auto */
+        height: 100vh;
+        overflow-y: auto;
+        -ms-scroll-snap-type: y mandatory;
+        scroll-snap-type: y mandatory;
+        scroll-behavior: smooth;
+        -webkit-overflow-scrolling: touch;
+
+        display: flex;
+        flex-direction: column;
+
+        > div {
             height: 100vh;
-            /* y mandatory로 snapping 효과를 만든다.*/
-            -ms-scroll-snap-type: y mandatory;
-
-            scroll-snap-type: y mandatory;
-
-            -webkit-overflow-scrolling: touch;
-            scroll-behavior: smooth;
-            /* 마지막, 자식들은 스냅 align까지 지정해줘야 거기로 정렬된다.*/
-
-            > div {
-                scroll-snap-align: center;
-            }
+            flex-shrink: 0;
+            scroll-snap-align: center; /* 기본값 */
         }
+        /*}*/
+    }
+
     </style>
 
 </head>
