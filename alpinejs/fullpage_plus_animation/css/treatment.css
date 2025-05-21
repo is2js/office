@@ -1,0 +1,64 @@
+.treatment-box {
+    max-width: 271px;
+
+    opacity: 0;
+    transform: translateY(300%);
+
+    /* 타이틀이 0초 -> 나머지요소들은 1초부터 5.s 간격*/
+
+    &:nth-child(1) {
+        animation: treatmentBox 1s ease-in-out forwards 1s;
+    }
+
+    &:nth-child(2) {
+        animation: treatmentBox 1s ease-in-out forwards 1.5s;
+    }
+
+    &:nth-child(3) {
+        animation: treatmentBox 1s ease-in-out forwards 2s;
+    }
+
+    &:nth-child(4) {
+        animation: treatmentBox 1s ease-in-out forwards 2.5s;
+    }
+
+    &:nth-child(5) {
+        animation: treatmentBox 1s ease-in-out forwards 3s;
+    }
+
+    /* 내가 조절한 것.*/
+
+    > img {
+        display: block;
+        margin: 0 auto;
+        width: 100%;
+        height: auto;
+
+        max-width: 271px;
+        max-height: 301px;
+
+        object-fit: cover;
+        border-radius: 20px;
+    }
+
+    /* 내가 조절한 것 3줄 제한 */
+
+    > p {
+        line-height: 1.5;
+        display: -webkit-box;
+        -webkit-line-clamp: 3; /* 최대3줄로 제한 */
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+}
+
+@keyframes treatmentBox {
+    0% {
+        opacity: 0;
+        transform: translateY(300%);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0%);
+    }
+}
