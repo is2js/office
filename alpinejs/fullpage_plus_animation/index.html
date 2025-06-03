@@ -10,10 +10,17 @@
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="stylesheet" href="./css/treatment.css">
+    <!-- swiper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="./css/doctors.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200..900&display=swap" rel="stylesheet">
+
+    <!-- swiper -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
 </head>
 
 <!--@scroll.window="scrollPosition = window.pageYOffset;"-->
@@ -34,7 +41,7 @@
                     },
                     {
                         title: '의료진 소개',
-                        subtitle: '부부한의원의 의료진을 소개합니다.',
+                        //subtitle: '풍부한 경험과 깊은 의술을 가진 부부한의원 의료진.',
                         isWhiteBackground: true,
                     },
                     {
@@ -49,7 +56,7 @@
 
         }"
 >
-<header class="text-white fixed left-0 top-0 z-10 flex items-center w-full justify-between mt-14">
+<header class="text-white fixed left-0 top-0 z-10 flex items-center w-full justify-between mt-8">
     <!-- 상단메뉴 -->
     <div class="container flex items-center justify-between">
         <a href="#" class="text-3xl font-bold">부부한의원</a>
@@ -112,13 +119,16 @@
 </div>
 <div class="sections" id="contents-sections">
     <!-- 2. 제목 섹션(section-1) -->
+    <!-- :style="`background-position: bottom -${scrollPosition / 2 }px center;`"-->
     <div x-data="{sectionNumber: 1}"
          :id="`section-${sectionNumber}`"
          x-intersect.half="activeSection = sectionNumber;"
          class="intro-section h-screen relative flex items-center justify-center  text-white overflow-hidden"
-         :style="`background-position: bottom -${scrollPosition / 2 }px center;`">
+    >
         <!-- main에서 snapping과 연결되면 scrollPosition 0 -->
-        <div :style="`transform: translateY(${scrollPosition / 4}px)`" class="transition ease-linear">
+        <!--:style="`transform: translateY(${scrollPosition / 4}px)`"-->
+        <div
+                class="transition ease-linear">
             <div class="intro-section-text text-center opacity-0">
                 <h1 class="text-5xl font-bold mb-4" x-text="sections[0].title">제목</h1>
                 <p class="text-xl" x-show="sections[0].subtitle" x-text="sections[0].subtitle">부제목</p>
@@ -142,9 +152,9 @@
     <!-- 여기서부터 작업 세션시작  -->
     <!-- secetion 2: 치료방법 -->
     <div x-data="{ sectionNumber: 2}"
-            :id="`section-${sectionNumber}`"
+         :id="`section-${sectionNumber}`"
          x-intersect.half="activeSection = sectionNumber;"
-         class="bottom-section h-screen text-white pt-40"
+         class="bottom-section h-screen text-white pt-24"
     >
         <div x-show="activeSection == sectionNumber">
             <!-- 고정 타이틀 -->
@@ -198,9 +208,23 @@
     <div x-data="{ sectionNumber: 3}"
          :id="`section-${sectionNumber}`"
          x-intersect.half="activeSection = sectionNumber;"
-         class="bottom-section h-screen text-white pt-40"
+         class="bottom-section h-screen text-white pt-24"
+         style="
+"
     >
-        <div x-show="activeSection == sectionNumber">
+        <!--background: rgba(255, 255, 255) url('./img/doctors_bg.jpg') no-repeat 0% 0%;-->
+
+        <!--background: rgba(255, 255, 255) url('./img/doctors_bg.jpg') no-repeat 0% 0%;-->
+        <!--         style="-->
+        <!--         background: rgba(255, 255, 255) url('../img/stars.png') no-repeat 0% 0%;-->
+        <!--        background-size: 100% 55vh;-->
+        <!--        padding: 83px 0px 0px;-->
+        <!--"-->
+        <!--background: rgb(255, 255, 255) url(http://hanchangbone.com/img/skyblue-dot.png) no-repeat 0% 0%;-->
+        <!-- h-full 추가 -->
+        <div x-show="activeSection == sectionNumber"
+             class="h-full"
+        >
             <!-- 고정 타이틀 -->
             <div class="contents-section-text text-center opacity-0 text-white">
                 <h1 class="text-5xl font-bold mb-4" x-text="sections[sectionNumber-1].title">제목</h1>
@@ -208,19 +232,354 @@
             </div>
 
             <!-- 추가 내용 -->
-            <div class="container">
+            <!--            <div class="container">-->
+            <!--            <div class="container h-full flex flex-col justify-center items-center">-->
+            <div class="container flex flex-col  items-center h-full justify-end">
+                <!-- container내부놈은 height가 주어지든지 해야함??-->
+                <div class="doctors-top flex  grow"
+                >
+                    <!--                     style="height: 100px;"-->
+                    <div class="doctors-top-left  mr-6 "
+                         style="width: calc(320px * 0.7);"
+                    >
+                        <!--style="width: 480px;"-->
+                        <div class="swiper doctorsTopSwiper">
+                            <div class="swiper-wrapper">
+                                <!-- 240 x 407-->
+                                <div class="swiper-slide">
+                                    <img src="http://hanchangbone.com/img/doc1.png" alt=""
+                                         class="w-full"
+                                    >
+                                    <figcaption class="doctors-name ">조재성 진료원장</figcaption>
+                                </div>
+                                <div class="swiper-slide">
+                                    <img src="http://hanchangbone.com/img/doc2.png" alt=""
+                                         class="w-full"
+                                    >
+                                    <figcaption class="doctors-name ">김석영 진료원장</figcaption>
+                                </div>
+                                <div class="swiper-slide">
+                                    <img src="http://hanchangbone.com/img/doc3.png" alt=""
+                                         class="w-full"
+                                    >
+                                    <figcaption class="doctors-name ">조재성 진료원장</figcaption>
+                                </div>
+                            </div>
+                            <div class="swiper-pagination doctors-paging"></div>
+                        </div>
+                    </div>
+                    <div class="doctors-top-right flex flex-col justify-center  text-center pl-14 pt-4 w-full"
+                         style="width: 572px;"
+                    >
+
+                        <div class="swiper doctorsMentSwiper">
+                            <div class="swiper-wrapper">
+                                <!-- slide -->
+                                <div class="swiper-slide">
+                                    <p class="doctors-top-right-subtitle text-2xl font-semibold mb-4 leading-10
+                                                bg-gradient-to-r from-yellow-200 via-amber-800 to-yellow-400 inline-block text-transparent bg-clip-text">
+                                        한의대 수석졸업 및 통계전공 한의사가 <br> 운동/재활/초음파를 접목한 치료를 선보이겠습니다!
+                                    </p>
+                                </div>
+                                <div class="swiper-slide">
+                                    <p class="doctors-top-right-subtitle text-2xl font-semibold mb-4 leading-10
+                                                bg-gradient-to-r from-yellow-200 via-amber-800 to-yellow-400 inline-block text-transparent bg-clip-text">
+                                         집앞 한의원 방문으로부터 약 20년을 <br>한약과 함께하는  ️찐한의사
+                                    </p>
+                                </div>
+                                <div class="swiper-slide">
+                                    <p class="doctors-top-right-subtitle text-2xl font-semibold mb-4 leading-10
+                                                bg-gradient-to-r from-yellow-200 via-amber-800 to-yellow-400 inline-block text-transparent bg-clip-text">
+                                        한의대 수석졸업 및 통계전공 한의사가 <br> 운동/재활/초음파를 접목한 치료를 선보이겠습니다!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- docstors swiper prev/next 버튼 -->
+                        <div class="flex  justify-start items-center space-x-5 mt-4 -ml-8">
+                            <button class="doctors-swiper-button-prev cursor-pointer rounded-full p-1 text-white bg-white bg-opacity-25 z-10">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                     stroke-width="1.5" stroke="currentColor"
+                                     style="width: 1.5rem;height: 1.5rem; /* 24px */">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                          d="M15.75 19.5 8.25 12l7.5-7.5"></path>
+                                </svg>
+                            </button>
+                            <button class="doctors-swiper-button-next cursor-pointer rounded-full p-1 text-white bg-white bg-opacity-25 z-10">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                     stroke-width="1.5" stroke="currentColor"
+                                     style="width: 1.5rem;height: 1.5rem; /* 24px */">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                          d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="doctors-bottom flex shrink-0 h-full max-h-full overflow-hidden -mt-10">
+                    <div class="swiper doctorsBottomSwiper ">
+                        <div class="swiper-wrapper">
+                            <!-- 552 x 629-->
+                            <!--<div class="swiper-slide">-->
+                            <div class="swiper-slide overflow-hidden">
+                                <figure class="doctors-bottom-img"
+                                >
+                                    <!-- 의료진 사진 src -->
+                                    <img class="w-full" src="http://hanchangbone.com/img/int3.png" alt="">
+                                </figure>
+                                <div class="doctors-bottom-text text-white -ml-8">
+                                    <!-- 의료진 설명 -->
+                                    <p class="ml-4 doctors-bottom-text-description font-bold
+                                                        bg-gradient-to-r from-yellow-200 via-amber-800 to-yellow-400 inline-block text-transparent bg-clip-text
+                                    ">통증재활, 한의사</p>
+                                    <!-- 의료진 이름 및 직책 -->
+                                    <h4 class=" doctors-bottom-text-name ml-6">김민수<span>진료원장</span></h4>
+                                    <a class="doctors-bottom-text-button ml-6 text-sm px-2 py-1 rounded  mt-2"
+                                       href="http://hanchangbone.com/view/sub0103.php">
+                                        자세히보고 예약하기
+                                    </a>
+                                    <div class="doctors-bottom-text-schedule mt-14">
+                                        <div class="schedule_list" style="width: 420px;">
+                                            <div class="schedule ">진료일정</div>
+                                            <div class="inner">
+                                                <div class="clinic">진료</div>
+                                                <div class="night">야간/연장진료</div>
+                                                <div class="half">부분진료</div>
+                                            </div>
+                                        </div>
+                                        <table class="schedule-table mt-2" style="width: 420px; display: inline-block;">
+                                            <colgroup>
+                                                <col style="width: 122px;">
+                                                <col style="width: 42px;">
+                                                <col style="width: 42px;">
+                                                <col style="width: 42px;">
+                                                <col style="width: 42px;">
+                                                <col style="width: 42px;">
+                                                <col style="width: 42px;">
+                                                <col style="width: 42px;">
+                                            </colgroup>
+                                            <thead>
+                                            <tr>
+                                                <th style="font-weight: 700;">진료시간</th>
+                                                <th>일</th>
+                                                <th>월</th>
+                                                <th>화</th>
+                                                <th>수</th>
+                                                <th>목</th>
+                                                <th>금</th>
+                                                <th>토</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr class="text-center align-bottom">
+                                                <th>오전</th>
+                                                <td></td>
+                                                <td><img src="./img/icon_clinic.png" alt="진료">8~12시</td>
+                                                <td><img src="./img/icon_clinic.png" alt="진료"></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <th>오후</th>
+                                                <td></td>
+                                                <td><img src="./img/icon_clinic.png" alt="진료"></td>
+                                                <td><img src="./img/icon_clinic.png" alt="진료"></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <th>야간</th>
+                                                <td></td>
+                                                <td><img src="./img/icon_star.png" alt="진료"></td>
+                                                <td><img src="./img/icon_star.png" alt="진료"></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide overflow-hidden">
+                                <figure class="doctors-bottom-img"
+                                >
+                                    <img class="w-full" src="http://hanchangbone.com/img/int3.png" alt="">
+                                </figure>
+                                <div class="doctors-bottom-text text-white -ml-8">
+                                    <p class="ml-4 doctors-bottom-text-description font-bold
+                                                        bg-gradient-to-r from-yellow-200 via-amber-600 to-yellow-300 inline-block text-transparent bg-clip-text
+                                    ">통증재활, 한의사</p>
+                                    <h4 class="ml-6 doctors-bottom-text-name">김민수<span>진료원장</span></h4>
+                                    <div class="doctors-bottom-text-schedule mt-14">
+                                        <div class="schedule_list" style="width: 420px;">
+                                            <div class="schedule ">진료일정</div>
+                                            <div class="inner">
+                                                <div class="clinic">진료</div>
+                                                <div class="night">야간/연장진료</div>
+                                                <div class="half">부분진료</div>
+                                            </div>
+                                        </div>
+                                        <table class="schedule-table mt-2" style="width: 420px; display: inline-block;">
+                                            <colgroup>
+                                                <col style="width: 122px;">
+                                                <col style="width: 38px;">
+                                                <col style="width: 45px;">
+                                                <col style="width: 40px;">
+                                                <col style="width: 44px;">
+                                                <col style="width: 41px;">
+                                                <col style="width: 44px;">
+                                                <col style="width: 46px;">
+                                            </colgroup>
+                                            <thead>
+                                            <tr>
+                                                <th style="font-weight: 700;">진료시간</th>
+                                                <th>일</th>
+                                                <th>월</th>
+                                                <th>화</th>
+                                                <th>수</th>
+                                                <th>목</th>
+                                                <th>금</th>
+                                                <th>토</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <th>오전</th>
+                                                <td></td>
+                                                <td><img src="./img/icon_clinic.png" alt="진료"></td>
+                                                <td><img src="./img/icon_clinic.png" alt="진료"></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <th>오후</th>
+                                                <td></td>
+                                                <td><img src="./img/icon_clinic.png" alt="진료"></td>
+                                                <td><img src="./img/icon_clinic.png" alt="진료"></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <th>야간</th>
+                                                <td></td>
+                                                <td><img src="./img/icon_star.png" alt="진료"></td>
+                                                <td><img src="./img/icon_star.png" alt="진료"></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide overflow-hidden">
+                                <figure class="doctors-bottom-img"
+                                >
+                                    <img class="w-full" src="http://hanchangbone.com/img/int3.png" alt="">
+                                </figure>
+                                <div class="doctors-bottom-text text-white -ml-8">
+                                    <p class="ml-4 doctors-bottom-text-description
+                                                        bg-gradient-to-r from-yellow-200 via-amber-600 to-yellow-300 inline-block text-transparent bg-clip-text
+                                    ">통증재활, 한의사</p>
+                                    <h4 class="ml-6 doctors-bottom-text-name">김민수<span>진료원장</span></h4>
+                                    <div class="doctors-bottom-text-schedule mt-14">
+                                        <div class="schedule_list" style="width: 420px;">
+                                            <div class="schedule ">진료일정</div>
+                                            <div class="inner">
+                                                <div class="clinic">진료</div>
+                                                <div class="night">야간/연장진료</div>
+                                                <div class="half">부분진료</div>
+                                            </div>
+                                        </div>
+                                        <table class="schedule-table mt-2" style="width: 420px; display: inline-block;">
+                                            <colgroup>
+                                                <col style="width: 122px;">
+                                                <col style="width: 38px;">
+                                                <col style="width: 45px;">
+                                                <col style="width: 40px;">
+                                                <col style="width: 44px;">
+                                                <col style="width: 41px;">
+                                                <col style="width: 44px;">
+                                                <col style="width: 46px;">
+                                            </colgroup>
+                                            <thead>
+                                            <tr>
+                                                <th style="font-weight: 700;">진료시간</th>
+                                                <th>일</th>
+                                                <th>월</th>
+                                                <th>화</th>
+                                                <th>수</th>
+                                                <th>목</th>
+                                                <th>금</th>
+                                                <th>토</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr>
+                                                <th>오전</th>
+                                                <td></td>
+                                                <td><img src="./img/icon_clinic.png" alt="진료"></td>
+                                                <td><img src="./img/icon_clinic.png" alt="진료"></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <th>오후</th>
+                                                <td></td>
+                                                <td><img src="./img/icon_clinic.png" alt="진료"></td>
+                                                <td><img src="./img/icon_clinic.png" alt="진료"></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <th>야간</th>
+                                                <td></td>
+                                                <td><img src="./img/icon_star.png" alt="진료"></td>
+                                                <td><img src="./img/icon_star.png" alt="진료"></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+
             </div>
-
-
         </div>
     </div>
 
 
     <!-- secetion 4: 갤러리 -->
     <div x-data="{ sectionNumber: 4}"
-        :id="`section-${sectionNumber}`"
+         :id="`section-${sectionNumber}`"
          x-intersect.half="activeSection = sectionNumber;"
-         class="bottom-section h-screen text-white pt-40"
+         class="bottom-section h-screen text-white pt-24"
     >
         <div x-show="activeSection == sectionNumber">
             <!-- 고정 타이틀 -->
@@ -235,11 +594,13 @@
 
     <!-- secetion 5:  샘플 -->
     <div x-data="{ sectionNumber: 5}"
-            :id="`section-${sectionNumber}`"
+         :id="`section-${sectionNumber}`"
          x-intersect.half="activeSection = sectionNumber;"
-         class="bottom-section h-screen text-white pt-40"
+         class="bottom-section h-screen text-white pt-24"
     >
-        <div x-show="activeSection == sectionNumber">
+        <div x-show="activeSection == sectionNumber"
+             class="h-full"
+        >
             <!-- 고정 타이틀 -->
             <div class="contents-section-text text-center opacity-0 text-white">
                 <h1 class="text-5xl font-bold mb-4" x-text="sections[sectionNumber-1].title">제목</h1>
@@ -247,7 +608,8 @@
             </div>
 
             <!-- 추가 내용 -->
-            <div class="container">
+            <div class="container h-full flex flex-col justify-center items-center">
+                <!--<div class="doctors-top flex max-h-full"></div>-->
             </div>
 
 
@@ -260,7 +622,7 @@
 
 <!-- 2. 해당색션에 x-intersect.half로 절반정도 들어모녀 변수에 true-->
 <div x-intersect.half="onBottomSection = true"
-     id='bottomScreen' class="bottom-section h-screen text-white pt-40">
+     id='bottomScreen' class="bottom-section h-screen text-white pt-24">
     <div x-show="onBottomSection">
         <div class="bottom-section-text text-center opacity-0 text-white">
             <h1 class="text-5xl font-bold mb-4">해당 질환의 치료방법</h1>
@@ -304,5 +666,82 @@
     </div>
 
 </div>
+
+<script>
+    let doctorsTopSwiper;
+    let doctorsBottomSwiper;
+    let doctorsMentSwiper;
+
+    const initDoctorsTopSwiper = () => {
+        doctorsTopSwiper = new Swiper('.swiper.doctorsTopSwiper', {
+            spaceBetween: 0,
+            slidesPerView: 2,
+            speed: 1200,
+            autoplay: {
+                delay: 4500,
+                disableOnInteraction: false,
+            },
+            loop: true,
+            freeMode: false,
+            loopedSlides: 3, //looped slides should be the same
+            watchSlidesVisibility: true,
+            watchSlidesProgress: true,
+
+
+            grabCursor: true,
+        });
+
+        doctorsMentSwiper = new Swiper('.swiper.doctorsMentSwiper', {
+            spaceBetween: 0,
+            // slidesPerView: 1,
+            direction: 'vertical',
+            autoHeight: true, // .swiper-slide { height: auto !important; } 이후 사용
+
+            speed: 1200,
+            autoplay: {
+                delay: 4500,
+                disableOnInteraction: false,
+            },
+            loop: true,
+            freeMode: false,
+            loopedSlides: 3, //looped slides should be the same
+            watchSlidesVisibility: true,
+            watchSlidesProgress: true,
+
+
+            grabCursor: true,
+        });
+
+
+        doctorsBottomSwiper = new Swiper('.swiper.doctorsBottomSwiper', {
+            spaceBetween: 10,
+            loop: true,
+            speed: 1200,
+            autoplay: {
+                delay: 4500,
+                disableOnInteraction: false,
+            },
+            loopedSlides: 3, //looped slides should be the same
+            navigation: {
+                nextEl: '.doctors-swiper-button-next',
+                prevEl: '.doctors-swiper-button-prev',
+            },
+            thumbs: {
+                // swiper: doctorsTopSwiper,
+            },
+        });
+
+        // ⬇️ 연결: bottomSwiper가 바뀔 때 다른 swiper도 같은 index로 이동
+        doctorsBottomSwiper.on('slideChange', () => {
+            const realIndex = doctorsBottomSwiper.realIndex;
+            doctorsTopSwiper.slideToLoop(realIndex);
+            doctorsMentSwiper.slideToLoop(realIndex);
+        });
+
+    };
+    initDoctorsTopSwiper();
+
+</script>
+
 </body>
 </html>

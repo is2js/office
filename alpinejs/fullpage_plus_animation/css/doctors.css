@@ -1,0 +1,367 @@
+/* swiper 부모의 높이 정해주기 */
+.doctors-top {
+    /*height: 560px;*/
+    /*height: 858px; !* 반응형 *!*/
+
+    /*background-color: #ebddc4;*/
+
+
+    box-sizing: border-box;
+    letter-spacing: -0.046em;
+    word-break: keep-all;
+    color: #1d1d1f;
+
+    & .doctors-top-left {
+        & .doctorsTopSwiper {
+            & .swiper-slide.swiper-slide-active {
+                & img {
+                    opacity: 1;
+
+                }
+            }
+
+            & .swiper-slide:not(.swiper-slide-active) {
+                & img {
+                    opacity: 0.5;
+                }
+            }
+        }
+
+        max-width: 100%;
+        width: 100%;
+        height: auto;
+        /*height: 560px;*/
+        /*height: 858px; !* 반응형 *!*/
+        /*object-fit: cover;*/
+        object-fit: contain;
+    }
+
+
+    & .doctors-name {
+        padding-top: 4px;
+        /*border-top: 1px solid #707070;*/
+        /*color: rgb(134, 134, 139);*/
+        border-top: 1px solid #d9d9d9;
+        color: #d9d9d9;
+        opacity: 0.6;
+
+        text-align: center;
+    }
+
+    & .doctors-top-right {
+
+        & .doctors-top-right-title {
+            position: relative;
+
+            &::after {
+                content: "";
+                display: block;
+                position: absolute;
+                left: 0px;
+                bottom: 0px;
+                width: 40px;
+                height: 2px;
+                background: #CEA869;
+            }
+        }
+
+        & .doctors-top-right-subtitle {
+            position: relative;
+
+            &::before {
+                content: '“';
+                color: #fde68a;
+                font-size: 30px;
+                vertical-align: top;
+                opacity: 0.7;
+
+            }
+
+            &::after {
+                content: '”';
+                color: #fde68a;
+                font-size: 30px;
+                vertical-align: top;
+                opacity: 0.7;
+            }
+        }
+
+
+        .doctors-swiper-button-prev {
+
+        }
+
+        .doctors-swiper-button-next {
+
+        }
+
+    }
+
+    .doctorsMentSwiper {
+        & .swiper-slide {
+            height: auto !important;
+        }
+    }
+}
+
+.doctors-bottom {
+    /*margin-top: 5px;*/
+    max-width: 1088px;
+
+    & .doctors-bottom-img {
+        max-width: calc(552px * 0.95);
+        margin: 0;
+
+        float: right;
+    }
+
+    & .doctors-bottom-text {
+        position: absolute;
+        /*top: 100px;*/
+        top: 65px;
+
+        width: 648px;
+        padding: 23px 0px 0px 80px;;
+
+        & .doctors-bottom-text-description {
+            position: relative;
+            /*color: #CEA869;*/
+            font-size: 28px;
+            /*font-weight: 400;*/
+            display: inline-block;
+            margin-bottom: 5px;
+
+            &::after {
+                content: "";
+                display: block;
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%);
+                right: -200px;
+
+                width: 180px;
+                height: 2px;
+                background: #CEA869;
+            }
+        }
+
+        & .doctors-bottom-text-button {
+            position: relative;
+
+            max-width: 201px;
+            border: 1px solid #fde68a;
+            border-radius: 15px;
+            padding: 7px 24px;
+            padding-right: 46px;
+
+            /*line-height: 35px;*/
+            /*height: 38px;*/
+
+            color: #fde68a;
+            display: inline-block;
+            /*margin-top: 30px;*/
+
+            &::after {
+                content: "";
+                display: block;
+                position: absolute;
+                width: 5.4px;
+                height: 10.8px;
+                background: url(http://hanchangbone.com/img/linkstyle1.png) no-repeat 50%;
+                background-size: auto 100%;
+                top: 50%;
+                transform: translateY(-50%);
+                right: 20px;
+            }
+        }
+
+        & .doctors-bottom-text-name {
+            font-size: 60px;
+            line-height: 76px;
+            /*color: #02233F;*/
+            /*color: #1e77e5;*/
+            font-weight: 500;
+            margin-bottom: 4px;
+
+            > span {
+                display: inline-block;
+                font-size: 34px;
+                vertical-align: bottom;
+                margin-left: 20px;
+                transform: translateY(10px);
+            }
+        }
+
+        & .doctors-bottom-text-schedule {
+            & .schedule_list {
+                & .schedule {
+                    display: inline-block;
+                    width: 100px;
+                    /*border: 1px solid #575c63;*/
+                    border: 1px solid #fff;
+                    border-radius: 18px;
+                    /*height: 31px;*/
+                    /*line-height: 31px;*/
+                    line-height: 35px;
+                    height: 38px;
+                    font-weight: 700;
+                    font-size: 18px;
+                    /*color: #575c63;*/
+                    color: #ffffff;
+                    text-align: center;
+                }
+
+                & .inner {
+                    float: right;
+                    margin: 16px 0 0;
+                    font-size: 0;
+
+                    & .clinic {
+                        display: inline-block;
+                        position: relative;
+                        padding: 0 0 0 20px;
+                        font-weight: 500;
+                        font-size: 14px;
+                        color: #ffffff;
+
+                        &:before {
+                            display: block;
+                            content: '';
+                            width: 10px;
+                            height: 10px;
+                            position: absolute;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            left: 0;
+                            background: url(../img/icon_clinic.png) 0 0 / 10px 10px no-repeat;
+                        }
+                    }
+
+                    & .night {
+                        display: inline-block;
+                        position: relative;
+                        margin: 0 0 0 20px;
+                        padding: 0 0 0 20px;
+                        font-weight: 500;
+                        font-size: 14px;
+                        color: #ffffff;
+
+                        &:before {
+                            display: block;
+                            content: '';
+                            width: 13px;
+                            height: 12px;
+                            position: absolute;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            left: 0;
+                            background: url(../img/icon_star.png) 0 0 / 13px 12px no-repeat;
+                        }
+                    }
+
+                    & .half {
+                        display: inline-block;
+                        position: relative;
+                        margin: 0 0 0 20px;
+                        padding: 0 0 0 20px;
+                        font-weight: 500;
+                        font-size: 14px;
+                        color: #ffffff;
+
+                        &:before {
+                            display: block;
+                            content: '';
+                            width: 13px;
+                            height: 12px;
+                            position: absolute;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            left: 0;
+                            background: url(../img/icon_clinic_half.png) 0 0 / 12px 12px no-repeat;
+                        }
+                    }
+                }
+            }
+
+            .schedule-table {
+                border-spacing: 0;
+                table-layout: fixed;
+                text-align: center;
+
+                border-collapse: collapse;
+
+                padding: 0;
+                border: 0;
+                background: transparent;
+
+                & thead {
+                    /*background: #9ca5b0;*/
+                    background: rgba(138, 143, 148, 0.3);
+
+                    & th {
+                        padding: 6px 0 7px;
+                        font-weight: 400;
+                        font-size: 15px;
+
+                        &:nth-child(2) {
+                            color: tomato;
+                        }
+
+                        &:nth-child(8) {
+                            color: deepskyblue;
+                        }
+                    }
+                }
+
+                & tbody {
+                    /*background: #acb6be;*/
+
+                    & th {
+                        border-bottom: 1px solid #9ca5b0;
+
+                        font-weight: 500;
+                        font-size: 14px;
+                        line-height: 35px;
+                        color: #ffffff;
+                    }
+
+                    & td {
+                        position: relative;
+
+                        border-bottom: 1px solid #9ca5b0;
+                        color: #ffffff;
+
+                        font-size: 9px;
+                        font-weight: 500;
+                        /*line-height: 35px;*/
+                        height: 35px;
+                        vertical-align: bottom;
+
+
+                        & img {
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+
+                            vertical-align: middle;
+                        }
+                    }
+                }
+            }
+        }
+
+        /*& .doctors-bottom-text-button {*/
+        /*    max-width: 201px;*/
+        /*    border: 1px solid #CEA869;*/
+        /*    padding: 7px 24px;*/
+        /*    padding-right: 46px;*/
+        /*    font-size: 17px;*/
+        /*    color: #cea869;*/
+        /*    display: inline-block;*/
+        /*    position: relative;*/
+        /*    margin-top: 30px;*/
+        /*}*/
+
+    }
+}
