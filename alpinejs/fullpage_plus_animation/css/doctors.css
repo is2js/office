@@ -13,18 +13,27 @@
 
     & .doctors-top-left {
         & .doctorsTopSwiper {
-            & .swiper-slide.swiper-slide-active {
-                & img {
-                    opacity: 1;
+            /*& .swiper-slide.swiper-slide-active {*/
+            /*    & img {*/
+            /*        opacity: 1;*/
 
-                }
-            }
+            /*    }*/
+            /*}*/
 
-            & .swiper-slide:not(.swiper-slide-active) {
-                & img {
-                    opacity: 0.5;
-                }
-            }
+            /*& .swiper-slide:not(.swiper-slide-active) {*/
+            /*    & img {*/
+            /*        opacity: 0.5;*/
+            /*    }*/
+            /*}*/
+
+            .swiper-slide img {
+                opacity: 0.5;
+                transition: opacity 0.3s;
+              }
+
+            .swiper-slide.custom-active img {
+                opacity: 1;
+              }
         }
 
         max-width: 100%;

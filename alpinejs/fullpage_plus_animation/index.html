@@ -437,6 +437,8 @@
                 // swiper: doctorsTopSwiper,
             },
 
+            grabCursor: true,
+
             init: false, // Dom에서 x-for를 다 처리하고 난 뒤, 직접 초기화할 예정
 
         });
@@ -451,12 +453,24 @@
 
             this.doctorsBottomSwiper.on('slideChange', () => {
                 this.sliding();
+
+                // 2장으로서 안움직일 때는 slide-active가 적용안됨.  기준이되는 bottomSwiper가 움직일 때 topSwiper의 realindex에 custom css적용
+               this.setDoctorsTopSwiperActiveHighlight();
             });
         });
 
-
-
    },
+   setDoctorsTopSwiperActiveHighlight() {
+          this.$nextTick(() => {
+            const slides = document.querySelectorAll('.doctorsTopSwiper .swiper-slide');
+            //console.log('setActiveHighlight', slides);
+            slides.forEach(slide => slide.classList.remove('custom-active'));
+            const realIndex = this.doctorsBottomSwiper.realIndex;
+            slides[realIndex % slides.length]?.classList.add('custom-active');
+            //console.log('setActiveHighlight', realIndex);
+          });
+    },
+
    sliding() {
         this.currentIndex = this.doctorsBottomSwiper.realIndex;
         this.doctorsTopSwiper.slideToLoop(this.currentIndex, 500);
@@ -470,6 +484,9 @@
         this.doctorsBottomSwiper.slideNext(1000);
         this.sliding();
     },
+
+
+
 }
 "
         >
