@@ -301,15 +301,10 @@
                     & th {
                         padding: 6px 0 7px;
                         font-weight: 400;
-                        font-size: 15px;
+                        font-size: 16px;
+                        font-weight: 800;
 
-                        &:nth-child(2) {
-                            color: tomato;
-                        }
 
-                        &:nth-child(8) {
-                            color: deepskyblue;
-                        }
                     }
                 }
 
@@ -319,10 +314,18 @@
                     & th {
                         border-bottom: 1px solid #9ca5b0;
 
-                        font-weight: 500;
-                        font-size: 14px;
-                        line-height: 35px;
+                        font-weight: 800;
+                        font-size: 16px;
+                        /*line-height: 35px;*/
+                        /* 오전 및에 시간 */
+                        line-height: 15px;
+                        padding: 6px 0;
                         color: #ffffff;
+
+                        > small {
+                            font-size: 75%;
+                            font-weight: 400;
+                        }
                     }
 
                     & td {
@@ -331,7 +334,7 @@
                         border-bottom: 1px solid #9ca5b0;
                         color: #ffffff;
 
-                        font-size: 9px;
+                        font-size: 10px;
                         font-weight: 500;
                         /*line-height: 35px;*/
                         height: 35px;
