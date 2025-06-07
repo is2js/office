@@ -29,11 +29,11 @@
             .swiper-slide img {
                 opacity: 0.5;
                 transition: opacity 0.3s;
-              }
+            }
 
             .swiper-slide.custom-active img {
                 opacity: 1;
-              }
+            }
         }
 
         max-width: 100%;
@@ -310,7 +310,7 @@
                     & th {
                         padding: 6px 0 7px;
                         font-weight: 400;
-                        font-size: 16px;
+                        font-size: 18px;
                         font-weight: 800;
 
 
@@ -324,7 +324,7 @@
                         border-bottom: 1px solid #9ca5b0;
 
                         font-weight: 800;
-                        font-size: 16px;
+                        font-size: 18px;
                         /*line-height: 35px;*/
                         /* 오전 및에 시간 */
                         line-height: 15px;
@@ -375,5 +375,97 @@
         /*    margin-top: 30px;*/
         /*}*/
 
+        & .doctors-bottom-text-career {
+
+            & span, & h5 {
+                line-height: 28px;
+                font-size: 17px;
+            }
+
+            /* 기간 */
+
+            & span {
+                font-weight: 350;
+                color: white;
+            }
+
+            /* 커리어 or 자격증 */
+
+            & h5 {
+                padding-left: 5px;
+                padding-right: 27px;
+
+                font-weight: 550;
+
+                &.verify {
+                    color: #deb97b;
+                    background-image: url("../img/profile-verify-gold.svg");
+                }
+
+                &:not(.verify) {
+                    color: #cdcdcd;
+                }
+
+                &.cert {
+                    padding-left: 20px;
+                    line-height: 25px;
+                    font-size: 16px;
+                    color: #cdcdcd;
+
+                    font-weight: 500;
+
+                    background-image: url("../img/profile-cert.svg");
+                }
+            }
+        }
+    }
+}
+
+
+
+
+.bg-img {
+    background: no-repeat var(--bg-x, center) var(--bg-y, center) var(--bg-color, transparent);
+    background-size: var(--bg-img-width, auto) var(--bg-img-height, auto);
+}
+
+
+.bg-img-x-center {
+    --bg-x: center;
+}
+
+
+.bg-img-y-center {
+    --bg-y: center;
+}
+
+.bg-img-color-transparent {
+    --bg-color: transparent;
+}
+
+.bg-img-width-auto {
+    --bg-img-width: auto;
+}
+
+.bg-img-height-auto {
+    --bg-img-height: auto;
+}
+
+
+/* 더보기 > 버튼을 위해, 배경이미지를 x right에 붙히도록 넣어주는 mixin */
+.bg-img-x-right {
+    background-position: right center;
+}
+
+/* 별점 배경이미지를 x left에 붙이기 */
+.bg-img-x-left {
+    background-position: left center;
+}
+
+/* 불가피하게 좌우공통여백이 20px 추가된 경우 -> 왼쪽에서 20px에 위치하는 왼쪽 아이콘 */
+.bg-img-x-left-20px {
+    background-position: left 20px center;
+    @media (max-width: 767px) {
+        background-position: left 0 center;
     }
 }

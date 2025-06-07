@@ -258,7 +258,18 @@
                         '금': { start: '09:00', end: '16:00' },
                         '토': { start: '09:00', end: '17:00' },
                         '일': null
-                      }
+                      },
+                      career: [
+                            {year: '`22~25', title: '백구한의원 부원장', isCertified: true},
+                            {year: '`21~22', title: '김영록한의원 부원장', isCertified: true},
+                            {year: '`20~21', title: '청연한방병원 일반수련의', isCertified: true},
+                            {year: '`20', title: '동신대 한의과대학 졸업', isCertified: false},
+                        ],
+                    certificates: [
+                        {title: '척추신경추나의학회 인증의'},
+                        {title: '대한한방비만학회 인증의'},
+                        {title: '임상약침학회 인증의'},
+                      ],
                     },
                     {
                       name: '조재성',
@@ -277,7 +288,22 @@
                         '금': { start: '10:30', end: '20:30' },
                         '토': null,
                         '일': null
-                      }
+                      },
+                     career: [
+                            {year: '`25~26', title: '경희허준한의원 부원장', isCertified: true},
+                            {year: '`21~22', title: '강남모커리한방병원 병동의', isCertified: true},
+                            {year: '`20~21', title: '청연한방병원 일반수련의', isCertified: true},
+                            {year: '`20', title: '동신대 한의과대학 수석 졸업', isCertified: true},
+                            {year: '`19', title: '서울대의대 생명과학교실 인턴쉽', isCertified: true},
+                        ],
+                    certificates: [
+                            {title: '미국의사 근골격계 초음파 자격(RSMK) 획득'},
+                            {title: '대한스포츠한의학회 팀닥터 인증의'},
+                            {title: '척추신경추나의학회 인증의'},
+                            {title: '의료통계학 석사'},
+                            {title: '우아한형제들 테크코스 백엔드 4기'},
+                            {title: 'SCIE 논문 1저자(학부생 최초 딥러닝 독성약재감별)'},
+                        ],
                     },
                     //{
                     //  name: '신현주',
@@ -521,12 +547,12 @@
                                         </figcaption>
                                     </div>
                                 </template>
-<!--                                                                    <div class="swiper-slide">-->
-<!--                                                                        <img src="http://hanchangbone.com/img/doc1.png" alt=""-->
-<!--                                                                             class="w-full"-->
-<!--                                                                        >-->
-<!--                                                                        <figcaption class="doctors-name ">조재성 진료원장</figcaption>-->
-<!--                                                                    </div>-->
+                                <!--                                                                    <div class="swiper-slide">-->
+                                <!--                                                                        <img src="http://hanchangbone.com/img/doc1.png" alt=""-->
+                                <!--                                                                             class="w-full"-->
+                                <!--                                                                        >-->
+                                <!--                                                                        <figcaption class="doctors-name ">조재성 진료원장</figcaption>-->
+                                <!--                                                                    </div>-->
                             </div>
                             <div class="swiper-pagination doctors-paging"></div>
                         </div>
@@ -547,12 +573,12 @@
                                         </p>
                                     </div>
                                 </template>
-<!--                                                                <div class="swiper-slide">-->
-<!--                                                                    <p class="doctors-top-right-subtitle text-2xl font-semibold mb-4 leading-10-->
-<!--                                                                                bg-gradient-to-r from-yellow-200 via-amber-800 to-yellow-400 inline-block text-transparent bg-clip-text">-->
-<!--                                                                        한의대 수석졸업 및 통계전공 한의사가 <br> 운동/재활/초음파를 접목한 치료를 선보이겠습니다!-->
-<!--                                                                    </p>-->
-<!--                                                                </div>-->
+                                <!--                                                                <div class="swiper-slide">-->
+                                <!--                                                                    <p class="doctors-top-right-subtitle text-2xl font-semibold mb-4 leading-10-->
+                                <!--                                                                                bg-gradient-to-r from-yellow-200 via-amber-800 to-yellow-400 inline-block text-transparent bg-clip-text">-->
+                                <!--                                                                        한의대 수석졸업 및 통계전공 한의사가 <br> 운동/재활/초음파를 접목한 치료를 선보이겠습니다!-->
+                                <!--                                                                    </p>-->
+                                <!--                                                                </div>-->
 
                             </div>
                         </div>
@@ -583,7 +609,7 @@
                     </div>
                 </div>
 
-                <div class="doctors-bottom flex shrink-0 h-full max-h-full overflow-hidden -mt-10">
+                <div class="doctors-bottom flex shrink-0 h-full max-h-full overflow-hidden -mt-12">
                     <div class="swiper doctorsBottomSwiper ">
                         <div class="swiper-wrapper">
                             <!-- 552 x 629-->
@@ -598,19 +624,24 @@
                                     </figure>
                                     <div class="doctors-bottom-text text-white -ml-8">
                                         <!-- 의료진 설명 -->
-                                        <p class="ml-4 doctors-bottom-text-description font-bold
+                                        <p class="ml-4 doctors-bottom-text-description font-bold -mt-4
                                                         bg-gradient-to-r from-yellow-200 via-amber-800 to-yellow-400 inline-block text-transparent bg-clip-text
-                                                        text-shadow-lg/30
-                                    " x-text="doctor.specialty">통증재활, 한의사</p>
+                                                        "
+                                           x-text="doctor.specialty">통증재활, 한의사</p>
                                         <!-- 의료진 이름 및 직책 -->
                                         <h4 class=" doctors-bottom-text-name ml-6"
                                             x-html="doctor.name + '<span>' + doctor.title + '</span>'"></h4>
-                                        <a class="doctors-bottom-text-button ml-6 text-sm px-2 py-1 rounded  mt-2"
+
+
+                                        <a class="doctors-bottom-text-button ml-6 text-sm px-2 py-1 rounded  mt-8 mb-4"
                                            :href="doctor.link">
                                             자세히보고 예약하기
                                         </a>
-                                        <div class="doctors-bottom-text-schedule mt-14">
-                                            <div class="schedule_list" style="width: 420px;">
+
+
+                                        <!-- 스케쥴 -->
+                                        <div class="doctors-bottom-text-schedule mt-11">
+                                            <div class="schedule_list" style="width: 480px;">
                                                 <div class="schedule ">진료일정</div>
                                                 <div class="inner">
                                                     <div class="clinic">진료</div>
@@ -619,11 +650,11 @@
                                                 </div>
                                             </div>
                                             <table class="schedule-table mt-2"
-                                                   style="width: 420px; display: inline-block;">
+                                                   style="width: 480px; display: inline-block;">
                                                 <colgroup>
-                                                    <col style="width: 122px;">
+                                                    <col style="width: 149px;">
                                                     <template x-for="i in 7">
-                                                        <col style="width: 42px;">
+                                                        <col style="width: 48px;">
                                                     </template>
                                                 </colgroup>
                                                 <!-- 요일 -->
@@ -664,9 +695,38 @@
                                                 </tbody>
                                             </table>
                                         </div>
+
+                                        <!-- 1. 커리어 -->
+                                        <!-- 1. 커리어 일단 4개만 by .slice(0, 4)-->
+                                        <div class="doctors-bottom-text-career text-left mt-6">
+                                            <template x-for="(career, index) in doctor.career.slice(0, 4)" :key="index">
+                                                <div class="flex">
+                                                    <span
+                                                            :class="{ 'verify' : career.isCertified }"
+                                                            x-text="career.year"
+                                                    ></span>
+                                                    <h5 class="bg-img bg-img-x-right"
+                                                        :class="{ 'verify' : career.isCertified }"
+                                                        x-text="career.title"
+                                                    ></h5>
+                                                </div>
+                                            </template>
+
+                                            <!-- 2. 자격증 -->
+                                            <br/>
+                                            <template x-for="(certificate, index) in doctor.certificates" :key="index">
+                                                <h5 class="cert bg-img bg-img-x-left ml-2"
+                                                    x-text="certificate.title"
+                                                ></h5>
+                                            </template>
+
+
+                                        </div>
+
                                     </div>
                                 </div>
                             </template>
+
                             <!--                            <div class="swiper-slide overflow-hidden">-->
                             <!--                                <figure class="doctors-bottom-img"-->
                             <!--                                >-->
