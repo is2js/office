@@ -6,12 +6,14 @@ html {
 body {
     font-family: Pretendard, "Noto Sans KR", "Malgun Gothic", sans-serif;
 
-    background-color: #092554;
 
+
+    background-color: #092554;
     /* intro-section 이후, 배경사진은 이것으로  + cover or contain 여야지 반복안되고 처리 */
     background-image: url('../img/stars.png');
     /*background-size: cover;*/
     background-size: contain;
+
 }
 
 [x-cloak] {
@@ -82,23 +84,25 @@ body {
     max-width: 100%;
 }
 
-header {
-    animation: headerAnimation 1s ease-in-out forwards 2s;
-    /* 키프레임 0%랑 동일*/
-    opacity: 0;
-    transform: translateY(-300%);
-}
 
-@keyframes headerAnimation {
-    0% {
-        opacity: 0;
-        transform: translateY(-300%);
-    }
-    100% {
-        opacity: 1;
-        transform: translateY(0%);
-    }
-}
+/*header {*/
+/*    animation: headerAnimation 1s ease-in-out forwards 2s;*/
+/*    !* 키프레임 0%랑 동일*!*/
+/*    opacity: 0;*/
+/*    transform: translateY(-300%);*/
+/*}*/
+
+/*@keyframes headerAnimation {*/
+/*    0% {*/
+/*        opacity: 0;*/
+/*        transform: translateY(-300%);*/
+/*    }*/
+/*    100% {*/
+/*        opacity: 1;*/
+/*        transform: translateY(0%);*/
+/*    }*/
+/*}*/
+
 
 .floatNav {
     z-index: 12;

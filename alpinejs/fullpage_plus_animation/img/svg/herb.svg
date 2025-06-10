@@ -1,0 +1,42 @@
+<!--https://www.figma.com/design/0tnvi0DpvsRXqSkYg2qRhd/Medicine-&#45;&#45;Health-Icons&#45;&#45;Community-?node-id=517-256&t=l3Bk8b0glzxljuQS-0-->
+<svg class="w-6 h-6"
+     viewBox="0 0 38 31"
+     stroke="currentColor"
+     stroke-width="2"
+     fill="none"
+     xmlns="http://www.w3.org/2000/svg"
+>
+    <path d="M12.78 30H7.2C3.78 30 1 27.2134 1 23.8298C1 23.4516 1.32 23.1331 1.7 23.1331H18.3C18.68 23.1331 19 23.4516 19 23.8298C19 27.2134 16.2 30 12.78 30Z"
+          stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M5.17993 18.9334C5.17993 18.9334 8.59994 19.9685 9.99994 23.1133C9.99994 23.1133 10.0799 19.8291 13.2799 16.525"
+          stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M6.79997 20.8641C6.79997 20.8641 4.95998 21.8991 3.59998 20.8641C2.23998 19.8291 1.45996 17.7591 1.45996 17.7591C1.45996 17.7591 3.43997 16.2862 5.83997 16.5648C8.23997 16.8435 8.19997 20.5257 8.19997 20.5257"
+          stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M11.58 20.9239C11.58 20.9239 16.88 20.1675 16.86 16.9232C16.84 13.6788 16.36 14.0172 17.06 12.8429C17.06 12.8429 12.24 12.4846 10.08 14.9527C7.94004 17.4208 10.38 20.5457 10.38 20.5457"
+          stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M31.1399 4.06528H26.4999L24.1799 8.3446L26.4999 12.6439H31.1399L33.4599 8.3446L31.1399 4.06528Z"
+          stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M24.1799 8.34454H20.6399" stroke-miterlimit="10" stroke-linecap="round"
+          stroke-linejoin="round"/>
+    <path d="M37 8.34454H33.46" stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M36.74 1.00003H33.2" stroke-miterlimit="10" stroke-linecap="round"
+          stroke-linejoin="round"/>
+    <path d="M36.4799 1.00003H32.9199" stroke-miterlimit="10" stroke-linecap="round"
+          stroke-linejoin="round"/>
+    <path d="M32.9199 1.00003L31.1599 4.06525" stroke-miterlimit="10" stroke-linecap="round"
+          stroke-linejoin="round"/>
+    <path d="M26.5 12.6439L24.74 15.6892" stroke-miterlimit="10" stroke-linecap="round"
+          stroke-linejoin="round"/>
+    <path d="M24.74 1.00003L26.5 4.06525" stroke-miterlimit="10" stroke-linecap="round"
+          stroke-linejoin="round"/>
+    <path d="M31.1599 12.6439L32.9199 15.6892" stroke-miterlimit="10" stroke-linecap="round"
+          stroke-linejoin="round"/>
+    <path d="M8.83984 9.83741C8.83984 9.83741 12.8198 2.71181 20.4798 3.92595" stroke-miterlimit="10"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M8.43994 7.62799L8.77994 9.59852C8.79994 9.73785 8.91994 9.81743 9.05994 9.81743L11.1599 9.71794"
+          stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M34.5799 20.0879C34.5799 20.0879 30.5999 27.2135 22.9399 25.9994" stroke-miterlimit="10"
+          stroke-linecap="round" stroke-linejoin="round"/>
+    <path d="M34.96 22.2973L34.62 20.3268C34.6 20.1874 34.48 20.1078 34.34 20.1078L32.24 20.2073"
+          stroke-miterlimit="10" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

@@ -1,0 +1,10 @@
+<!--https://www.figma.com/design/0tnvi0DpvsRXqSkYg2qRhd/Medicine-&#45;&#45;Health-Icons&#45;&#45;Community-?node-id=512-571&p=f&t=l3Bk8b0glzxljuQS-0-->
+<svg class="w-9 h-9"
+     viewBox="0 0 24 24"
+     stroke="currentColor"
+     fill="none"
+     xmlns="http://www.w3.org/2000/svg">
+    <path d="M8.55655 2V3.5C8.55655 4.60457 7.65118 5.50121 6.57967 5.76941C5.71406 5.98608 4.87507 6.30618 4.15684 6.62646C2.79012 7.23591 2.08327 8.69245 2.21584 10.183L3 19M15.5 2V3.5C15.5 4.60457 16.4056 5.5006 17.4766 5.77104C18.3326 5.98721 19.1595 6.30561 19.8669 6.62439C21.2217 7.23491 21.9176 8.68304 21.7859 10.1632L21 19M6.5 11C6.5 12.5 6.5 16.5 10.5 16.5M7.5 15.5C7.5 17 8 20 6.5 22M17.5 11C17.5 12.5 17.5 16.5 13.5 16.5M16.5 15.5C16.5 17 16 20 17.5 22"
+          stroke-width="1" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+

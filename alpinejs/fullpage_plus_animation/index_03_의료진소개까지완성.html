@@ -1,0 +1,996 @@
+<!doctype html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/treatment.css">
+    <!-- swiper -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"/>
+    <link rel="stylesheet" href="./css/doctors.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200..900&display=swap" rel="stylesheet">
+
+
+    <!-- swiper -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+</head>
+
+<!--@scroll.window="scrollPosition = window.pageYOffset;"-->
+<!--scrollPosition: window.pageYOffset,-->
+<body
+        x-data="{
+                onBottomSection: false,
+                 activeSection: 1,
+                sections: [
+                    {
+                        title: '제목',
+                        subtitle: '부제목',
+                    },
+                    {
+                        title: '치료방법',
+                        subtitle: '예후에 따른 다양한 치료법을 적용합니다.',
+                        isWhiteBackground: true,
+                    },
+                    {
+                        title: '의료진 소개',
+                        //subtitle: '풍부한 경험과 깊은 의술을 가진 부부한의원 의료진.',
+                        isWhiteBackground: true,
+                    },
+                    {
+                        title: '갤러리',
+                        subtitle: '병원 내부 이미지.',
+                    },
+                    {
+                        title: '샘플',
+                        subtitle: '빈섹션',
+                    },
+                ],
+
+        }"
+>
+<header class="text-white fixed left-0 top-0 z-10 flex items-center w-full justify-between mt-8">
+    <!-- 상단메뉴 -->
+    <!--    https://www.youtube.com/watch?v=Y7i4ygh1wYw&list=WL&index=33 -->
+    <div class="container flex items-center justify-between">
+        <a href="#" class="text-3xl font-bold">부부한의원</a>
+        <ul class="flex items-center space-x-8 font-semibold">
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Experience</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">원장단</a></li>
+            <li><a href="#" class="h-14 flex items-center  rounded-full border border-current px-6">원내광고</a></li>
+        </ul>
+    </div>
+</header>
+<!-- 좌측 nav-->
+<div class="floatNav fixed flex flex-col justify-center space-y-4 px-10">
+    <ul>
+        <template x-for="(section, i) in sections" :key="i">
+            <li class="w-auto">
+                <a :href="`#section-${i+1}`"
+                   class="cursor flex items-center"
+                   x-data="{ hovered: false }"
+                   @mouseenter="hovered = true"
+                   @mouseleave="hovered = false"
+                >
+                    <!-- bar -->
+                    <span class="inline-block h-10 relative"
+                          :class="{
+                          'bg-white' : !sections[activeSection-1].isWhiteBackground && activeSection == i + 1,
+                          'bg-gray-400' : !sections[activeSection-1].isWhiteBackground && activeSection != i + 1,
+
+                          'bg-gray-700' : sections[activeSection-1].isWhiteBackground && activeSection == i + 1,
+                          'bg-gray-500' : sections[activeSection-1].isWhiteBackground && activeSection != i + 1,
+
+                          }"
+                          :style="hovered? 'width: 6px; left: -1px; background-color: #1ECECB;' : 'width: 4px;'"
+                    ></span>
+                    <!-- title -->
+                    <span class="inline-block pl-3 text-sm"
+                          :class="{
+                                'text-white font-bold':!sections[activeSection-1].isWhiteBackground && activeSection == i + 1,
+                                'text-gray-400': !sections[activeSection-1].isWhiteBackground && activeSection != i + 1,
+
+                                'text-gray-700 font-bold': sections[activeSection-1].isWhiteBackground && activeSection == i + 1,
+                                'text-gray-500': sections[activeSection-1].isWhiteBackground && activeSection != i + 1,
+
+                                'font-bold': hovered,
+
+                                'animate-bounce': activeSection == i + 1
+                                }"
+                          :style="hovered ? 'color: #1ECECB;' : ''"
+                          x-text="i + 1 == 1 ? '메인' : section.title"></span>
+                </a>
+            </li>
+        </template>
+    </ul>
+
+    <!-- 마우스 스크롤 -->
+    <span class="scroll-down block -ml-1 mt-10 h-8.5"
+          :class="{'white' : activeSection == 1}"
+    ></span>
+</div>
+<div class="sections" id="contents-sections">
+    <!-- 2. 제목 섹션(section-1) -->
+    <!-- :style="`background-position: bottom -${scrollPosition / 2 }px center;`"-->
+    <div x-data="{sectionNumber: 1}"
+         :id="`section-${sectionNumber}`"
+         x-intersect.half="activeSection = sectionNumber;"
+         class="intro-section h-screen relative flex items-center justify-center  text-white overflow-hidden"
+    >
+        <!-- main에서 snapping과 연결되면 scrollPosition 0 -->
+        <!--:style="`transform: translateY(${scrollPosition / 4}px)`"-->
+        <div
+                class="transition ease-linear">
+            <div class="intro-section-text text-center opacity-0">
+                <h1 class="text-5xl font-bold mb-4" x-text="sections[0].title">제목</h1>
+                <p class="text-xl" x-show="sections[0].subtitle" x-text="sections[0].subtitle">부제목</p>
+            </div>
+        </div>
+
+        <div class="w-full absolute left-0 bottom-0 flex justify-center pointer-events-none">
+            <img class="foreground  " src="img/foreground.png" alt="foreGround">
+        </div>
+
+        <div class="w-full absolute left-0 bottom-0 flex justify-center z-10 pb-8">
+            <a href="#section-2">
+                <button class="flex flex-col justify-center items-center font-semibold space-y-2 animate-bounce">
+                    <img src="img/arrow-down.svg" alt="">
+                    <span>Scroll down</span>
+                </button>
+            </a>
+        </div>
+    </div>
+
+    <!-- 여기서부터 작업 세션시작  -->
+    <!-- secetion 2: 치료방법 -->
+    <div x-data="{ sectionNumber: 2}"
+         :id="`section-${sectionNumber}`"
+         x-intersect.half="activeSection = sectionNumber;"
+         class="bottom-section h-screen text-white pt-24"
+    >
+        <div x-show="activeSection == sectionNumber">
+            <!-- 고정 타이틀 -->
+            <div class="contents-section-text text-center opacity-0 text-white">
+                <h1 class="text-5xl font-bold mb-4" x-text="sections[sectionNumber-1].title">제목</h1>
+                <p class="text-xl" x-text="sections[sectionNumber-1].subtitle">부제목</p>
+            </div>
+
+            <!-- 추가내용  -->
+            <div class="container">
+                <div class="boxes flex items-center  justify-between mt-24">
+                    <div class="treatment-box">
+                        <!-- 271 x 301 px-->
+                        <img src="img/composition1.jpg" alt="Box 1">
+                        <div class="text-xl font-semibold mt-5 mb-2">근재생 역동추나</div>
+                        <p class="opacity-60">잘못된 생활 습관이나 외상 등으로 균형을 잃은 근조직을 역동적으로 교정하는 한창한방병원만의 추나요법</p>
+                    </div>
+                    <div class="treatment-box">
+                        <img src="img/composition2.jpg" alt="Box 2">
+                        <div class="text-xl font-semibold mt-5 mb-2">진근탕</div>
+                        <p class="opacity-60">근세포 활성 천연물의
+                            유효성분만을 고농축으로 담은
+                            한창한방병원만의 1:1 맞춤
+                            근골격 강화 기능한약</p>
+                    </div>
+                    <div class="treatment-box">
+                        <img src="img/composition3.jpg" alt="Box 3">
+                        <div class="text-xl font-semibold mt-5 mb-2">진근약침</div>
+                        <p class="opacity-60">진근탕의 유효성분을 주입해
+                            빠르게 통증을 해소하고
+                            근육과 관절 기능을 강화하는
+                            인체친화적 약침치료</p>
+                    </div>
+                    <div class="treatment-box">
+                        <img src="img/composition4.jpg" alt="Box 4">
+                        <div class="text-xl font-semibold mt-5 mb-2">근육이완 미세침</div>
+                        <p class="opacity-60">머리카락보다 얇은 미세침으로
+                            경직된 근조직의 경혈을 자극하고
+                            기혈의 흐름을 원활하게 하여
+                            근기능을 향상하는 침치료</p>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+
+    <!-- secetion 3:  의료진소개 -->
+    <div x-data="{ sectionNumber: 3}"
+         :id="`section-${sectionNumber}`"
+         x-intersect.half="activeSection = sectionNumber;"
+         class="bottom-section h-screen text-white pt-24"
+         style="
+"
+    >
+        <!--background: rgba(255, 255, 255) url('./img/doctors_bg.jpg') no-repeat 0% 0%;-->
+
+        <!--background: rgba(255, 255, 255) url('./img/doctors_bg.jpg') no-repeat 0% 0%;-->
+        <!--         style="-->
+        <!--         background: rgba(255, 255, 255) url('../img/stars.png') no-repeat 0% 0%;-->
+        <!--        background-size: 100% 55vh;-->
+        <!--        padding: 83px 0px 0px;-->
+        <!--"-->
+        <!--background: rgb(255, 255, 255) url(http://hanchangbone.com/img/skyblue-dot.png) no-repeat 0% 0%;-->
+        <!-- h-full 추가 -->
+        <div x-show="activeSection == sectionNumber"
+             class="h-full"
+             x-data="{
+             days: ['일', '월', '화', '수', '목', '금', '토'],
+            timeStrings: {
+            // 사용자가 입력하는 진료시간대 (아침, 오후, 야간)
+              morning: '09:00~13:00',
+              afternoon: '14:00~17:00',
+              night: '17:00~20:30'
+            },
+            ranges() {
+              return {
+                morning: this.parseRange(this.timeStrings.morning),
+                afternoon: this.parseRange(this.timeStrings.afternoon),
+                night: this.parseRange(this.timeStrings.night)
+              };
+            },
+             doctors: [
+                    {
+                      name: '김석영',
+                      title: '대표원장',
+                      specialty: '여성질환/한약상담 한의사',
+                      previewPhoto: 'https://front.chojaeseong.com/images/png/profile/sub/01.png',
+                      photo: 'https://front.chojaeseong.com/images/png/profile/main/01.png',
+                     ment: '집앞 한의원 방문으로부터 약 20년을 <br>한약과 함께하는 ️찐한의사',
+
+                      link: 'http://hanchangbone.com/view/sub0103.php',
+                      schedule: {
+                        '월': { start: '09:00', end: '17:00' },
+                        '화': { start: '09:00', end: '16:00' },
+                        '수': { start: '09:00', end: '14:00' },
+                        '목': null,
+                        '금': { start: '09:00', end: '16:00' },
+                        '토': { start: '09:00', end: '17:00' },
+                        '일': null
+                      },
+                      career: [
+                            {year: '`22~25', title: '백구한의원 부원장', isCertified: true},
+                            {year: '`21~22', title: '김영록한의원 부원장', isCertified: true},
+                            {year: '`20~21', title: '청연한방병원 일반수련의', isCertified: true},
+                            {year: '`20', title: '동신대 한의과대학 졸업', isCertified: false},
+                        ],
+                    certificates: [
+                        {title: '척추신경추나의학회 인증의'},
+                        {title: '대한한방비만학회 인증의'},
+                        {title: '임상약침학회 인증의'},
+                      ],
+                    },
+                    {
+                      name: '조재성',
+                      title: '진료원장',
+                      specialty: '초음파/추나/운동재활 한의사',
+                      previewPhoto: 'https://front.chojaeseong.com/images/png/profile/sub/02.png',
+                      photo: 'https://front.chojaeseong.com/images/png/profile/main/02.png',
+                      ment: '한의대 수석졸업 및 통계전공 한의사가 <br> 운동/재활/초음파를 접목한 치료를 선보이겠습니다!',
+
+                      link: 'http://hanchangbone.com/view/sub0103.php',
+                      schedule: {
+                        '월': { start: '09:00', end: '20:30' },
+                        '화': { start: '14:00', end: '20:30' },
+                        '수': { start: '14:00', end: '20:30' },
+                        '목': { start: '14:00', end: '20:30' },
+                        '금': { start: '10:30', end: '20:30' },
+                        '토': null,
+                        '일': null
+                      },
+                     career: [
+                            {year: '`25~26', title: '경희허준한의원 부원장', isCertified: true},
+                            {year: '`21~22', title: '강남모커리한방병원 병동의', isCertified: true},
+                            {year: '`20~21', title: '청연한방병원 일반수련의', isCertified: true},
+                            {year: '`20', title: '동신대 한의과대학 수석 졸업', isCertified: true},
+                            {year: '`19', title: '서울대의대 생명과학교실 인턴쉽', isCertified: true},
+                        ],
+                    certificates: [
+                            {title: '미국의사 근골격계 초음파 자격(RSMK) 획득'},
+                            {title: '대한스포츠한의학회 팀닥터 인증의'},
+                            {title: '척추신경추나의학회 인증의'},
+                            {title: '의료통계학 석사'},
+                            {title: '우아한형제들 테크코스 백엔드 4기'},
+                            {title: 'SCIE 논문 1저자(학부생 최초 딥러닝 독성약재감별)'},
+                        ],
+                    },
+                    //{
+                    //  name: '신현주',
+                    //  title: '진료원장',
+                    //  specialty: '내과, 여성질환',
+                    //  previewPhoto: 'https://front.chojaeseong.com/images/png/profile/sub/02.png',
+                    //  photo: 'http://hanchangbone.com/img/int2.png',
+                    //  link: 'http://hanchangbone.com/view/sub0103.php',
+                    //  ment: '한의대 수석졸업 및 통계전공 한의사가 <br> 운동/재활/초음파를 접목한 치료를 선보이겠습니다!',
+                    //  schedule: {
+                    //    '월': null,
+                    //    '화': null,
+                    //    '수': null,
+                    //    '목': { start: '09:00', end: '17:00' },
+                    //    '금': null,
+                    //    '토': null,
+                    //    '일': { start: '09:00', end: '17:00' },
+                    //  }
+                    //},
+              ],
+              timeToMinutes(t) {
+              // '14:30' -> 870
+                const [h, m] = t.split(':').map(Number);
+                return h * 60 + m;
+              },
+
+            parseRange(timeStr) {
+                  // 'HH:MM~HH:MM' → [startInMin, endInMin]
+              const [start, end] = timeStr.split('~');
+              return [this.timeToMinutes(start), this.timeToMinutes(end)];
+            },
+
+            formatTime(minutes) {
+              const h = Math.floor(minutes / 60);
+              const m = minutes % 60;
+              return m === 0 ? `${h}시` : `${h}:${m.toString().padStart(2, '0')}`;
+            },
+
+              getHTML(timeObj, period) {
+              // 진료 아이콘 HTML 반환
+              // start, end minutes
+
+                if (!timeObj) return '';
+
+                const start = this.timeToMinutes(timeObj.start);
+                const end = this.timeToMinutes(timeObj.end);
+
+                  //morning: [540, 780],   // 09:00~13:00
+                  //afternoon: [840, 1080],// 14:00~18:00
+                  //night: [1080, 1200]    // 18:00~20:00
+                const [pStart, pEnd] = this.ranges()[period];
+              if (end <= pStart || start >= pEnd) return '';
+
+                let icon = '';
+                let label = '';
+                const partial = start > pStart || end < pEnd;
+
+                 if (period === 'night') {
+                  icon = `<img src='./img/icon_star.png' alt='야간'>`;
+                  if (end < 1200) label = `~${this.formatTime(end)}`;
+                } else {
+                    icon = `<img src='./img/${partial ? 'icon_clinic_half.png' : 'icon_clinic.png'}' alt='진료'>`;
+
+                    if (partial) {
+                      if (end < pEnd && start <= pStart) {
+                        label = `~${this.formatTime(end)}`; // 조기 종료
+                      } else if (start > pStart && end >= pEnd) {
+                        label = `${this.formatTime(start)}~`; // 지연 시작
+                      } else if (start > pStart && end < pEnd) {
+                        label = `${this.formatTime(start)}~${this.formatTime(end)}`; // 중간 일부만 진료
+                      }
+                    }
+                  }
+
+                return icon + label;
+              },
+
+            timeLabels() {
+              const labels = {};
+              for (const [key, range] of Object.entries(this.ranges())) {
+                const [start, end] = range.map(this.formatTime);
+                labels[key] = `${start}~${end}`;
+              }
+              return labels;
+            },
+
+        doctorsBottomSwiper: null,
+        doctorsTopSwiper: null,
+        doctorsMentSwiper: null,
+        currentIndex: 0,
+
+        init() {
+        this.doctorsTopSwiper = new Swiper('.swiper.doctorsTopSwiper', {
+            spaceBetween: 0,
+            slidesPerView: 2,
+            //speed: 1200,
+            //autoplay: {
+            //    delay: 4500,
+            //    disableOnInteraction: false,
+            //},
+            loop: true, // loop true안주면 안보임
+            //loop: false,
+            //freeMode: false,
+            //loopedSlides: 3, //looped slides should be the same
+            //watchSlidesVisibility: true,
+            //watchSlidesProgress: true,
+
+
+            allowTouchMove: false,
+            grabCursor: true,
+
+
+            init: false, // Dom에서 x-for를 다 처리하고 난 뒤, 직접 초기화할 예정
+        });
+
+        this.doctorsMentSwiper = new Swiper('.swiper.doctorsMentSwiper', {
+            spaceBetween: 0,
+            // slidesPerView: 1,
+            direction: 'vertical',
+            autoHeight: true, // .swiper-slide { height: auto !important; } 이후 사용
+
+            //speed: 1200,
+            //autoplay: {
+            //    delay: 4500,
+            //    disableOnInteraction: false,
+            //},
+            //loop: false, // loop false면 안보임..
+            loop: true,
+            //freeMode: false,
+            //loopedSlides: 3, //looped slides should be the same
+            //watchSlidesVisibility: true,
+            //watchSlidesProgress: true,
+
+
+            allowTouchMove: false,
+            grabCursor: true,
+
+
+            init: false, // Dom에서 x-for를 다 처리하고 난 뒤, 직접 초기화할 예정
+        });
+
+
+        this.doctorsBottomSwiper = new Swiper('.swiper.doctorsBottomSwiper', {
+            spaceBetween: 10,
+            loop: true,
+            speed: 1500,
+            autoplay: {
+                delay: 4500,
+                disableOnInteraction: false,
+            },
+            //loopedSlides: 3, //looped slides should be the same
+            //navigation: {
+            //    nextEl: '.doctors-swiper-button-next',
+            //    prevEl: '.doctors-swiper-button-prev',
+            //},
+            thumbs: {
+                // swiper: doctorsTopSwiper,
+            },
+
+            grabCursor: true,
+
+            init: false, // Dom에서 x-for를 다 처리하고 난 뒤, 직접 초기화할 예정
+
+        });
+
+
+        // wait for alpine finishing the DOM manipulation
+        this.$nextTick(() => {
+
+            this.doctorsBottomSwiper.init();
+            this.doctorsTopSwiper.init();
+            this.doctorsMentSwiper.init();
+
+            this.doctorsBottomSwiper.on('slideChange', () => {
+                this.sliding();
+
+                // 2장으로서 안움직일 때는 slide-active가 적용안됨.  기준이되는 bottomSwiper가 움직일 때 topSwiper의 realindex에 custom css적용
+               this.setDoctorsTopSwiperActiveHighlight();
+            });
+        });
+
+   },
+   setDoctorsTopSwiperActiveHighlight() {
+          this.$nextTick(() => {
+            const slides = document.querySelectorAll('.doctorsTopSwiper .swiper-slide');
+            //console.log('setActiveHighlight', slides);
+            slides.forEach(slide => slide.classList.remove('custom-active'));
+            const realIndex = this.doctorsBottomSwiper.realIndex;
+            slides[realIndex % slides.length]?.classList.add('custom-active');
+            //console.log('setActiveHighlight', realIndex);
+          });
+    },
+
+   sliding() {
+        this.currentIndex = this.doctorsBottomSwiper.realIndex;
+        this.doctorsTopSwiper.slideToLoop(this.currentIndex, 500);
+        this.doctorsMentSwiper.slideToLoop(this.currentIndex, 500);
+    },
+    prevSlide() {
+        this.doctorsBottomSwiper.slidePrev(1000);
+        this.sliding();
+    },
+    nextSlide() {
+        this.doctorsBottomSwiper.slideNext(1000);
+        this.sliding();
+    },
+
+
+
+}
+"
+        >
+            <!-- 고정 타이틀 -->
+            <div class="contents-section-text text-center opacity-0 text-white">
+                <h1 class="text-5xl font-bold mb-4" x-text="sections[sectionNumber-1].title">제목</h1>
+                <p class="text-xl" x-text="sections[sectionNumber-1].subtitle">부제목</p>
+            </div>
+
+            <!-- 추가 내용 -->
+            <!--            <div class="container">-->
+            <!--            <div class="container h-full flex flex-col justify-center items-center">-->
+            <div class="container flex flex-col  items-center h-full justify-end">
+                <!-- container내부놈은 height가 주어지든지 해야함??-->
+                <div class="doctors-top flex  grow"
+                >
+                    <!--                     style="height: 100px;"-->
+                    <div class="doctors-top-left  mr-6 "
+                         style="width: calc(320px * 0.7);"
+                    >
+                        <!--style="width: 480px;"-->
+                        <div class="swiper doctorsTopSwiper">
+                            <div class="swiper-wrapper">
+                                <template x-for="(doctor, index) in doctors" :key="index">
+                                    <!-- 240 x 407-->
+                                    <div class="swiper-slide">
+                                        <img :src="doctor.previewPhoto" alt=""
+                                             class="w-full"
+                                        >
+                                        <figcaption class="doctors-name " x-text="doctor.name + ' '  + doctor.title">조재성
+                                            진료원장
+                                        </figcaption>
+                                    </div>
+                                </template>
+                                <!--                                                                    <div class="swiper-slide">-->
+                                <!--                                                                        <img src="http://hanchangbone.com/img/doc1.png" alt=""-->
+                                <!--                                                                             class="w-full"-->
+                                <!--                                                                        >-->
+                                <!--                                                                        <figcaption class="doctors-name ">조재성 진료원장</figcaption>-->
+                                <!--                                                                    </div>-->
+                            </div>
+                            <div class="swiper-pagination doctors-paging"></div>
+                        </div>
+                    </div>
+                    <div class="doctors-top-right flex flex-col justify-center  text-center pl-14 pt-4 w-full"
+                         style="width: 572px;"
+                    >
+
+                        <div class="swiper doctorsMentSwiper">
+                            <div class="swiper-wrapper">
+                                <template x-for="(doctor, index) in doctors" :key="index">
+                                    <!-- ment slide -->
+                                    <div class="swiper-slide">
+                                        <p class="doctors-top-right-subtitle text-2xl font-semibold mb-4 leading-10
+                                                bg-gradient-to-r from-yellow-200 via-amber-800 to-yellow-400 inline-block text-transparent bg-clip-text"
+                                           x-html="doctor.ment"
+                                        >
+                                        </p>
+                                    </div>
+                                </template>
+                                <!--                                                                <div class="swiper-slide">-->
+                                <!--                                                                    <p class="doctors-top-right-subtitle text-2xl font-semibold mb-4 leading-10-->
+                                <!--                                                                                bg-gradient-to-r from-yellow-200 via-amber-800 to-yellow-400 inline-block text-transparent bg-clip-text">-->
+                                <!--                                                                        한의대 수석졸업 및 통계전공 한의사가 <br> 운동/재활/초음파를 접목한 치료를 선보이겠습니다!-->
+                                <!--                                                                    </p>-->
+                                <!--                                                                </div>-->
+
+                            </div>
+                        </div>
+
+                        <!-- docstors swiper prev/next 버튼 -->
+                        <div class="flex  justify-start items-center space-x-5 mt-4 -ml-8">
+                            <button class="doctors-swiper-button-prev cursor-pointer rounded-full p-1 text-white bg-white bg-opacity-25 z-10"
+                                    @click="prevSlide()"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                     stroke-width="1.5" stroke="currentColor"
+                                     style="width: 1.5rem;height: 1.5rem; /* 24px */">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                          d="M15.75 19.5 8.25 12l7.5-7.5"></path>
+                                </svg>
+                            </button>
+                            <button class="doctors-swiper-button-next cursor-pointer rounded-full p-1 text-white bg-white bg-opacity-25 z-10"
+                                    @click="nextSlide()"
+                            >
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                     stroke-width="1.5" stroke="currentColor"
+                                     style="width: 1.5rem;height: 1.5rem; /* 24px */">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                          d="m8.25 4.5 7.5 7.5-7.5 7.5"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="doctors-bottom flex shrink-0 h-full max-h-full overflow-hidden -mt-12">
+                    <div class="swiper doctorsBottomSwiper ">
+                        <div class="swiper-wrapper">
+                            <!-- 552 x 629-->
+                            <!--<div class="swiper-slide">-->
+                            <template x-for="(doctor, index) in doctors" :key="index">
+
+                                <div class="swiper-slide overflow-hidden">
+                                    <figure class="doctors-bottom-img"
+                                    >
+                                        <!-- 의료진 사진 src -->
+                                        <img class="w-full" :src="doctor.photo" alt="">
+                                    </figure>
+                                    <div class="doctors-bottom-text text-white -ml-8">
+                                        <!-- 의료진 설명 -->
+                                        <p class="ml-4 doctors-bottom-text-description font-bold -mt-4
+                                                        bg-gradient-to-r from-yellow-200 via-amber-800 to-yellow-400 inline-block text-transparent bg-clip-text
+                                                        "
+                                           x-text="doctor.specialty">통증재활, 한의사</p>
+                                        <!-- 의료진 이름 및 직책 -->
+                                        <h4 class=" doctors-bottom-text-name ml-6"
+                                            x-html="doctor.name + '<span>' + doctor.title + '</span>'"></h4>
+
+
+                                        <a class="doctors-bottom-text-button ml-6 text-sm px-2 py-1 rounded  mt-8 mb-4"
+                                           :href="doctor.link">
+                                            자세히보고 예약하기
+                                        </a>
+
+
+                                        <!-- 스케쥴 -->
+                                        <div class="doctors-bottom-text-schedule mt-11">
+                                            <div class="schedule_list" style="width: 480px;">
+                                                <div class="textTitle ">진료일정</div>
+                                                <div class="inner">
+                                                    <div class="clinic">진료</div>
+                                                    <div class="night">야간/연장진료</div>
+                                                    <div class="half">부분진료</div>
+                                                </div>
+                                            </div>
+                                            <table class="schedule-table mt-2"
+                                                   style="width: 480px; display: inline-block;">
+                                                <colgroup>
+                                                    <col style="width: 149px;">
+                                                    <template x-for="i in 7">
+                                                        <col style="width: 48px;">
+                                                    </template>
+                                                </colgroup>
+                                                <!-- 요일 -->
+                                                <thead>
+                                                <tr>
+                                                    <th style="font-weight: 600;">진료시간</th>
+                                                    <template x-for="day in days">
+                                                        <th x-text="day"
+                                                            :class="{
+                                                                          'text-red-500': day === '일',
+                                                                          'text-blue-400': day === '토',
+                                                                          'text-white': day !== '일' && day !== '토'
+                                                                        }"
+                                                        ></th>
+                                                    </template>
+                                                </tr>
+                                                </thead>
+                                                <!-- 진료시간 -->
+                                                <tbody>
+                                                <tr class="text-center align-bottom ">
+                                                    <th>오 전<br><small x-text="timeLabels().morning"></small></th>
+                                                    <template x-for="day in days">
+                                                        <td x-html="getHTML(doctor.schedule[day], 'morning')"></td>
+                                                    </template>
+                                                </tr>
+                                                <tr>
+                                                    <th>오 후<br><small x-text="timeLabels().afternoon"></small></th>
+                                                    <template x-for="day in days">
+                                                        <td x-html="getHTML(doctor.schedule[day], 'afternoon')"></td>
+                                                    </template>
+                                                </tr>
+                                                <tr>
+                                                    <th>야 간<br><small x-text="timeLabels().night"></small></th>
+                                                    <template x-for="day in days">
+                                                        <td x-html="getHTML(doctor.schedule[day], 'night')"></td>
+                                                    </template>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                        <!-- 1. 커리어 -->
+                                        <!-- 1. 커리어 일단 4개만 by .slice(0, 4)-->
+                                        <div class="doctors-bottom-text-career text-left mt-6">
+                                            <template x-for="(career, index) in doctor.career.slice(0, 4)" :key="index">
+                                                <div class="flex">
+                                                    <span
+                                                            :class="{ 'verify' : career.isCertified }"
+                                                            x-text="career.year"
+                                                    ></span>
+                                                    <h5 class="bg-img bg-img-x-right"
+                                                        :class="{ 'verify' : career.isCertified }"
+                                                        x-text="career.title"
+                                                    ></h5>
+                                                </div>
+                                            </template>
+
+                                            <!-- 2. 자격증 -->
+                                            <br/>
+                                            <template x-for="(certificate, index) in doctor.certificates" :key="index">
+                                                <h5 class="cert bg-img bg-img-x-left ml-2"
+                                                    x-text="certificate.title"
+                                                ></h5>
+                                            </template>
+
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </template>
+
+                            <!--                            <div class="swiper-slide overflow-hidden">-->
+                            <!--                                <figure class="doctors-bottom-img"-->
+                            <!--                                >-->
+                            <!--                                    &lt;!&ndash; 의료진 사진 src &ndash;&gt;-->
+                            <!--                                    <img class="w-full" src="http://hanchangbone.com/img/int3.png" alt="">-->
+                            <!--                                </figure>-->
+                            <!--                                <div class="doctors-bottom-text text-white -ml-8">-->
+                            <!--                                    &lt;!&ndash; 의료진 설명 &ndash;&gt;-->
+                            <!--                                    <p class="ml-4 doctors-bottom-text-description font-bold-->
+                            <!--                                                        bg-gradient-to-r from-yellow-200 via-amber-800 to-yellow-400 inline-block text-transparent bg-clip-text-->
+                            <!--                                    ">통증재활, 한의사</p>-->
+                            <!--                                    &lt;!&ndash; 의료진 이름 및 직책 &ndash;&gt;-->
+                            <!--                                    <h4 class=" doctors-bottom-text-name ml-6">김민수<span>진료원장</span></h4>-->
+                            <!--                                    <a class="doctors-bottom-text-button ml-6 text-sm px-2 py-1 rounded  mt-2"-->
+                            <!--                                       href="http://hanchangbone.com/view/sub0103.php">-->
+                            <!--                                        자세히보고 예약하기-->
+                            <!--                                    </a>-->
+                            <!--                                    <div class="doctors-bottom-text-schedule mt-14">-->
+                            <!--                                        <div class="schedule_list" style="width: 420px;">-->
+                            <!--                                            <div class="schedule ">진료일정</div>-->
+                            <!--                                            <div class="inner">-->
+                            <!--                                                <div class="clinic">진료</div>-->
+                            <!--                                                <div class="night">야간/연장진료</div>-->
+                            <!--                                                <div class="half">부분진료</div>-->
+                            <!--                                            </div>-->
+                            <!--                                        </div>-->
+                            <!--                                        <table class="schedule-table mt-2" style="width: 420px; display: inline-block;">-->
+                            <!--                                            <colgroup>-->
+                            <!--                                                <col style="width: 122px;">-->
+                            <!--                                                <col style="width: 42px;">-->
+                            <!--                                                <col style="width: 42px;">-->
+                            <!--                                                <col style="width: 42px;">-->
+                            <!--                                                <col style="width: 42px;">-->
+                            <!--                                                <col style="width: 42px;">-->
+                            <!--                                                <col style="width: 42px;">-->
+                            <!--                                                <col style="width: 42px;">-->
+                            <!--                                            </colgroup>-->
+                            <!--                                            <thead>-->
+                            <!--                                            <tr>-->
+                            <!--                                                <th style="font-weight: 700;">진료시간</th>-->
+                            <!--                                                <th>일</th>-->
+                            <!--                                                <th>월</th>-->
+                            <!--                                                <th>화</th>-->
+                            <!--                                                <th>수</th>-->
+                            <!--                                                <th>목</th>-->
+                            <!--                                                <th>금</th>-->
+                            <!--                                                <th>토</th>-->
+                            <!--                                            </tr>-->
+                            <!--                                            </thead>-->
+                            <!--                                            <tbody>-->
+                            <!--                                            <tr class="text-center align-bottom">-->
+                            <!--                                                <th>오전</th>-->
+                            <!--                                                <td></td>-->
+                            <!--                                                <td><img src="./img/icon_clinic.png" alt="진료">8~12시</td>-->
+                            <!--                                                <td><img src="./img/icon_clinic.png" alt="진료"></td>-->
+                            <!--                                                <td></td>-->
+                            <!--                                                <td></td>-->
+                            <!--                                                <td></td>-->
+                            <!--                                                <td></td>-->
+                            <!--                                            </tr>-->
+                            <!--                                            <tr>-->
+                            <!--                                                <th>오후</th>-->
+                            <!--                                                <td></td>-->
+                            <!--                                                <td><img src="./img/icon_clinic.png" alt="진료"></td>-->
+                            <!--                                                <td><img src="./img/icon_clinic.png" alt="진료"></td>-->
+                            <!--                                                <td></td>-->
+                            <!--                                                <td></td>-->
+                            <!--                                                <td></td>-->
+                            <!--                                                <td></td>-->
+                            <!--                                            </tr>-->
+                            <!--                                            <tr>-->
+                            <!--                                                <th>야간</th>-->
+                            <!--                                                <td></td>-->
+                            <!--                                                <td><img src="./img/icon_star.png" alt="진료"></td>-->
+                            <!--                                                <td><img src="./img/icon_star.png" alt="진료"></td>-->
+                            <!--                                                <td></td>-->
+                            <!--                                                <td></td>-->
+                            <!--                                                <td></td>-->
+                            <!--                                                <td></td>-->
+                            <!--                                            </tr>-->
+                            <!--                                            </tbody>-->
+                            <!--                                        </table>-->
+                            <!--                                    </div>-->
+                            <!--                                </div>-->
+                            <!--                            </div>-->
+
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <!-- secetion 4: 갤러리 -->
+    <div x-data="{ sectionNumber: 4}"
+         :id="`section-${sectionNumber}`"
+         x-intersect.half="activeSection = sectionNumber;"
+         class="bottom-section h-screen text-white pt-24"
+    >
+        <div x-show="activeSection == sectionNumber">
+            <!-- 고정 타이틀 -->
+            <div class="contents-section-text text-center opacity-0 text-white">
+                <h1 class="text-5xl font-bold mb-4" x-text="sections[sectionNumber-1].title">제목</h1>
+                <p class="text-xl" x-text="sections[sectionNumber-1].subtitle">부제목</p>
+            </div>
+            <!-- 추가 내용 -->
+        </div>
+    </div>
+
+
+    <!-- secetion 5:  샘플 -->
+    <div x-data="{ sectionNumber: 5}"
+         :id="`section-${sectionNumber}`"
+         x-intersect.half="activeSection = sectionNumber;"
+         class="bottom-section h-screen text-white pt-24"
+    >
+        <div x-show="activeSection == sectionNumber"
+             class="h-full"
+        >
+            <!-- 고정 타이틀 -->
+            <div class="contents-section-text text-center opacity-0 text-white">
+                <h1 class="text-5xl font-bold mb-4" x-text="sections[sectionNumber-1].title">제목</h1>
+                <p class="text-xl" x-text="sections[sectionNumber-1].subtitle">부제목</p>
+            </div>
+
+            <!-- 추가 내용 -->
+            <div class="container h-full flex flex-col justify-center items-center">
+                <!--<div class="doctors-top flex max-h-full"></div>-->
+            </div>
+
+
+        </div>
+    </div>
+
+
+</div>
+
+
+<!-- 2. 해당색션에 x-intersect.half로 절반정도 들어모녀 변수에 true-->
+<div x-intersect.half="onBottomSection = true"
+     id='bottomScreen' class="bottom-section h-screen text-white pt-24">
+    <div x-show="onBottomSection">
+        <div class="bottom-section-text text-center opacity-0 text-white">
+            <h1 class="text-5xl font-bold mb-4">해당 질환의 치료방법</h1>
+            <p class="text-xl">디스크 질환들을 다룹니다.</p>
+        </div>
+
+        <div class="container">
+            <div class="boxes flex items-center  justify-between mt-24">
+                <div class="location-box">
+                    <!-- 271 x 301 px-->
+                    <img src="img/composition1.jpg" alt="Box 1">
+                    <div class="text-xl font-semibold mt-5 mb-2">근재생 역동추나</div>
+                    <p class="opacity-60">잘못된 생활 습관이나 외상 등으로 균형을 잃은 근조직을 역동적으로 교정하는 한창한방병원만의 추나요법</p>
+                </div>
+                <div class="location-box">
+                    <img src="img/composition2.jpg" alt="Box 2">
+                    <div class="text-xl font-semibold mt-5 mb-2">진근탕</div>
+                    <p class="opacity-60">근세포 활성 천연물의
+                        유효성분만을 고농축으로 담은
+                        한창한방병원만의 1:1 맞춤
+                        근골격 강화 기능한약</p>
+                </div>
+                <div class="location-box">
+                    <img src="img/composition3.jpg" alt="Box 3">
+                    <div class="text-xl font-semibold mt-5 mb-2">진근약침</div>
+                    <p class="opacity-60">진근탕의 유효성분을 주입해
+                        빠르게 통증을 해소하고
+                        근육과 관절 기능을 강화하는
+                        인체친화적 약침치료</p>
+                </div>
+                <div class="location-box">
+                    <img src="img/composition4.jpg" alt="Box 4">
+                    <div class="text-xl font-semibold mt-5 mb-2">근육이완 미세침</div>
+                    <p class="opacity-60">머리카락보다 얇은 미세침으로
+                        경직된 근조직의 경혈을 자극하고
+                        기혈의 흐름을 원활하게 하여
+                        근기능을 향상하는 침치료</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!--<script>-->
+<!--    let doctorsTopSwiper;-->
+<!--    let doctorsBottomSwiper;-->
+<!--    let doctorsMentSwiper;-->
+
+<!--    const initDoctorsTopSwiper = () => {-->
+<!--        doctorsTopSwiper = new Swiper('.swiper.doctorsTopSwiper', {-->
+<!--            spaceBetween: 0,-->
+<!--            slidesPerView: 2,-->
+<!--            speed: 1200,-->
+<!--            autoplay: {-->
+<!--                delay: 4500,-->
+<!--                disableOnInteraction: false,-->
+<!--            },-->
+<!--            loop: true,-->
+<!--            freeMode: false,-->
+<!--            loopedSlides: 3, //looped slides should be the same-->
+<!--            watchSlidesVisibility: true,-->
+<!--            watchSlidesProgress: true,-->
+
+
+<!--            grabCursor: true,-->
+<!--        });-->
+
+<!--        doctorsMentSwiper = new Swiper('.swiper.doctorsMentSwiper', {-->
+<!--            spaceBetween: 0,-->
+<!--            // slidesPerView: 1,-->
+<!--            direction: 'vertical',-->
+<!--            autoHeight: true, // .swiper-slide { height: auto !important; } 이후 사용-->
+
+<!--            speed: 1200,-->
+<!--            autoplay: {-->
+<!--                delay: 4500,-->
+<!--                disableOnInteraction: false,-->
+<!--            },-->
+<!--            loop: true,-->
+<!--            freeMode: false,-->
+<!--            loopedSlides: 3, //looped slides should be the same-->
+<!--            watchSlidesVisibility: true,-->
+<!--            watchSlidesProgress: true,-->
+
+
+<!--            grabCursor: true,-->
+<!--        });-->
+
+
+<!--        doctorsBottomSwiper = new Swiper('.swiper.doctorsBottomSwiper', {-->
+<!--            spaceBetween: 10,-->
+<!--            loop: true,-->
+<!--            speed: 1200,-->
+<!--            autoplay: {-->
+<!--                delay: 4500,-->
+<!--                disableOnInteraction: false,-->
+<!--            },-->
+<!--            loopedSlides: 3, //looped slides should be the same-->
+<!--            navigation: {-->
+<!--                nextEl: '.doctors-swiper-button-next',-->
+<!--                prevEl: '.doctors-swiper-button-prev',-->
+<!--            },-->
+<!--            thumbs: {-->
+<!--                // swiper: doctorsTopSwiper,-->
+<!--            },-->
+<!--        });-->
+
+<!--        // ⬇️ 연결: bottomSwiper가 바뀔 때 다른 swiper도 같은 index로 이동-->
+<!--        doctorsBottomSwiper.on('slideChange', () => {-->
+<!--            const realIndex = doctorsBottomSwiper.realIndex;-->
+<!--            doctorsTopSwiper.slideToLoop(realIndex);-->
+<!--            doctorsMentSwiper.slideToLoop(realIndex);-->
+<!--        });-->
+
+<!--    };-->
+<!--    initDoctorsTopSwiper();-->
+
+<!--</script>-->
+
+</body>
+</html>
