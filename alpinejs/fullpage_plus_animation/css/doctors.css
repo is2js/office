@@ -57,6 +57,18 @@
         text-align: center;
     }
 
+    & .doctors-top-left {
+        & .doctorsTopSwiper {
+            & .swiper-slide.custom-active {
+                & .doctors-name {
+                    opacity: 1;
+                    font-weight: 600;
+                }
+            }
+        }
+    }
+
+
     & .doctors-top-right {
 
         & .doctors-top-right-title {
@@ -217,6 +229,7 @@
             color: #ffffff;
             text-align: center;
         }
+
         & .doctors-bottom-text-schedule {
             & .schedule_list {
 
@@ -420,8 +433,6 @@
         }
     }
 }
-
-
 
 
 .bg-img {

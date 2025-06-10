@@ -1324,7 +1324,9 @@
          x-intersect.half="activeSection = sectionNumber;"
          class="bottom-section h-screen text-white pt-20"
     >
-        <div x-show="activeSection == sectionNumber">
+        <div x-show="activeSection == sectionNumber"
+             class="h-full"
+        >
             <!-- 고정 타이틀 -->
             <div class="contents-section-text text-center opacity-0 text-white">
                 <h1 class="text-3xl font-bold mb-4" x-text="sections[sectionNumber-1].title">제목</h1>
@@ -1332,7 +1334,7 @@
             </div>
 
             <!-- 추가내용  -->
-            <div class="container">
+            <div class="container h-full flex flex-col justify-center ">
                 <div class="boxes flex items-center  justify-between mt-24">
                     <div class="treatment-box">
                         <!-- 271 x 301 px-->
@@ -1692,10 +1694,11 @@
             <!-- 추가 내용 -->
             <!--            <div class="container">-->
             <!--            <div class="container h-full flex flex-col justify-center items-center">-->
-            <div class="container flex flex-col  items-center max-h-full justify-end">
+            <!-- 추가내용은 제목빼고 h-full 상태로 만들어두고 내용물은 가운데 정렬. -->
+            <div class="container h-full flex flex-col justify-center items-center">
                 <!-- container내부놈은 height가 주어지든지 해야함??-->
-                <div class="doctors-top flex  grow"
-                >
+<!--                <div class="doctors-top flex  grow">-->
+                <div class="doctors-top flex ">
                     <!--                     style="height: 100px;"-->
                     <div class="doctors-top-left  mr-6 "
                          style="width: calc(320px * 0.7);"
@@ -1735,7 +1738,7 @@
                                     <div class="swiper-slide">
                                         <p class="doctors-top-right-subtitle text-2xl font-semibold mb-4 leading-10
                                                 bg-gradient-to-br from-yellow-200 to-amber-400 via-yellow-500 inline-block text-transparent bg-clip-text"
-                                           x-html="doctor.ment"
+                                           x-html="' ' + doctor.ment + ' '"
                                         >
                                         </p>
                                     </div>
@@ -1776,7 +1779,7 @@
                     </div>
                 </div>
 
-                <div class="doctors-bottom flex shrink-0 h-full max-h-full overflow-hidden -mt-12">
+                <div class="doctors-bottom  shrink-0 flex overflow-hidden -mt-12">
                     <div class="swiper doctorsBottomSwiper ">
                         <div class="swiper-wrapper">
                             <!-- 552 x 629-->
@@ -1800,7 +1803,7 @@
                                             x-html="doctor.name + '<span>' + doctor.title + '</span>'"></h4>
 
 
-                                        <a class="doctors-bottom-text-button ml-8 text-sm px-2 py-1 rounded  mt-2 mb-4
+                                        <a class="doctors-bottom-text-button ml-8 text-sm px-2 py-1 rounded  mt-4 mb-4
                                         text-[#fde68a]
                                         hover:bg-gradient-to-r from-yellow-200 to-amber-400 via-yellow-500 text-white bg-opacity-80 transition duration-300 ease-in-out
                                           hover:text-gray-600
@@ -1869,7 +1872,7 @@
 
                                         <!-- 1. 커리어 -->
                                         <!-- 1. 커리어 일단 4개만 by .slice(0, 4)-->
-                                        <div class="doctors-bottom-text-career text-left mt-6">
+                                        <div class="doctors-bottom-text-career text-left mt-8">
                                             <div class="doctors-bottom-text-title mb-2">경 력</div>
                                             <template x-for="(career, index) in doctor.career.slice(0, 4)" :key="index">
                                                 <div class="flex">
@@ -1887,7 +1890,7 @@
                                             <!-- 2. 자격증 -->
                                             <br/>
                                             <div class="doctors-bottom-text-title mb-2">자 격</div>
-                                            <template x-for="(certificate, index) in doctor.certificates" :key="index">
+                                            <template x-for="(certificate, index) in doctor.certificates.slice(0, 4)" :key="index">
                                                 <h5 class="cert bg-img bg-img-x-left ml-2"
                                                     x-text="certificate.title"
                                                 ></h5>
@@ -2002,13 +2005,18 @@
          x-intersect.half="activeSection = sectionNumber;"
          class="bottom-section h-screen text-white pt-20"
     >
-        <div x-show="activeSection == sectionNumber">
+        <div x-show="activeSection == sectionNumber"
+             class="h-full"
+        >
             <!-- 고정 타이틀 -->
             <div class="contents-section-text text-center opacity-0 text-white">
                 <h1 class="text-3xl font-bold mb-4" x-text="sections[sectionNumber-1].title">제목</h1>
                 <p class="text-xl" x-text="sections[sectionNumber-1].subtitle">부제목</p>
             </div>
             <!-- 추가 내용 -->
+            <div class="container h-full flex flex-col justify-center">
+                asdfasdf
+            </div>
         </div>
     </div>
 
