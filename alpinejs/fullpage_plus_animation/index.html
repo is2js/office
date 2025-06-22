@@ -1331,6 +1331,159 @@
     >
         <div x-show="activeSection == sectionNumber"
              class="h-full"
+             x-data="{
+                autoplayIntervalTime: 15000, // 2/3는 detail보고 넘어감. 넘어가기전에 1초는 detail에서 복귀해서 넘어감
+                treatments: [
+                    {
+                        title: '초음파약침',
+                        price: '+20,000원',
+                        isInsuranceCovered: true,
+                        insurancePrice: '10,000원',
+                        topic: '근막/신경 유착 및 국소염증',
+                        description: '미국 초음파 자격증 RMSK를 수료한 대표원장이 초음파 기기를 활용하여 Nerve Sprouting과 유착된 섬유조직을 정밀하게 분석한 후 신경 유착을 해소하고 손상된 조직의 재생과 강화를 유도합니다.',
+                        image: 'img/treatments/초음파약침.png',
+                        specifications: {
+                          'procedure': {
+                            'label': '시 술',
+                            'description': '5분이내'
+                          },
+                          'indication': {
+                            'label': '적응증',
+                            'description': '유착된 모든 신경/근막'
+                          },
+                          'target': {
+                            'label': '적용대상',
+                            'description': '모든 통증 질환'
+                          }
+                        }
+                    },
+                    {
+                        title: '약침/봉침',
+                        price: '+8000원/+12000원',
+                        isInsuranceCovered: false,
+                        insurancePrice: '',
+                        topic: '근육염좌 혹은 인대염증',
+                        description: '염증이 발생하여 통증이 극심한 부위에 직접 주사하여 염증과 통증을 개선하는데 도움이 됩니다. 약침요법은 주사제를 제조하는 방법에 의해 조제된 약침액을, 질환과 연관된 경혈과 통증부위에 주사기를 사용하여 시술하는 방법입니다. <br>봉약침이란 꿀벌에서 추출한 벌독을 정제하여 만든 봉약침을 환자의 체질이나 질병에 따라 경혈에 주입하여 치료하는 방법으로, 진통 소염 효과가 뛰어납니다. 알레르기나 과민반응을 고려해서 필요한 경우에 시술합니다.',
+                        image: 'img/treatments/약침봉침.png',
+                        specifications: {
+                          'procedure': {
+                            'label': '시 술',
+                            'description': '5분이내'
+                          },
+                          'indication': {
+                            'label': '적응증',
+                            'description': '유착된 모든 신경/근막'
+                          },
+                          'target': {
+                            'label': '적용대상',
+                            'description': '모든 통증 질환'
+                          }
+                        }
+                    },
+                    {
+                        title: '추나+충격파',
+                        price: '+20,000원',
+                        isInsuranceCovered: true,
+                        insurancePrice: '10,000원',
+                        topic: '비대칭/불균형으로 인한 통증',
+                        description: '추나요법의 핵심은 관절의 유착을 풀고 균형을 맞춰서 정상운동 범위를 회복하는데 있습니다. 비수술요법으로 골반대의 무너진 밸런스를 바로잡고 경추와 후두골의 움직임을 바로 잡아 결과적으로 전신의 긴장된 근육을 이완시키고 척추의 균형을 바로잡아 신경을 누르는 압박을 줄여줌으로서 통증을 완화하고 올바른 자세를 만들어줍니다.',
+                        image: 'img/treatments/추나.png',
+                        specifications: {
+                          'procedure': {
+                            'label': '시 술',
+                            'description': '5분이내'
+                          },
+                          'indication': {
+                            'label': '적응증',
+                            'description': '유착된 모든 신경/근막'
+                          },
+                          'target': {
+                            'label': '적용대상',
+                            'description': '모든 통증 질환'
+                          }
+                        }
+                    },
+                ],
+
+
+                init() {
+                    this.startAutoplay(); // 페이지 진입 시 자동 시작
+                },
+
+                showDetail: false,
+                unAcceptClick: null,
+                showSlider(type) {
+                  const listHTML = this.$refs.list;
+                  const carousel = this.$refs.carousel;
+                  const items = listHTML.querySelectorAll('.item');
+
+                  this.$refs.next.style.pointerEvents = 'none';
+                  this.$refs.prev.style.pointerEvents = 'none';
+
+                  carousel.classList.remove('next', 'prev');
+
+                  if (type === 'next') {
+                    listHTML.appendChild(items[0]);
+                    carousel.classList.add('next');
+                  } else {
+                    listHTML.prepend(items[items.length - 1]);
+                    carousel.classList.add('prev');
+                  }
+
+                  clearTimeout(this.unAcceptClick);
+                  this.unAcceptClick = setTimeout(() => {
+                    this.$refs.next.style.pointerEvents = 'auto';
+                    this.$refs.prev.style.pointerEvents = 'auto';
+                  }, 2000);
+                },
+
+              isHovered: false, // 자동실행 mouseenter시 일시정지 안정화
+              // 재귀를 이용해서 0.8초 정도 넘어가기전 뒤로가기 해놓고 넘어가기
+              startAutoplay() {
+                this.stopAutoplay(); // 이전 타이머 제거
+
+                const interval = this.autoplayIntervalTime;
+                const showDetailStart = interval / 3;
+                const beforeNextDelay = 1000;
+
+                const step1 = () => {
+                  if (this.isHovered) return; // 마우스 올라간 상태면 멈춤
+                  this.showDetail = false;
+
+                  this.autoplayTimer = setTimeout(step2, showDetailStart);
+                };
+
+                const step2 = () => {
+                  if (this.isHovered) return;
+                  this.showDetail = true;
+
+                  this.autoplayTimer = setTimeout(step3, interval - showDetailStart - beforeNextDelay);
+                };
+
+                const step3 = () => {
+                  if (this.isHovered) return;
+                  this.showDetail = false;
+
+                  this.autoplayTimer = setTimeout(() => {
+                    this.showSlider('next');
+                    // DOM 렌더링 안정성을 위해 약간의 딜레이 후 다음 루프 (0으로 줬더니 2장씩 넘어감)
+                    this.autoplayTimer = setTimeout(step1, 100);
+                  }, beforeNextDelay);
+                };
+
+                step1(); // 시작
+              },
+
+              stopAutoplay() {
+                if (this.autoplayTimer) {
+                  clearTimeout(this.autoplayTimer);
+                  this.autoplayTimer = null;
+                }
+              }
+
+
+             }
+            "
         >
             <!-- 고정 타이틀 -->
             <div class="contents-section-text text-center opacity-0 text-white">
@@ -1763,351 +1916,129 @@
                 <!-- 높이 및 hidden 설정 -->
                 <!--                <div class="treatment-methods h-[800px] overflow-hidden relative">-->
                 <!-- 나의 경우 h-full이 최대여야함. 800px -> full -->
-                <div class="treatment-methods h-full overflow-hidden relative">
+                <div class="treatment-methods h-full overflow-hidden relative"
+                     x-ref="carousel"
+                     :class="{ 'showDetail': showDetail }"
+                     @mouseenter="isHovered = true; stopAutoplay()"
+                     @mouseleave="isHovered = false; startAutoplay()"
+                >
                     <!-- 아이템들의 부모(list)를 abs로 만들고, top0 left는 가운데정렬 + w100% 높이는 80%만 -->
-                    <div class="list absolute top-0 left-1/2 transform -translate-x-1/2 w-full h-[100%] md:h-[80%]">
-                        <!-- item 모두 abs + top0left0 출발. width는 70%만 먹기 height는 100%-->
-                        <!--     cf) 복수를 다 abs로 만들면, 한곳에 item들이 다 모임.-->
-                        <div class="item w-[100%] lg:w-[70%] mx-auto absolute top-0 left-0  h-full text-[15px]">
-                            <!-- 이미지는 abs로 w절반먹고, y축 50%이동 우측에 붙이기 -->
-                            <img class="absolute top-1/2 transform -translate-y-1/2 w-[40%] md:w-[50%] right-0 drop-shadow-2xl"
-                                 src="img/treatments/약침봉침.png" alt="">
-                            <!-- intro는 abs top50%중간에서 400px차지하는데, 일단 op0으로 감쳐놓는다.-->
-
-                            <div class="intro absolute top-1/2 transform -translate-y-1/2 w-[50%] md:w-[400px] opacity-0 pointer-events-none ">
-                                <div class="topic text-[1.5em] md:text-[2em] font-bold bg-gradient-to-r from-yellow-200 to-amber-400 via-yellow-500 inline-block text-transparent bg-clip-text">
-                                    근육염좌 혹은 인대염증
-                                </div>
-                                <div class="title text-[2em] md:text-[2.5rem] lg:text-[4rem] font-extrabold">약침/봉침</div>
-                                <div class="description text-sm md:text-base font-md text-[#d9d9d9]">염증이 발생하여 통증이 극심한
-                                    부위에 직접 주사하여 염증과 통증을 개선하는데 도움이 됩니다. 약침요법은 주사제를 제조하는 방법에 의해 조제된 약침액을, 질환과 연관된 경혈과 통증
-                                    부위에 주사기를 사용하여 시술하는 방법입니다. <br>봉약침이란 꿀벌에서 추출한 벌독을 정제하여 만든 봉약침을 환자의 체질이나 질병에 따라 경혈에
-                                    주입하여
-                                    치료하는 방법으로, 진통 소염 효과가 뛰어납니다. 알레르기나 과민반응을 고려해서 필요한 경우에 시술합니다.
-                                </div>
-                                <button class="seeMore">자세히 보기</button>
-                            </div>
-                            <!-- 디테일은 일단 op0/마우스작동안하도록 숨겨준다.-->
-                            <div class="detail opacity-0 pointer-events-none">
-                                <div class="detailTitle text-[1.5em] sm:text-[2em] md:text-[2.5rem] lg:text-[4rem] font-extrabold tracking-wider">
-                                    약침/봉침
-                                </div>
-                                <div class="price text-base sm:text-xl lg:text-3xl mt-2 mb-2 font-bold flex align-center justify-end leading-[1]">
-                                    <span class="leading-[1]">+8,000원/+15,000원</span>
-                                    <!--                                    <span class="rounded-full bg-red-500 mx-1 sm:mx-2 lg:py-1  px-[6px]-->
-                                    <!--                                     sm:px-2 lg:px-3 font-bold text-xs md:text-sm lg:text-xl align-center leading-[1.25] sm:leading-[2]">실비환급 시</span>-->
-                                    <!--                                    <span class="-ml-3 sm:-ml-4 mr1 sm:mr-2 text-red-500 leading-[1.1] z-[-1]">➡ </span>-->
-                                    <!--                                    <span class="font-extrabold bg-gradient-to-r from-yellow-200 to-amber-400 via-yellow-500 inline-block text-transparent bg-clip-text leading-[1]">10,000원</span>-->
-                                </div>
-                                <div class="specifications flex space-x-6 mt-[20px] border-t border-t-[1px]
-                                max-w-[80%] ml-auto overflow-auto  lg:max-w-full text-xs sm:text-md lg:text-lg
-">
-                                    <div class="text-center shrink-0
-                                    w-[40px] sm:w-[60px] lg:w-[90px]
-">
-                                        <p class="font-bold leading-[2] tracking-wider">시술</p>
-                                        <p class="text-xs sm:text-sm lg:text-base text-[#d9d9d9]">5분이내</p>
+                    <div class="list absolute top-0 left-1/2 transform -translate-x-1/2 w-full h-[100%] md:h-[80%]"
+                         x-ref="list"
+                    >
+                        <template x-for="(treatment, index) in treatments" :key="index">
+                            <div class="item w-[100%] lg:w-[70%] mx-auto absolute top-0 left-0  h-full text-[15px]">
+                                <img class="absolute top-1/2 transform -translate-y-1/2 w-[40%] md:w-[50%] right-0 drop-shadow-2xl"
+                                     :src="treatment.image" alt="">
+                                <div class="intro absolute top-1/2 transform -translate-y-1/2 w-[50%] md:w-[400px] opacity-0 pointer-events-none ">
+                                    <div class="topic text-[0.9em] sm:text-[1.5em] md:text-[2em] font-bold bg-gradient-to-r from-yellow-200 to-amber-400 via-yellow-500 inline-block text-transparent bg-clip-text"
+                                         x-text="treatment.topic"
+                                    >
+                                        근육염좌 혹은 인대염증
                                     </div>
-                                    <div class="text-center shrink-0
-                                    w-[95px] sm:w-[140px] lg:w-[200px]
-">
-                                        <p class="font-bold leading-[2] tracking-wider">적응증</p>
-                                        <p class="text-xs sm:text-sm lg:text-base text-[#d9d9d9]">유착된 모든 신경/근막</p>
+                                    <div class="title text-[2em] md:text-[2.5rem] lg:text-[4rem] font-extrabold"
+                                         x-text="treatment.title"
+                                    >
+                                        약침/봉침
                                     </div>
-                                    <div class="text-center shrink-0
-                                    w-[95px] sm:w-[140px] lg:w-[200px]
-                                        ">
-                                        <p class="font-bold leading-[2] tracking-wider">적용대상</p>
-                                        <p class="text-xs sm:text-sm lg:text-base text-[#d9d9d9]">모든 통증 질환</p>
+                                    <div class="description text-sm md:text-base font-md text-[#d9d9d9]"
+                                         x-html="treatment.description"
+                                    >염증이 발생하여 통증이
+                                        극심한
+                                        부위에 직접 주사하여 염증과 통증을 개선하는데 도움이 됩니다. 약침요법은 주사제를 제조하는 방법에 의해 조제된 약침액을, 질환과 연관된 경혈과
+                                        통증
+                                        부위에 주사기를 사용하여 시술하는 방법입니다. <br>봉약침이란 꿀벌에서 추출한 벌독을 정제하여 만든 봉약침을 환자의 체질이나 질병에 따라
+                                        경혈에
+                                        주입하여
+                                        치료하는 방법으로, 진통 소염 효과가 뛰어납니다. 알레르기나 과민반응을 고려해서 필요한 경우에 시술합니다.
                                     </div>
-                                </div>
-                                <div class="checkout bg-transparent font-bold mt-[15px] sm:mt-[20px] flex float-right
-                                text-sm sm:text-base
-"
-                                     style="width: max-content;"
-                                >
-                                    <button class="border border-[1px] border-white px-1">카트에 넣기</button>
-                                    <button class="ml-[5px] border border-[1px] border-white px-1 bg-red-500 text-[#eee]">
-                                        결제하기
+                                    <button class="seeMore"
+                                            @click="showDetail = true"
+                                    >자세히 보기
                                     </button>
                                 </div>
-                            </div>
-                        </div>
-
-                        <!-- 2번째 main -->
-                        <!-- w-70%인데, showDetail시 100%가 될 예정? -->
-                        <div class="item w-[100%] lg:w-[70%] mx-auto absolute top-0 left-0  h-full text-[15px]">
-                            <!-- 이미지는 abs로 w절반먹고, y축 50%이동 우측에 붙이기 -->
-                            <img class="absolute top-1/2 transform -translate-y-1/2 w-[40%] md:w-[50%] right-0 drop-shadow-2xl"
-                                 src="img/treatments/초음파약침.png" alt="">
-                            <!-- intro는 abs top50%중간에서 400px차지하는데, 일단 op0으로 감쳐놓는다.-->
-
-                            <div class="intro absolute top-1/2 transform -translate-y-1/2 w-[50%] md:w-[400px] opacity-0 pointer-events-none ">
-                                <div class="topic text-[1.5em] md:text-[2em] font-bold bg-gradient-to-r from-yellow-200 to-amber-400 via-yellow-500 inline-block text-transparent bg-clip-text">
-                                    근육/신경 유착
-                                </div>
-                                <div class="title text-[2em] md:text-[2.5rem] lg:text-[4rem] font-extrabold">초음파약침</div>
-                                <div class="description text-sm md:text-base font-md text-[#d9d9d9]">미국 초음파 자격증 RMSK를
-                                    수료한 대표원장이 초음파 기기를 활용하여
-                                    Nerve Sprouting과 유착된 섬유조직을 정밀하게 분석한 후 신경 유착을 해소하고
-                                    손상된 조직의 재생과 강화를 유도합니다
-                                </div>
-                                <button class="seeMore">자세히 보기</button>
-                            </div>
-                            <!-- 디테일은 일단 op0/마우스작동안하도록 숨겨준다.-->
-                            <div class="detail opacity-0 pointer-events-none">
-                                <div class="detailTitle text-[1.5em] sm:text-[2em] md:text-[2.5rem] lg:text-[4rem] font-extrabold tracking-wider">
-                                    초음파약침
-                                </div>
-                                <div class="price text-base sm:text-xl lg:text-3xl mt-2 mb-2 font-bold flex align-center justify-end leading-[1]">
-                                    <span class="leading-[1]">+20,000원</span>
-                                    <span class="rounded-full bg-red-500 mx-1 sm:mx-2 lg:py-1  px-[6px]
-                                     sm:px-2 lg:px-3 font-bold text-xs md:text-sm lg:text-xl align-center leading-[1.25] sm:leading-[2]">실비환급 시</span>
-                                    <span class="-ml-3 sm:-ml-4 mr1 sm:mr-2 text-red-500 leading-[1.1] z-[-1]">➡ </span>
-                                    <span class="font-extrabold bg-gradient-to-r from-yellow-200 to-amber-400 via-yellow-500 inline-block text-transparent bg-clip-text leading-[1]">10,000원</span>
-                                </div>
-                                <div class="specifications flex space-x-6 mt-[20px] border-t border-t-[1px]
-                                max-w-[80%] ml-auto overflow-auto  lg:max-w-full text-xs sm:text-md lg:text-lg
-">
-                                    <div class="text-center shrink-0
-                                    w-[40px] sm:w-[60px] lg:w-[90px]
-">
-                                        <p class="font-bold leading-[2] tracking-wider">시술</p>
-                                        <p class="text-xs sm:text-sm lg:text-base text-[#d9d9d9]">5분이내</p>
+                                <!-- 디테일은 일단 op0/마우스작동안하도록 숨겨준다.-->
+                                <div class="detail opacity-0 pointer-events-none">
+                                    <div class="detailTitle text-[1.5em] sm:text-[2em] md:text-[2.5rem] lg:text-[4rem] font-extrabold tracking-wider"
+                                         x-text="treatment.title"
+                                    >
+                                        약침/봉침
                                     </div>
-                                    <div class="text-center shrink-0
+                                    <div class="price text-base sm:text-xl lg:text-3xl mt-2 mb-2 font-bold flex align-center justify-end leading-[1]">
+                                        <span class="leading-[1]" x-text="treatment.price">+8,000원/+15,000원</span>
+                                        <span class="rounded-full bg-red-500 mx-1 sm:mx-2 lg:py-1  px-[6px]
+                                                              sm:px-2 lg:px-3 font-bold text-xs md:text-sm lg:text-xl align-center leading-[1.25] sm:leading-[2]"
+                                              x-show="treatment.isInsuranceCovered"
+                                        >실비환급 시</span>
+                                        <span class="-ml-3 sm:-ml-4 mr1 sm:mr-2 text-red-500 leading-[1.1] z-[-1]"
+                                              x-show="treatment.isInsuranceCovered"
+                                        >➡ </span>
+                                        <span class="font-extrabold bg-gradient-to-r from-yellow-200 to-amber-400 via-yellow-500 inline-block text-transparent bg-clip-text leading-[1]"
+                                              x-show="treatment.isInsuranceCovered"
+                                              x-text="treatment.insurancePrice"
+                                        >10,000원</span>
+                                    </div>
+                                    <div class="specifications flex space-x-6 mt-[20px] border-t border-t-[1px]
+                                max-w-[80%] ml-auto overflow-auto  lg:max-w-full text-xs sm:text-md lg:text-lg">
+                                        <div class="text-center shrink-0
+                                    w-[40px] sm:w-[60px] lg:w-[90px]">
+                                            <p class="font-bold leading-[2] tracking-wider"
+                                               x-text="treatment.specifications.procedure.label">시 술</p>
+                                            <p class="text-xs sm:text-sm lg:text-base text-[#d9d9d9]"
+                                               x-text="treatment.specifications.procedure.description">5분이내</p>
+                                        </div>
+                                        <div class="text-center shrink-0
                                     w-[95px] sm:w-[140px] lg:w-[200px]
 ">
-                                        <p class="font-bold leading-[2] tracking-wider">적응증</p>
-                                        <p class="text-xs sm:text-sm lg:text-base text-[#d9d9d9]">유착된 모든 신경/근막</p>
-                                    </div>
-                                    <div class="text-center shrink-0
+                                            <p class="font-bold leading-[2] tracking-wider"
+                                               x-text="treatment.specifications.indication.label">적응증</p>
+                                            <p class="text-xs sm:text-sm lg:text-base text-[#d9d9d9]"
+                                               x-text="treatment.specifications.indication.description">유착된 모든 신경/근막</p>
+                                        </div>
+                                        <div class="text-center shrink-0
                                     w-[95px] sm:w-[140px] lg:w-[200px]
                                         ">
-                                        <p class="font-bold leading-[2] tracking-wider">적용대상</p>
-                                        <p class="text-xs sm:text-sm lg:text-base text-[#d9d9d9]">모든 통증 질환</p>
+                                            <p class="font-bold leading-[2] tracking-wider"
+                                               x-text="treatment.specifications.target.label">적용대상</p>
+                                            <p class="text-xs sm:text-sm lg:text-base text-[#d9d9d9]"
+                                               x-text="treatment.specifications.target.description">모든 통증 질환</p>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="checkout bg-transparent font-bold mt-[15px] sm:mt-[20px] flex float-right
+                                    <div class="checkout bg-transparent font-bold mt-[15px] sm:mt-[20px] flex float-right
                                 text-sm sm:text-base
 "
-                                     style="width: max-content;"
-                                >
-                                    <button class="border border-[1px] border-white px-1">카트에 넣기</button>
-                                    <button class="ml-[5px] border border-[1px] border-white px-1 bg-red-500 text-[#eee]">
-                                        결제하기
-                                    </button>
+                                         style="width: max-content;"
+                                    >
+                                        <button class="border border-[1px] border-white px-1">즐겨찾기</button>
+                                        <button class="ml-[5px] border border-[1px] border-white px-1 bg-red-500 text-[#eee]">
+                                            문의하기
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="item w-[100%] lg:w-[70%] mx-auto absolute top-0 left-0  h-full text-[15px]">
-                            <!-- 이미지는 abs로 w절반먹고, y축 50%이동 우측에 붙이기 -->
-                            <img class="absolute top-1/2 transform -translate-y-1/2 w-[40%] md:w-[50%] right-0 drop-shadow-2xl"
-                                 src="img/treatments/추나.png" alt="">
-                            <!-- intro는 abs top50%중간에서 400px차지하는데, 일단 op0으로 감쳐놓는다.-->
-
-                            <div class="intro absolute top-1/2 transform -translate-y-1/2 w-[50%] md:w-[400px] opacity-0 pointer-events-none ">
-                                <div class="topic text-[1.5em] md:text-[2em] font-bold bg-gradient-to-r from-yellow-200 to-amber-400 via-yellow-500 inline-block text-transparent bg-clip-text">
-                                    비대칭/불균형으로 인한 통증
-                                </div>
-                                <div class="title text-[2em] md:text-[2.5rem] lg:text-[4rem] font-extrabold">추나+충격파</div>
-                                <div class="description text-sm md:text-base font-md text-[#d9d9d9]">추나요법의 핵심은 관절의 유착을 풀고 균형을 맞춰서 정상운동 범위를 회복하는데 있습니다.
-비수술요법으로 골반대의 무너진 밸런스를 바로잡고 경추와 후두골의 움직임을 바로 잡아 결과적으로 전신의 긴장된
-근육을 이완시키고 척추의 균형을 바로잡아 신경을 누르는 압박을 줄여줌으로서 통증을 완화하고 올바른 자세를 만들어줍니다.
-
-
-                                </div>
-                                <button class="seeMore">자세히 보기</button>
-                            </div>
-                            <!-- 디테일은 일단 op0/마우스작동안하도록 숨겨준다.-->
-                            <div class="detail opacity-0 pointer-events-none">
-                                <div class="detailTitle text-[1.5em] sm:text-[2em] md:text-[2.5rem] lg:text-[4rem] font-extrabold tracking-wider">
-                                    추나+충격파
-                                </div>
-                                <div class="price text-base sm:text-xl lg:text-3xl mt-2 mb-2 font-bold flex align-center justify-end leading-[1]">
-                                    <span class="leading-[1]">+20,000원</span>
-                                    <span class="rounded-full bg-red-500 mx-1 sm:mx-2 lg:py-1  px-[6px]
-                                     sm:px-2 lg:px-3 font-bold text-xs md:text-sm lg:text-xl align-center leading-[1.25] sm:leading-[2]">실비환급 시</span>
-                                    <span class="-ml-3 sm:-ml-4 mr1 sm:mr-2 text-red-500 leading-[1.1] z-[-1]">➡ </span>
-                                    <span class="font-extrabold bg-gradient-to-r from-yellow-200 to-amber-400 via-yellow-500 inline-block text-transparent bg-clip-text leading-[1]">10,000원</span>
-                                </div>
-                                <div class="specifications flex space-x-6 mt-[20px] border-t border-t-[1px]
-                                max-w-[80%] ml-auto overflow-auto  lg:max-w-full text-xs sm:text-md lg:text-lg
-">
-                                    <div class="text-center shrink-0
-                                    w-[40px] sm:w-[60px] lg:w-[90px]
-">
-                                        <p class="font-bold leading-[2] tracking-wider">시술</p>
-                                        <p class="text-xs sm:text-sm lg:text-base text-[#d9d9d9]">10분이내</p>
-                                    </div>
-                                    <div class="text-center shrink-0
-                                    w-[95px] sm:w-[140px] lg:w-[200px]
-">
-                                        <p class="font-bold leading-[2] tracking-wider">적응증</p>
-                                        <p class="text-xs sm:text-sm lg:text-base text-[#d9d9d9]">근육통(경근)/관절척추통(정골)</p>
-                                    </div>
-                                    <div class="text-center shrink-0
-                                    w-[95px] sm:w-[140px] lg:w-[200px]
-                                        ">
-                                        <p class="font-bold leading-[2] tracking-wider">적용대상</p>
-                                        <p class="text-xs sm:text-sm lg:text-base text-[#d9d9d9]">모든 통증 질환</p>
-                                    </div>
-                                </div>
-                                <div class="checkout bg-transparent font-bold mt-[15px] sm:mt-[20px] flex float-right
-                                text-sm sm:text-base
-"
-                                     style="width: max-content;"
-                                >
-                                    <button class="border border-[1px] border-white px-1">카트에 넣기</button>
-                                    <button class="ml-[5px] border border-[1px] border-white px-1 bg-red-500 text-[#eee]">
-                                        결제하기
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item w-[100%] lg:w-[70%] mx-auto absolute top-0 left-0  h-full text-[15px]">
-                            <!-- 이미지는 abs로 w절반먹고, y축 50%이동 우측에 붙이기 -->
-                            <img class="absolute top-1/2 transform -translate-y-1/2 w-[40%] md:w-[50%] right-0 drop-shadow-2xl"
-                                 src="img/treatments/7.png" alt="">
-                            <!-- intro는 abs top50%중간에서 400px차지하는데, 일단 op0으로 감쳐놓는다.-->
-
-                            <div class="intro absolute top-1/2 transform -translate-y-1/2 w-[50%] md:w-[400px] opacity-0 pointer-events-none ">
-                                <div class="topic text-[1.5em] md:text-[2em] font-bold bg-gradient-to-r from-yellow-200 to-amber-400 via-yellow-500 inline-block text-transparent bg-clip-text">
-                                    근육/신경 유착
-                                </div>
-                                <div class="title text-[2em] md:text-[2.5rem] lg:text-[4rem] font-extrabold">초음파약침</div>
-                                <div class="description text-sm md:text-base font-md text-[#d9d9d9]">미국 초음파 자격증 RMSK를
-                                    수료한 대표원장이 초음파 기기를 활용하여
-                                    Nerve Sprouting과 유착된 섬유조직을 정밀하게 분석한 후 신경 유착을 해소하고
-                                    손상된 조직의 재생과 강화를 유도합니다
-                                </div>
-                                <button class="seeMore">자세히 보기</button>
-                            </div>
-                            <!-- 디테일은 일단 op0/마우스작동안하도록 숨겨준다.-->
-                            <div class="detail opacity-0 pointer-events-none">
-                                <div class="detailTitle text-[1.5em] sm:text-[2em] md:text-[2.5rem] lg:text-[4rem] font-extrabold tracking-wider">
-                                    초음파약침
-                                </div>
-                                <div class="price text-base sm:text-xl lg:text-3xl mt-2 mb-2 font-bold flex align-center justify-end leading-[1]">
-                                    <span class="leading-[1]">+20,000원</span>
-                                    <span class="rounded-full bg-red-500 mx-1 sm:mx-2 lg:py-1  px-[6px]
-                                     sm:px-2 lg:px-3 font-bold text-xs md:text-sm lg:text-xl align-center leading-[1.25] sm:leading-[2]">실비환급 시</span>
-                                    <span class="-ml-3 sm:-ml-4 mr1 sm:mr-2 text-red-500 leading-[1.1] z-[-1]">➡ </span>
-                                    <span class="font-extrabold bg-gradient-to-r from-yellow-200 to-amber-400 via-yellow-500 inline-block text-transparent bg-clip-text leading-[1]">10,000원</span>
-                                </div>
-                                <div class="specifications flex space-x-6 mt-[20px] border-t border-t-[1px]
-                                max-w-[80%] ml-auto overflow-auto  lg:max-w-full text-xs sm:text-md lg:text-lg
-">
-                                    <div class="text-center shrink-0
-                                    w-[40px] sm:w-[60px] lg:w-[90px]
-">
-                                        <p class="font-bold leading-[2] tracking-wider">시술</p>
-                                        <p class="text-xs sm:text-sm lg:text-base text-[#d9d9d9]">5분이내</p>
-                                    </div>
-                                    <div class="text-center shrink-0
-                                    w-[95px] sm:w-[140px] lg:w-[200px]
-">
-                                        <p class="font-bold leading-[2] tracking-wider">적응증</p>
-                                        <p class="text-xs sm:text-sm lg:text-base text-[#d9d9d9]">유착된 모든 신경/근막</p>
-                                    </div>
-                                    <div class="text-center shrink-0
-                                    w-[95px] sm:w-[140px] lg:w-[200px]
-                                        ">
-                                        <p class="font-bold leading-[2] tracking-wider">적용대상</p>
-                                        <p class="text-xs sm:text-sm lg:text-base text-[#d9d9d9]">모든 통증 질환</p>
-                                    </div>
-                                </div>
-                                <div class="checkout bg-transparent font-bold mt-[15px] sm:mt-[20px] flex float-right
-                                text-sm sm:text-base
-"
-                                     style="width: max-content;"
-                                >
-                                    <button class="border border-[1px] border-white px-1">카트에 넣기</button>
-                                    <button class="ml-[5px] border border-[1px] border-white px-1 bg-red-500 text-[#eee]">
-                                        결제하기
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="item w-[100%] lg:w-[70%] mx-auto absolute top-0 left-0  h-full text-[15px]">
-                            <!-- 이미지는 abs로 w절반먹고, y축 50%이동 우측에 붙이기 -->
-                            <img class="absolute top-1/2 transform -translate-y-1/2 w-[40%] md:w-[50%] right-0 drop-shadow-2xl"
-                                 src="img/treatments/7.png" alt="">
-                            <!-- intro는 abs top50%중간에서 400px차지하는데, 일단 op0으로 감쳐놓는다.-->
-
-                            <div class="intro absolute top-1/2 transform -translate-y-1/2 w-[50%] md:w-[400px] opacity-0 pointer-events-none ">
-                                <div class="topic text-[1.5em] md:text-[2em] font-bold bg-gradient-to-r from-yellow-200 to-amber-400 via-yellow-500 inline-block text-transparent bg-clip-text">
-                                    근육/신경 유착
-                                </div>
-                                <div class="title text-[2em] md:text-[2.5rem] lg:text-[4rem] font-extrabold">초음파약침</div>
-                                <div class="description text-sm md:text-base font-md text-[#d9d9d9]">미국 초음파 자격증 RMSK를
-                                    수료한 대표원장이 초음파 기기를 활용하여
-                                    Nerve Sprouting과 유착된 섬유조직을 정밀하게 분석한 후 신경 유착을 해소하고
-                                    손상된 조직의 재생과 강화를 유도합니다
-                                </div>
-                                <button class="seeMore">자세히 보기</button>
-                            </div>
-                            <!-- 디테일은 일단 op0/마우스작동안하도록 숨겨준다.-->
-                            <div class="detail opacity-0 pointer-events-none">
-                                <div class="detailTitle text-[1.5em] sm:text-[2em] md:text-[2.5rem] lg:text-[4rem] font-extrabold tracking-wider">
-                                    초음파약침
-                                </div>
-                                <div class="price text-base sm:text-xl lg:text-3xl mt-2 mb-2 font-bold flex align-center justify-end leading-[1]">
-                                    <span class="leading-[1]">+20,000원</span>
-                                    <span class="rounded-full bg-red-500 mx-1 sm:mx-2 lg:py-1  px-[6px]
-                                     sm:px-2 lg:px-3 font-bold text-xs md:text-sm lg:text-xl align-center leading-[1.25] sm:leading-[2]">실비환급 시</span>
-                                    <span class="-ml-3 sm:-ml-4 mr1 sm:mr-2 text-red-500 leading-[1.1] z-[-1]">➡ </span>
-                                    <span class="font-extrabold bg-gradient-to-r from-yellow-200 to-amber-400 via-yellow-500 inline-block text-transparent bg-clip-text leading-[1]">10,000원</span>
-                                </div>
-                                <div class="specifications flex space-x-6 mt-[20px] border-t border-t-[1px]
-                                max-w-[80%] ml-auto overflow-auto  lg:max-w-full text-xs sm:text-md lg:text-lg
-">
-                                    <div class="text-center shrink-0
-                                    w-[40px] sm:w-[60px] lg:w-[90px]
-">
-                                        <p class="font-bold leading-[2] tracking-wider">시술</p>
-                                        <p class="text-xs sm:text-sm lg:text-base text-[#d9d9d9]">5분이내</p>
-                                    </div>
-                                    <div class="text-center shrink-0
-                                    w-[95px] sm:w-[140px] lg:w-[200px]
-">
-                                        <p class="font-bold leading-[2] tracking-wider">적응증</p>
-                                        <p class="text-xs sm:text-sm lg:text-base text-[#d9d9d9]">유착된 모든 신경/근막</p>
-                                    </div>
-                                    <div class="text-center shrink-0
-                                    w-[95px] sm:w-[140px] lg:w-[200px]
-                                        ">
-                                        <p class="font-bold leading-[2] tracking-wider">적용대상</p>
-                                        <p class="text-xs sm:text-sm lg:text-base text-[#d9d9d9]">모든 통증 질환</p>
-                                    </div>
-                                </div>
-                                <div class="checkout bg-transparent font-bold mt-[15px] sm:mt-[20px] flex float-right
-                                text-sm sm:text-base
-"
-                                     style="width: max-content;"
-                                >
-                                    <button class="border border-[1px] border-white px-1">카트에 넣기</button>
-                                    <button class="ml-[5px] border border-[1px] border-white px-1 bg-red-500 text-[#eee]">
-                                        결제하기
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
+                        </template>
 
                     </div>
+
+
                     <!-- 화살표 -->
                     <div class="arrows absolute left-1/2 transform -translate-x-1/2 bottom-[10%] w-full max-w-[90%]  flex justify-between"
                          style="font-family: monospace"
                     >
-                        <button id="prevTreatment"
-                                class="w-8 h-8 rounded-[50%] text-xl font-bold border-[1px] border-white "><
+                        <button id="prevTreatment" x-ref="prev"
+                                class="w-8 h-8 rounded-[50%] text-xl font-bold border-[1px] border-white "
+                                @click="showSlider('prev')"
+                        ><
                         </button>
-                        <button id="backTreatment" class="font-normal bg-transparent border-b border-b-[1px] border-white p-0 tracking-wide
-                                opacity-0">뒤로가기
+                        <button id="backTreatment" x-ref="back" class="font-normal bg-transparent border-b border-b-[1px] border-white p-0 tracking-wide
+                                opacity-0"
+                                @click="showDetail = false"
+                        >뒤로가기
                         </button>
-                        <button id="nextTreatment"
-                                class="w-8 h-8 rounded-[50%] text-xl font-bold border-[1px] border-white ">>
+                        <button id="nextTreatment" x-ref="next"
+                                class="w-8 h-8 rounded-[50%] text-xl font-bold border-[1px] border-white "
+                                @click="showSlider('next')"
+                        >>
                         </button>
                     </div>
 
@@ -2115,73 +2046,73 @@
             </div>
         </div>
 
-        <script>
-            // 1. 좌우 버튼 + 더보기버튼들전체 + 부모요소들
-            let nextButton = document.getElementById('nextTreatment');
-            let backButton = document.getElementById('backTreatment');
-            let prevButton = document.getElementById('prevTreatment');
+        <!--        <script>-->
+        <!--            // 1. 좌우 버튼 + 더보기버튼들전체 + 부모요소들-->
+        <!--            let nextButton = document.getElementById('nextTreatment');-->
+        <!--            let backButton = document.getElementById('backTreatment');-->
+        <!--            let prevButton = document.getElementById('prevTreatment');-->
 
-            let seeMoreButtons = document.querySelectorAll('.seeMore');
+        <!--            let seeMoreButtons = document.querySelectorAll('.seeMore');-->
 
-            let carousel = document.querySelector('.treatment-methods');
-            let listHTML = document.querySelector('.treatment-methods .list');
+        <!--            let carousel = document.querySelector('.treatment-methods');-->
+        <!--            let listHTML = document.querySelector('.treatment-methods .list');-->
 
-            // 2. 버튼들에 showSlider('') 함수 연결
-            nextButton.onclick = function () {
-                showSlider('next');
-            }
-            prevButton.onclick = function () {
-                showSlider('prev');
-            }
+        <!--            // 2. 버튼들에 showSlider('') 함수 연결-->
+        <!--            nextButton.onclick = function () {-->
+        <!--                showSlider('next');-->
+        <!--            }-->
+        <!--            prevButton.onclick = function () {-->
+        <!--                showSlider('prev');-->
+        <!--            }-->
 
-            // 2초이내 클릭 금시 by setTimeout
-            let unAcceptClick;
+        <!--            // 2초이내 클릭 금시 by setTimeout-->
+        <!--            let unAcceptClick;-->
 
-            // 3. showSlider 정의
-            const showSlider = (type) => {
-                nextButton.style.pointerEvents = 'none';
-                prevButton.style.pointerEvents = 'none';
+        <!--            // 3. showSlider 정의-->
+        <!--            const showSlider = (type) => {-->
+        <!--                nextButton.style.pointerEvents = 'none';-->
+        <!--                prevButton.style.pointerEvents = 'none';-->
 
-                // 맨나중에 next/prev 한번씩 해서 다 생길 때,
-                carousel.classList.remove('next', 'prev');
+        <!--                // 맨나중에 next/prev 한번씩 해서 다 생길 때,-->
+        <!--                carousel.classList.remove('next', 'prev');-->
 
-                // 모든 item들을 찾아서. 들어온 type(next/prev)에 따라 직전item위치로 이동시킨다. 1번째는 마지막 position으로 간다.
-                let items = document.querySelectorAll('.treatment-methods .list .item');
-                if (type === 'next') {
-                    listHTML.appendChild(items[0]); // 첫번째 아이템을 마지막에 추가(추가로 삭제해야 이동)
-                    // 여기까지만 해도, 첫번째께 사라짐??
-                    // 추가로 next가 될때 carousel에 next라는 class를 추가해서 signal을 만들어준다.
-                    // next가 달린 .treatment-methods.next의 list에 있는 item중 1번째 것(2->1)에는 2번재 것의 animation을 적용해줄 것이다.
-                    carousel.classList.add('next');
-                } else {
-                    let positionLast = items.length - 1;
-                    listHTML.prepend(items[positionLast]); // 마지막 아이템을 처음에 추가
-                    carousel.classList.add('prev');
-                }
+        <!--                // 모든 item들을 찾아서. 들어온 type(next/prev)에 따라 직전item위치로 이동시킨다. 1번째는 마지막 position으로 간다.-->
+        <!--                let items = document.querySelectorAll('.treatment-methods .list .item');-->
+        <!--                if (type === 'next') {-->
+        <!--                    listHTML.appendChild(items[0]); // 첫번째 아이템을 마지막에 추가(추가로 삭제해야 이동)-->
+        <!--                    // 여기까지만 해도, 첫번째께 사라짐??-->
+        <!--                    // 추가로 next가 될때 carousel에 next라는 class를 추가해서 signal을 만들어준다.-->
+        <!--                    // next가 달린 .treatment-methods.next의 list에 있는 item중 1번째 것(2->1)에는 2번재 것의 animation을 적용해줄 것이다.-->
+        <!--                    carousel.classList.add('next');-->
+        <!--                } else {-->
+        <!--                    let positionLast = items.length - 1;-->
+        <!--                    listHTML.prepend(items[positionLast]); // 마지막 아이템을 처음에 추가-->
+        <!--                    carousel.classList.add('prev');-->
+        <!--                }-->
 
-                clearTimeout(unAcceptClick);
-                unAcceptClick = setTimeout(() => {
-                    nextButton.style.pointerEvents = 'auto';
-                    prevButton.style.pointerEvents = 'auto';
-                }, 2000); // 2초 후에 다시 클릭 가능하게
+        <!--                clearTimeout(unAcceptClick);-->
+        <!--                unAcceptClick = setTimeout(() => {-->
+        <!--                    nextButton.style.pointerEvents = 'auto';-->
+        <!--                    prevButton.style.pointerEvents = 'auto';-->
+        <!--                }, 2000); // 2초 후에 다시 클릭 가능하게-->
 
-            }
-
-
-            // 자세히보기 버튼들 처리 -> class를 추가하여 그때 보이게 한다.
-            seeMoreButtons.forEach(button => {
-                button.onclick = function () {
-                    carousel.classList.add('showDetail');
-                };
-            });
-
-            // 자세히본 상태에서 css로 나타나는 back버튼을 누르면 자세히보기 꺼지기
-            backButton.onclick = function () {
-                carousel.classList.remove('showDetail');
-            };
+        <!--            }-->
 
 
-        </script>
+        <!--            // 자세히보기 버튼들 처리 -> class를 추가하여 그때 보이게 한다.-->
+        <!--            seeMoreButtons.forEach(button => {-->
+        <!--                button.onclick = function () {-->
+        <!--                    carousel.classList.add('showDetail');-->
+        <!--                };-->
+        <!--            });-->
+
+        <!--            // 자세히본 상태에서 css로 나타나는 back버튼을 누르면 자세히보기 꺼지기-->
+        <!--            backButton.onclick = function () {-->
+        <!--                carousel.classList.remove('showDetail');-->
+        <!--            };-->
+
+
+        <!--        </script>-->
     </div>
 
 
