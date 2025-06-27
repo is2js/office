@@ -1332,7 +1332,7 @@
         <div x-show="activeSection == sectionNumber"
              class="h-full"
              x-data="{
-                autoplayIntervalTime: 15000, // 2/3는 detail보고 넘어감. 넘어가기전에 1초는 detail에서 복귀해서 넘어감
+                autoplayIntervalTime: 15000, // 2/3는 detail보고 넘어감. 넘어가기전에 3초는 detail에서 복귀해서 넘어감
                 treatments: [
                     {
                         title: '초음파약침',
@@ -1407,7 +1407,7 @@
 
 
                 init() {
-                    this.startAutoplay(); // 페이지 진입 시 자동 시작
+                    //this.startAutoplay(); // 페이지 진입 시 자동 시작
                 },
 
                 showDetail: false,
@@ -1423,8 +1423,12 @@
                   carousel.classList.remove('next', 'prev');
 
                   if (type === 'next') {
-                    listHTML.appendChild(items[0]);
-                    carousel.classList.add('next');
+
+                      if (items.length > 0) {
+                          listHTML.appendChild(items[0]);
+                          carousel.classList.add('next');
+                        }
+
                   } else {
                     listHTML.prepend(items[items.length - 1]);
                     carousel.classList.add('prev');
@@ -1444,7 +1448,7 @@
 
                 const interval = this.autoplayIntervalTime;
                 const showDetailStart = interval / 3;
-                const beforeNextDelay = 1000;
+                const beforeNextDelay = 2000;
 
                 const step1 = () => {
                   if (this.isHovered) return; // 마우스 올라간 상태면 멈춤
@@ -2144,6 +2148,7 @@
               afternoon: '14:00~17:00',
               night: '17:00~20:30'
             },
+            showDetail: false,
             ranges() {
               return {
                 morning: this.parseRange(this.timeStrings.morning),
@@ -2159,8 +2164,7 @@
                       previewPhoto: 'https://front.chojaeseong.com/images/png/profile/sub/01.png',
                       photo: 'https://front.chojaeseong.com/images/png/profile/main/01.png',
                      ment: '집앞 한의원 방문으로부터 약 20년을 <br>한약과 함께하는 ️찐한의사',
-
-                      link: 'http://hanchangbone.com/view/sub0103.php',
+                     link: 'http://hanchangbone.com/view/sub0103.php',
                       schedule: {
                         '월': { start: '09:00', end: '17:00' },
                         '화': { start: '09:00', end: '16:00' },
@@ -2189,7 +2193,6 @@
                       previewPhoto: 'https://front.chojaeseong.com/images/png/profile/sub/02.png',
                       photo: 'https://front.chojaeseong.com/images/png/profile/main/02.png',
                       ment: '한의대 수석졸업 및 통계전공 한의사가 <br> 운동/재활/초음파를 접목한 치료를 선보이겠습니다!',
-
                       link: 'http://hanchangbone.com/view/sub0103.php',
                       schedule: {
                         '월': { start: '09:00', end: '20:30' },
@@ -2208,7 +2211,7 @@
                             {year: '`19', title: '서울대의대 생명과학교실 인턴쉽', isCertified: true},
                         ],
                     certificates: [
-                            {title: '미국의사 근골격계 초음파 자격(RSMK) 획득'},
+                            {title: '미국의사 근골격계 초음파 자격(RSMK) 획득 ㅇㅇㅇㅇㅇㅇㅇㅇㅇ'},
                             {title: '대한스포츠한의학회 팀닥터 인증의'},
                             {title: '척추신경추나의학회 인증의'},
                             {title: '의료통계학 석사'},
@@ -2216,24 +2219,24 @@
                             {title: 'SCIE 논문 1저자(학부생 최초 딥러닝 독성약재감별)'},
                         ],
                     },
-                    //{
-                    //  name: '신현주',
-                    //  title: '진료원장',
-                    //  specialty: '내과, 여성질환',
-                    //  previewPhoto: 'https://front.chojaeseong.com/images/png/profile/sub/02.png',
-                    //  photo: 'http://hanchangbone.com/img/int2.png',
-                    //  link: 'http://hanchangbone.com/view/sub0103.php',
-                    //  ment: '한의대 수석졸업 및 통계전공 한의사가 <br> 운동/재활/초음파를 접목한 치료를 선보이겠습니다!',
-                    //  schedule: {
-                    //    '월': null,
-                    //    '화': null,
-                    //    '수': null,
-                    //    '목': { start: '09:00', end: '17:00' },
-                    //    '금': null,
-                    //    '토': null,
-                    //    '일': { start: '09:00', end: '17:00' },
-                    //  }
-                    //},
+                   //{
+                   //  name: '신현주',
+                   //  title: '진료원장',
+                   //  specialty: '내과, 여성질환',
+                   //  previewPhoto: 'https://front.chojaeseong.com/images/png/profile/sub/02.png',
+                   //  photo: 'http://hanchangbone.com/img/int2.png',
+                   //  link: 'http://hanchangbone.com/view/sub0103.php',
+                   //  ment: '한의대 수석졸업 및 통계전공 한의사가 <br> 운동/재활/초음파를 접목한 치료를 선보이겠습니다!',
+                   //  schedule: {
+                   //    '월': null,
+                   //    '화': null,
+                   //    '수': null,
+                   //    '목': { start: '09:00', end: '17:00' },
+                   //    '금': null,
+                   //    '토': null,
+                   //    '일': { start: '09:00', end: '17:00' },
+                   //  }
+                   //},
               ],
               timeToMinutes(t) {
               // '14:30' -> 870
@@ -2422,8 +2425,6 @@
         this.sliding();
     },
 
-
-
 }
 "
         >
@@ -2437,10 +2438,17 @@
             <!--            <div class="container">-->
             <!--            <div class="container h-full flex flex-col justify-center items-center">-->
             <!-- 추가내용은 제목빼고 h-full 상태로 만들어두고 내용물은 가운데 정렬. -->
-            <div class="container h-full flex flex-col justify-center items-center">
+            <div class="container h-full flex flex-col justify-center items-center"
+                 :class="{ 'showDetail': showDetail }"
+            >
                 <!-- container내부놈은 height가 주어지든지 해야함??-->
                 <!--                <div class="doctors-top flex  grow">-->
-                <div class="doctors-top flex ">
+                <div class="doctors-top flex "
+                     x-show="!showDetail"
+                     x-transition:leave="transition-all duration-5000 ease-in-out"
+                     x-transition:leave-start="opacity-100"
+                     x-transition:leave-end="opacity-0 max-h-0 overflow-hidden"
+                >
                     <!--                     style="height: 100px;"-->
                     <div class="doctors-top-left  mr-6 "
                          style="width: calc(320px * 0.7);"
@@ -2473,12 +2481,14 @@
                          style="width: 572px;"
                     >
 
-                        <div class="swiper doctorsMentSwiper">
+                        <div class="swiper doctorsMentSwiper
+                        relative left-[22%]
+                        ">
                             <div class="swiper-wrapper">
                                 <template x-for="(doctor, index) in doctors" :key="index">
                                     <!-- ment slide -->
                                     <div class="swiper-slide">
-                                        <p class="doctors-top-right-subtitle text-2xl font-semibold mb-4 leading-10
+                                        <p class="doctors-top-right-subtitle text-[1.3rem] leading-[1.2] font-semibold mb-4 leading-10
                                                 bg-gradient-to-br from-yellow-200 to-amber-400 via-yellow-500 inline-block text-transparent bg-clip-text"
                                            x-html="' ' + doctor.ment + ' '"
                                         >
@@ -2496,7 +2506,7 @@
                         </div>
 
                         <!-- docstors swiper prev/next 버튼 -->
-                        <div class="flex  justify-start items-center space-x-5 mt-4 -ml-8">
+                        <div class="flex  justify-start items-center space-x-3 -mt-2 -ml-10">
                             <button class="doctors-swiper-button-prev cursor-pointer rounded-full p-1 text-white bg-white bg-opacity-25 z-10"
                                     @click="prevSlide()"
                             >
@@ -2521,127 +2531,152 @@
                     </div>
                 </div>
 
-                <div class="doctors-bottom  shrink-0 flex overflow-hidden -mt-12">
+                <div class="doctors-bottom  flex shrink-0 grow overflow-hidden -mt-12">
                     <div class="swiper doctorsBottomSwiper ">
                         <div class="swiper-wrapper">
                             <!-- 552 x 629-->
                             <!--<div class="swiper-slide">-->
                             <template x-for="(doctor, index) in doctors" :key="index">
 
-                                <div class="swiper-slide overflow-hidden">
-                                    <figure class="doctors-bottom-img"
-                                    >
+                                <div class="swiper-slide overflow-hidden relative">
+                                    <figure class="doctors-bottom-img
+                                    flex flex-col justify-end h-full w-full">
                                         <!-- 의료진 사진 src -->
-                                        <img class="w-full" :src="doctor.photo" alt="">
+                                        <img
+                                                class="w-full drop-shadow-[8px_0_8px_rgba(0,0,0,0.6)]"
+                                                :src="doctor.photo" alt=""
+                                        >
                                     </figure>
-                                    <div class="doctors-bottom-text text-white -ml-8">
+                                    <div class="doctors-bottom-text text-white -ml-4"
+                                         :class="!showDetail  ? 'w-[648px]' : 'w-[620px]'"
+                                    >
                                         <!-- 의료진 설명 -->
                                         <p class="ml-4 doctors-bottom-text-description font-bold -mt-4
                                                         bg-gradient-to-r from-yellow-200 to-amber-400 via-yellow-500 inline-block text-transparent bg-clip-text
                                                         "
                                            x-text="doctor.specialty">통증재활, 한의사</p>
                                         <!-- 의료진 이름 및 직책 -->
-                                        <h4 class=" doctors-bottom-text-name ml-6"
+                                        <h4 class=" doctors-bottom-text-name ml-6 font-extrabold"
                                             x-html="doctor.name + '<span>' + doctor.title + '</span>'"></h4>
 
 
-                                        <a class="doctors-bottom-text-button ml-8 text-sm px-2 py-1 rounded  mt-4 mb-4
-                                        text-[#fde68a]
-                                        hover:bg-gradient-to-r from-yellow-200 to-amber-400 via-yellow-500 text-white bg-opacity-80 transition duration-300 ease-in-out
-                                          hover:text-gray-600
-"
-                                           :href="doctor.link">
-                                            진료일정 및 상세보기
-                                        </a>
-
-
                                         <!-- 스케쥴 -->
-                                        <!--                                                                                <div class="doctors-bottom-text-schedule mt-11">-->
-                                        <!--                                                                                    <div class="schedule_list" style="width: 460px;">-->
-                                        <!--                                                                                        <div class="doctors-bottom-text-title mb-2">진료일정</div>-->
-                                        <!--                                                                                        <div class="inner">-->
-                                        <!--                                                                                            <div class="clinic">진료</div>-->
-                                        <!--                                                                                            <div class="night">야간/연장진료</div>-->
-                                        <!--                                                                                            <div class="half">부분진료</div>-->
-                                        <!--                                                                                        </div>-->
-                                        <!--                                                                                    </div>-->
-                                        <!--                                                                                    <table class="schedule-table mt-2"-->
-                                        <!--                                                                                           style="width: 460px; display: inline-block;">-->
-                                        <!--                                                                                        <colgroup>-->
-                                        <!--                                                                                            <col style="width: 150px;">-->
-                                        <!--                                                                                            <template x-for="i in 7">-->
-                                        <!--                                                                                                <col style="width: 45px;">-->
-                                        <!--                                                                                            </template>-->
-                                        <!--                                                                                        </colgroup>-->
-                                        <!--                                                                                        &lt;!&ndash; 요일 &ndash;&gt;-->
-                                        <!--                                                                                        <thead>-->
-                                        <!--                                                                                        <tr>-->
-                                        <!--                                                                                            <th style="font-weight: 600;">진료시간</th>-->
-                                        <!--                                                                                            <template x-for="day in days">-->
-                                        <!--                                                                                                <th x-text="day"-->
-                                        <!--                                                                                                    :class="{-->
-                                        <!--                                                                                                                  'text-red-500': day === '일',-->
-                                        <!--                                                                                                                  'text-blue-400': day === '토',-->
-                                        <!--                                                                                                                  'text-white': day !== '일' && day !== '토'-->
-                                        <!--                                                                                                                }"-->
-                                        <!--                                                                                                ></th>-->
-                                        <!--                                                                                            </template>-->
-                                        <!--                                                                                        </tr>-->
-                                        <!--                                                                                        </thead>-->
-                                        <!--                                                                                        &lt;!&ndash; 진료시간 &ndash;&gt;-->
-                                        <!--                                                                                        <tbody>-->
-                                        <!--                                                                                        <tr class="text-center align-bottom ">-->
-                                        <!--                                                                                            <th>오 전<br><small x-text="timeLabels().morning"></small></th>-->
-                                        <!--                                                                                            <template x-for="day in days">-->
-                                        <!--                                                                                                <td x-html="getHTML(doctor.schedule[day], 'morning')"></td>-->
-                                        <!--                                                                                            </template>-->
-                                        <!--                                                                                        </tr>-->
-                                        <!--                                                                                        <tr>-->
-                                        <!--                                                                                            <th>오 후<br><small x-text="timeLabels().afternoon"></small></th>-->
-                                        <!--                                                                                            <template x-for="day in days">-->
-                                        <!--                                                                                                <td x-html="getHTML(doctor.schedule[day], 'afternoon')"></td>-->
-                                        <!--                                                                                            </template>-->
-                                        <!--                                                                                        </tr>-->
-                                        <!--                                                                                        <tr>-->
-                                        <!--                                                                                            <th>야 간<br><small x-text="timeLabels().night"></small></th>-->
-                                        <!--                                                                                            <template x-for="day in days">-->
-                                        <!--                                                                                                <td x-html="getHTML(doctor.schedule[day], 'night')"></td>-->
-                                        <!--                                                                                            </template>-->
-                                        <!--                                                                                        </tr>-->
-                                        <!--                                                                                        </tbody>-->
-                                        <!--                                                                                    </table>-->
-                                        <!--                                                                                </div>-->
+                                        <div class="doctors-bottom-text-schedule mt-8 hidden"
+                                             :class="{ '!block': showDetail }">
+                                            <div class="schedule_list" style="width: 460px;">
+                                                <div class="doctors-bottom-text-title mb-2">진료일정</div>
+                                                <div class="inner">
+                                                    <div class="clinic">진료</div>
+                                                    <div class="night">야간/연장진료</div>
+                                                    <div class="half">부분진료</div>
+                                                </div>
+                                            </div>
+                                            <table class="schedule-table mt-2"
+                                                   style="width: 460px; display: inline-block;">
+                                                <colgroup>
+                                                    <col style="width: 150px;">
+                                                    <template x-for="i in 7">
+                                                        <col style="width: 45px;">
+                                                    </template>
+                                                </colgroup>
+                                                <!-- 요일 -->
+                                                <thead>
+                                                <tr>
+                                                    <th style="font-weight: 600;">진료시간</th>
+                                                    <template x-for="day in days">
+                                                        <th x-text="day"
+                                                            :class="{
+                                                                              'text-red-500': day === '일',
+                                                                              'text-blue-400': day === '토',
+                                                                              'text-white': day !== '일' && day !== '토'
+                                                                            }"
+                                                        ></th>
+                                                    </template>
+                                                </tr>
+                                                </thead>
+                                                <!-- 진료시간 -->
+                                                <tbody>
+                                                <tr class="text-center align-bottom ">
+                                                    <th>오 전<br><small x-text="timeLabels().morning"></small></th>
+                                                    <template x-for="day in days">
+                                                        <td x-html="getHTML(doctor.schedule[day], 'morning')"></td>
+                                                    </template>
+                                                </tr>
+                                                <tr>
+                                                    <th>오 후<br><small x-text="timeLabels().afternoon"></small></th>
+                                                    <template x-for="day in days">
+                                                        <td x-html="getHTML(doctor.schedule[day], 'afternoon')"></td>
+                                                    </template>
+                                                </tr>
+                                                <tr>
+                                                    <th>야 간<br><small x-text="timeLabels().night"></small></th>
+                                                    <template x-for="day in days">
+                                                        <td x-html="getHTML(doctor.schedule[day], 'night')"></td>
+                                                    </template>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
 
                                         <!-- 1. 커리어 -->
                                         <!-- 1. 커리어 일단 4개만 by .slice(0, 4)-->
-                                        <div class="doctors-bottom-text-career text-left mt-8">
-                                            <div class="doctors-bottom-text-title mb-2">경 력</div>
-                                            <template x-for="(career, index) in doctor.career.slice(0, 4)" :key="index">
-                                                <div class="flex">
+                                        <div class="doctors-bottom-text-career text-left "
+                                             :class="showDetail ? 'flex w-full mt-8' : 'block ml-4 mt-10' "
+                                        >
+                                            <template x-if="doctor && doctor.career">
+                                                <div :class="showDetail ? 'flex-shrink-0 inline-block' : 'w-full' ">
+                                                    <div class="doctors-bottom-text-title mb-2">경 력</div>
+                                                    <template
+                                                            x-for="(career, index) in showDetail ? doctor.career.slice(0, 7) : doctor.career.slice(0, 5)"
+                                                            :key="index">
+                                                        <div class="flex">
                                                     <span
                                                             :class="{ 'verify' : career.isCertified }"
                                                             x-text="career.year"
                                                     ></span>
-                                                    <h5 class="bg-img bg-img-x-right"
-                                                        :class="{ 'verify' : career.isCertified }"
-                                                        x-text="career.title"
-                                                    ></h5>
+                                                            <h5 class="bg-img bg-img-x-right"
+                                                                :class="{ 'verify' : career.isCertified }"
+                                                                x-text="career.title"
+                                                            ></h5>
+                                                        </div>
+                                                    </template>
                                                 </div>
                                             </template>
 
                                             <!-- 2. 자격증 -->
-                                            <br/>
-                                            <div class="doctors-bottom-text-title mb-2">자 격</div>
-                                            <template x-for="(certificate, index) in doctor.certificates.slice(0, 4)"
-                                                      :key="index">
-                                                <h5 class="cert bg-img bg-img-x-left ml-2"
-                                                    x-text="certificate.title"
-                                                ></h5>
+                                            <template x-if="doctor && doctor.career">
+                                                <div :class="showDetail ? 'flex-1 overflow-hidden' : 'w-full mt-6' ">
+                                                    <div class="doctors-bottom-text-title mb-2">자 격</div>
+                                                    <template
+                                                            x-for="(certificate, index) in showDetail ? doctor.certificates.slice(0, 7) : doctor.certificates.slice(0, 5)"
+                                                            :key="index">
+                                                        <h5 class="cert bg-img bg-img-x-left ml-2
+                                                        truncate block w-full max-w-full"
+                                                            x-text="certificate.title"
+                                                            style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; max-width: 100%;"
+                                                        ></h5>
+                                                    </template>
+                                                </div>
                                             </template>
-
-
                                         </div>
 
+                                        <template x-if="!showDetail">
+                                            <a class="doctors-bottom-text-button text-sm py-1 mt-4
+                                                            text-[#fde68a] hover:text-white"
+                                               :class="!showDetail ? 'ml-5' : 'ml-2' "
+                                               @click="showDetail = true">
+                                                📅 일정표 및 자세히보기
+                                            </a>
+                                        </template>
+
+                                        <template x-if="showDetail">
+                                            <a class="doctors-bottom-text-button text-sm  py-1 mt-4
+                                                            text-[#fde68a] hover:text-white"
+                                               :class="!showDetail ? 'ml-5' : 'ml-4' "
+                                               @click="showDetail = false">
+                                                ↩ 뒤로가기
+                                            </a>
+                                        </template>
                                     </div>
                                 </div>
                             </template>
