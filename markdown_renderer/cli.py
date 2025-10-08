@@ -25,12 +25,16 @@ CONFIG_DIR_NAME = '.mdr'  # SOURCE_DIR 내부의 config 폴더
 
 # OUTPUT_DIR = '../html'  # 상대경로
 OUTPUT_DIR_NAME = 'build'  # 빌드는 패키지 내부/build 폴더 -> 패키지설치후 root의 build폴더
+# 삭제
+OUTPUT_DIR = OUTPUT_DIR_NAME
 
 # TEMPLATE_DIR = 'md_templates'  # 템플릿도 패키지내부 폴더에서 제공할 것으로 지정
 
-# PACKAGE_DIR = os.path.dirname(__file__)  # 패키지 폴더이름 (내/외부 무관)
-PACKAGE_DIR = Path(__file__).resolve().parent  # 패키지 폴더 절대경로(resolve)
-OUTPUT_DIR = os.path.join(PACKAGE_DIR.parent, OUTPUT_DIR_NAME)
+PACKAGE_DIR = os.path.dirname(__file__)  # 패키지 폴더이름 (내/외부 무관)
+# 변경
+# PACKAGE_DIR = Path(__file__).resolve().parent  # 패키지 폴더 절대경로(resolve)
+# 추가
+# OUTPUT_DIR = os.path.join(PACKAGE_DIR.parent, OUTPUT_DIR_NAME)
 
 TEMPLATE_DIR = os.path.join(PACKAGE_DIR, 'md_templates')  # 템플릿도 패키지내부 폴더에서 제공할 것으로 지정
 STATIC_DIR = os.path.join(TEMPLATE_DIR, 'static')
@@ -465,7 +469,7 @@ def cli_entry_point():
 def clear_output_dir():
     if os.path.exists(OUTPUT_DIR):
         shutil.rmtree(OUTPUT_DIR)
-    os.makedirs(OUTPUT_DIR)  # 폴더 다시 생성
+    # os.makedirs(OUTPUT_DIR)  # 폴더 다시 생성
 
 
 def process_init_prev_and_next_post(i: int, posts: list[Any]) -> tuple[Any, Any]:
