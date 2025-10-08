@@ -43,7 +43,7 @@ jobs:
 #python setup.py install
 #mdr
       - name: Deploy Github Pages # gh-pages에 빌드한 것과 함께 배포 (빌드한 내용물을 pull request로 gh-pages 브랜치에 반영)
-        uses: peaceiris/actions-gh-pages@v4
+        uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/master' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }} # GH_ACTIONS_TOKEN 도 따로 만들어뒀는데, default token인 듯.
