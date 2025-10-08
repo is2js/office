@@ -16,8 +16,8 @@ jobs:
     concurrency: # 동시성 설정
       group: ${{ github.workflow }}-${{ github.ref }} # 동시성 그룹 설정
     steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🎉 The job is now running on a ${{ runner.os }} server hosted by Github!"
+#      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+#      - run: echo "🎉 The job is now running on a ${{ runner.os }} server hosted by Github!"
       - run: echo "🔎 The name  of your branch is  ${{ github.ref }} and your repository is ${{ github.repository }}."
 
       - name: Checkout Repository # 체크아웃 => repository의 코드들을 runner로 클론후 checkout까지
@@ -43,6 +43,9 @@ jobs:
           pip install -e .
           mdr
 
+      - name: List files after Build site # 빌드 후 파일 목록 출력
+        run: |
+          ls ${{ github.workspace }}
 #python setup.py install
 #mdr
       - name: Deploy Github Pages # gh-pages에 빌드한 것과 함께 배포 (빌드한 내용물을 pull request로 gh-pages 브랜치에 반영)
