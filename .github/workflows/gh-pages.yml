@@ -1,0 +1,33 @@
+name: Github Pages
+on:
+  push:
+    branches:
+      - master  # Set a branch name to trigger deployment
+    #pull_request:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest # 시작OS
+    permissions: # 권한 설정
+      contents: write
+    concurrency: # 동시성 설정
+      group: ${{ github.workflow }}-${{ github.ref }} # 동시성 그룹 설정
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🎉 The job is now running on a ${{ runner.os }} server hosted by Github!"
+      - run: echo "🔎 The name  of your branch is  ${{ github.ref }} and your repository is ${{ github.repository }}."
+
+      - name: Checkout Repository # 체크아웃 = 클론?
+        uses: actions/checkout@v3
+      - run: echo "?? The ${{  github.repository }} repository has been cloned out to ${{ github.workspace }} on the runner."
+
+      - name: List files # 파일 목록 출력
+        run: |
+          ls ${{ github.workspace }}
+
+      - run: echo "🍏 This job's status is ${{ job.status }}."
+
+
+          
+
+

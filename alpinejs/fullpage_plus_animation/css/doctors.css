@@ -137,19 +137,22 @@
 
 .doctors-bottom {
     /*margin-top: 5px;*/
-    max-width: 1088px;
+
+    /*tailwind*/
+    /*max-width: 1088px;*/
 
     & .doctors-bottom-img {
-        max-width: calc(552px * 0.95);
-        margin: 0;
-
-        float: right;
+        /* tainwind */
+        /*max-width: calc(552px * 0.95);*/
+        /*margin: 0;*/
+        /*float: right;*/
 
     }
 
     /* 자세히 보기시 */
 
     .showDetail & {
+
         max-width: 1150px;
 
         & .doctors-bottom-img {
