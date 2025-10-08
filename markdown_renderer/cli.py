@@ -29,6 +29,21 @@ PACKAGE_DIR = os.path.dirname(__file__)  # 패키지 폴더이름 (내/외부 �
 TEMPLATE_DIR = os.path.join(PACKAGE_DIR, 'md_templates')  # 템플릿도 패키지내부 폴더에서 제공할 것으로 지정
 STATIC_DIR = os.path.join(TEMPLATE_DIR, 'static')
 
+
+################
+# github actions 용 #
+################
+print(f"__name__  >> {__name__}")
+print(f"SOURCE_DIR  >> {SOURCE_DIR}")
+print(f"CONFIG_DIR  >> {CONFIG_DIR}")
+print(f"PACKAGE_DIR  >> {PACKAGE_DIR}")
+print(f"TEMPLATE_DIR  >> {TEMPLATE_DIR}")
+print(f"OUTPUT_DIR  >> {OUTPUT_DIR}")
+print(f"STATIC_DIR  >> {STATIC_DIR}")
+
+
+
+
 TRUNCATE_STRING = [
     '<!-- truncate -->', '<!--truncate-->',
     '<!--summary-->', '<!-- summary -->',
