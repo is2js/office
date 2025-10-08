@@ -8,8 +8,11 @@ on:
 jobs:
   deploy: # actions > 좌측 탭으로 나올 job 이름
     runs-on: ubuntu-latest # 시작OS
-    permissions: # 권한 설정
+
+    # permissions: write-all
+    permissions:
       contents: write
+
     concurrency: # 동시성 설정
       group: ${{ github.workflow }}-${{ github.ref }} # 동시성 그룹 설정
     steps:
@@ -42,10 +45,16 @@ jobs:
 
 #python setup.py install
 #mdr
-      - name: Deploy Github Pages # gh-pages에 빌드한 것과 함께 배포 (빌드한 내용물을 pull request로 gh-pages 브랜치에 반영)
-        uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.ref == 'refs/heads/master' }}
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }} # GH_ACTIONS_TOKEN 도 따로 만들어뒀는데, default token인 듯.
-          publish_dir: ./build
+#      - name: Deploy Github Pages # gh-pages에 빌드한 것과 함께 배포 (빌드한 내용물을 pull request로 gh-pages 브랜치에 반영)
+#        uses: peaceiris/actions-gh-pages@v3
+#        if: ${{ github.ref == 'refs/heads/master' }}
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }} # GH_ACTIONS_TOKEN 도 따로 만들어뒀는데, default token인 듯.
+#          publish_dir: ./build
 
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.1.3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: gh-pages
+          folder: build
