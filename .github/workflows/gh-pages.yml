@@ -34,6 +34,8 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.11' # 파이썬 버전 설정
+          cache: pip
+          cache-dependency-path: ./requirements.txt
 
       - name: Build site # 로컬 터미널에서 하던 python 패키지 빌드 작업
         run: |
@@ -48,9 +50,16 @@ jobs:
           ls ${{ github.workspace }}
 #python setup.py install
 #mdr
-      - name: Deploy Github Pages # gh-pages에 빌드한 것과 함께 배포 (빌드한 내용물을 pull request로 gh-pages 브랜치에 반영)
-        uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.ref == 'refs/heads/master' }}
+      # https://github.com/peaceiris/actions-gh-pages
+#      - name: Deploy Github Pages # gh-pages에 빌드한 것과 함께 배포 (빌드한 내용물을 pull request로 gh-pages 브랜치에 반영)
+#        uses: peaceiris/actions-gh-pages@v3
+#        if: ${{ github.ref == 'refs/heads/master' }}
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }} # GH_ACTIONS_TOKEN 도 따로 만들어뒀는데, default token인 듯.
+#          publish_dir: ./build
+
+      - name: Deploy
+        uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }} # GH_ACTIONS_TOKEN 도 따로 만들어뒀는데, default token인 듯.
+          personal_token: ${{ secrets.PERSONAL_TOKEN }}
           publish_dir: ./build
