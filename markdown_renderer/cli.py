@@ -208,8 +208,10 @@ def cli_entry_point():
             relative_path = post['attributes']['file_full_path'].replace(SOURCE_DIR, '').replace('.md', '.html')
 
         # 상대경로에선, 맨 앞에 '/'를 제거한다.
+        print(f"처리전 relative_path  >> {relative_path}")
         if relative_path.startswith('\\') or relative_path.startswith('/'):
             relative_path = relative_path[1:]
+        print(f"처리 후 relative_path  >> {relative_path}")
 
         # print(f"relative_path  >> {relative_path}")
         # relative_path  >> 1 cli.html
