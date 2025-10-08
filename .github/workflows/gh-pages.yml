@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - master  # Set a branch name to trigger deployment
-    #pull_request:
+    pull_request:
 
 jobs:
   deploy: # actions > 좌측 탭으로 나올 job 이름
