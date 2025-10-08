@@ -69,7 +69,7 @@ def cli_entry_point():
     files_full_path_to_render, image_files_full_path = get_full_path_of_files_to_render_and_images()
 
     ## build폴더 삭제 미리 해놓기
-    delete_output_dir_already()
+    clear_output_dir()
 
     ## Load Config
     # - docs > .mdr > config.yml 읽기. 없으면 설치패키지 내부 폴더에서 가져오기
@@ -462,9 +462,10 @@ def cli_entry_point():
             f.write(code_highlight_css)
 
 
-def delete_output_dir_already():
+def clear_output_dir():
     if os.path.exists(OUTPUT_DIR):
         shutil.rmtree(OUTPUT_DIR)
+    os.makedirs(OUTPUT_DIR)  # 폴더 다시 생성
 
 
 def process_init_prev_and_next_post(i: int, posts: list[Any]) -> tuple[Any, Any]:
