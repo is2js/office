@@ -2,6 +2,7 @@ import datetime
 import os.path
 import re
 import shutil
+from typing import Any
 
 import frontmatter
 import jinja2
@@ -77,7 +78,7 @@ def cli_entry_point():
 
     with open(config_file_path, 'r', encoding='utf-8') as f:
         config = yaml.safe_load(f)
-        # print(f"config  >> {config}") # config  >> {'title': '상세질환 디자인(외부)'}
+        print(f"config  >> {config}") # config  >> {'title': '상세질환 디자인(외부)'}
 
     posts = []  #
     post_paths = {}  # 모든 post에 대한 path들을 모은다. TODO: DB에서 검사
@@ -99,10 +100,10 @@ def cli_entry_point():
                 # 'date', 'date_parsed', 'path' : '/blog/nested/post',
                 # }
                 # raise ValueError('해당파일에 frontmatter가 빠짐: ', file_full_path)
-                print(f'🤣 frontmatter가 없는 파일 수정 요망: {file_full_path}')
+                # print(f'🤣 frontmatter가 없는 파일 수정 요망: {file_full_path}')  TODO: 임시로 출력 막음
                 continue
 
-            print(f"attributes  >> {attributes}")
+            # print(f"attributes  >> {attributes}") TODO: 임시로 출력 막음
 
 
             ## front용 path지정(백엔드 달리면 필요 없을 듯)
@@ -198,13 +199,7 @@ def cli_entry_point():
     ## render post
     for i, post in enumerate(posts):
         # 17-1) init prev/next
-        prev_post = next_post = None
-        # 아직 안끝났으면, next post객체를 넣어놓기
-        if i < len(posts) - 1:
-            next_post = posts[i + 1]
-        # 0번째가 아니면, prev post객체를 넣어놓기
-        if i > 0:
-            prev_post = posts[i - 1]
+        next_post, prev_post = process_init_prev_and_next_post(i, posts)
 
         # 18) 'path': /blog/nested/post 가 있으면, path + '/index.html'을 붙힌 상대주소를 만든다.
         if 'path' in post['attributes']:
@@ -463,6 +458,17 @@ def cli_entry_point():
             f.write(code_highlight_css)
 
 
+def process_init_prev_and_next_post(i: int, posts: list[Any]) -> tuple[Any, Any]:
+    prev_post = next_post = None
+    # 아직 안끝났으면, next post객체를 넣어놓기
+    if i < len(posts) - 1:
+        next_post = posts[i + 1]
+    # 0번째가 아니면, prev post객체를 넣어놓기
+    if i > 0:
+        prev_post = posts[i - 1]
+    return next_post, prev_post
+
+
 def render_html(page, config, env, posts, title='Home', root_path_back_level=0, **others):
     html_template = env.get_template(page)
 
@@ -517,24 +523,24 @@ def get_full_path_of_files_to_render_and_images():
             ## 이미지 파일도 복사해놓기 (md파일 필터링 전)
             for image_type in ['.png', '.jpg', '.jpeg', '.gif', '.svg', '.webp']:
                 if file_basename.lower().endswith(image_type):
-                    print(f'  이미지 파일 >> {file_basename}')
+                    # print(f'  이미지 파일 >> {file_basename}') TODO: 임시로 출력 막음
                     full_path_of_image_files.append(full_path)
 
             # 11-2) md파일도 아니면서 .renderignore도 아닌 것 -> pass
             if not file_basename.lower().endswith('.md'):
-                print(f'  SOURCE_DIR 폴더에 md파일이 아닌 것이 존재 >> {file_basename}')
+                # print(f'  SOURCE_DIR 폴더에 md파일이 아닌 것이 존재 >> {file_basename}') TODO: 임시로 출력 막음
                 continue
 
             # 11-3) 파일명이 .renderignore에 포함되어 있다면, pass
             if file_basename in files_to_render_ignore:
-                print(f"  제외된 파일 목록 >> {file_basename}")
+                # print(f"  제외된 파일 목록 >> {file_basename}") TODO: 임시로 출력 막음
                 continue
 
             # 3) 파일명이 .md로 끝나는지 확인하고 그렇다면, root + filename을 합쳐서 파일 경로를 저장한다.
             # if filename.lower().endswith('.md'):
             full_path_of_files_to_render.append(full_path)
 
-        print(f"files_to_render  >> {full_path_of_files_to_render}")
+        # print(f"files_to_render  >> {full_path_of_files_to_render}") TODO: 임시로 출력 막음
     return full_path_of_files_to_render, full_path_of_image_files
 
 
