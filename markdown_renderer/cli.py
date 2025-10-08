@@ -2,6 +2,7 @@ import datetime
 import os.path
 import re
 import shutil
+from pathlib import Path
 from typing import Any
 
 import frontmatter
@@ -20,13 +21,17 @@ if __name__ == '__main__':
 else:
     SOURCE_DIR = 'docs'  # 패키지 설치후 mdr명령어로 사용자 실행
 
-CONFIG_DIR = '.mdr'  # SOURCE_DIR 내부의 config 폴더
+CONFIG_DIR_NAME = '.mdr'  # SOURCE_DIR 내부의 config 폴더
 
 # OUTPUT_DIR = '../html'  # 상대경로
-OUTPUT_DIR = 'build'  # 빌드는 패키지 내부/build 폴더 -> 패키지설치후 root의 build폴더
+OUTPUT_DIR_NAME = 'build'  # 빌드는 패키지 내부/build 폴더 -> 패키지설치후 root의 build폴더
 
 # TEMPLATE_DIR = 'md_templates'  # 템플릿도 패키지내부 폴더에서 제공할 것으로 지정
-PACKAGE_DIR = os.path.dirname(__file__)  # 패키지 폴더이름 (내/외부 무관)
+
+# PACKAGE_DIR = os.path.dirname(__file__)  # 패키지 폴더이름 (내/외부 무관)
+PACKAGE_DIR = Path(__file__).resolve().parent  # 패키지 폴더 절대경로(resolve)
+OUTPUT_DIR = os.path.join(PACKAGE_DIR.parent, OUTPUT_DIR_NAME)
+
 TEMPLATE_DIR = os.path.join(PACKAGE_DIR, 'md_templates')  # 템플릿도 패키지내부 폴더에서 제공할 것으로 지정
 STATIC_DIR = os.path.join(TEMPLATE_DIR, 'static')
 
@@ -36,7 +41,7 @@ STATIC_DIR = os.path.join(TEMPLATE_DIR, 'static')
 ################
 print(f"__name__  >> {__name__}")
 print(f"SOURCE_DIR  >> {SOURCE_DIR}")
-print(f"CONFIG_DIR  >> {CONFIG_DIR}")
+print(f"CONFIG_DIR  >> {CONFIG_DIR_NAME}")
 print(f"PACKAGE_DIR  >> {PACKAGE_DIR}")
 print(f"TEMPLATE_DIR  >> {TEMPLATE_DIR}")
 print(f"OUTPUT_DIR  >> {OUTPUT_DIR}")
@@ -69,7 +74,7 @@ def cli_entry_point():
 
     ## Load Config
     # - docs > .mdr > config.yml 읽기. 없으면 설치패키지 내부 폴더에서 가져오기
-    config_file_path = os.path.join(SOURCE_DIR, CONFIG_DIR, 'config.yml')
+    config_file_path = os.path.join(SOURCE_DIR, CONFIG_DIR_NAME, 'config.yml')
     if not os.path.exists(config_file_path):
         config_file_path = os.path.join(TEMPLATE_DIR, 'default_config.yml')
 
@@ -208,10 +213,8 @@ def cli_entry_point():
             relative_path = post['attributes']['file_full_path'].replace(SOURCE_DIR, '').replace('.md', '.html')
 
         # 상대경로에선, 맨 앞에 '/'를 제거한다.
-        print(f"처리전 relative_path  >> {relative_path}")
         if relative_path.startswith('\\') or relative_path.startswith('/'):
             relative_path = relative_path[1:]
-        print(f"처리 후 relative_path  >> {relative_path}")
 
         # print(f"relative_path  >> {relative_path}")
         # relative_path  >> 1 cli.html
