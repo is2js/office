@@ -69,8 +69,7 @@ def cli_entry_point():
     files_full_path_to_render, image_files_full_path = get_full_path_of_files_to_render_and_images()
 
     ## build폴더 삭제 미리 해놓기
-    if os.path.exists(OUTPUT_DIR):
-        shutil.rmtree(OUTPUT_DIR)
+    delete_output_dir_already()
 
     ## Load Config
     # - docs > .mdr > config.yml 읽기. 없으면 설치패키지 내부 폴더에서 가져오기
@@ -83,7 +82,7 @@ def cli_entry_point():
 
     with open(config_file_path, 'r', encoding='utf-8') as f:
         config = yaml.safe_load(f)
-        print(f"config  >> {config}") # config  >> {'title': '상세질환 디자인(외부)'}
+        # print(f"config  >> {config}") # config  >> {'title': '상세질환 디자인(외부)'}
 
     posts = []  #
     post_paths = {}  # 모든 post에 대한 path들을 모은다. TODO: DB에서 검사
@@ -461,6 +460,11 @@ def cli_entry_point():
         code_highlight_css = formatter.get_style_defs()
         with open(os.path.join(OUTPUT_DIR, 'static', 'code-highlights.css'), 'w') as f:
             f.write(code_highlight_css)
+
+
+def delete_output_dir_already():
+    if os.path.exists(OUTPUT_DIR):
+        shutil.rmtree(OUTPUT_DIR)
 
 
 def process_init_prev_and_next_post(i: int, posts: list[Any]) -> tuple[Any, Any]:

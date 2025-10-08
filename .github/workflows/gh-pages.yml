@@ -39,14 +39,14 @@ jobs:
           
           
           pip install -e .
-          
           mdr
-          
-          
-          
+
 #python setup.py install
 #mdr
-
-          
-
+      - name: Deploy Github Pages # gh-pages에 빌드한 것과 함께 배포
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/master' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
 
