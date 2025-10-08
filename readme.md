@@ -94,3 +94,25 @@
 
 
 4. git > github > 프로젝트 공유 후, 해당 repository로 이동하여 actions탭에서 방금 만든 yml파일이 잘 작동하는지 확인
+
+5. yml에 `build` 후  `gh-pages`브랜치에 푸시하는 코드 추가
+    ```yml
+      - name: Build site # 로컬 터미널에서 하던 python 패키지 빌드 작업
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt # mdr 패키지는 주석처리?
+          
+          
+          pip install -e . # 로컬의 python setup.py install 대신
+          mdr
+      - name: Deploy Github Pages # gh-pages에 빌드한 것과 함께 배포 (빌드한 내용물을 pull request로 gh-pages 브랜치에 반영)
+        uses: peaceiris/actions-gh-pages@v3
+        if: ${{ github.ref == 'refs/heads/master' }}
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./build
+    ```
+   
+
+6. settings > pages에 `gh-pages`브랜치와 `/root`폴더로 설정
+    
