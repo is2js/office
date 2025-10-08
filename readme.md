@@ -76,3 +76,21 @@
         - 토큰은 깃허브 개발자 설정에서 person 쪽에서 생성하고 있음.
         - 안되면 
    2. 상단 git > github > 프로젝트 공유
+3. local git 설정
+    - push해도 올라가지 않는다.
+    ```
+    git@github.com: Permission denied (publickey).
+    fatal: Could not read from remote repository.
+    Please make sure you have the correct access rights
+    and the repository exists.
+    ```
+    - local에서 public key생성 by ssh키 생성 
+        - 비번은 입력안하고 enter로 넘겨도 됨. 
+        ```shell
+        ssh-keygen -t rsa -C “본인 GitHub 계정 이메일”
+        cat ~/.ssh/id_rsa.pub # 생성한 키 확인 (github에 등록할 키)
+        ```
+    - github > settings > ssh and gpg keys > new ssh key에 추가
+
+
+4. git > github > 프로젝트 공유 후, 해당 repository로 이동하여 actions탭에서 방금 만든 yml파일이 잘 작동하는지 확인
