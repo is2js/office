@@ -1,0 +1,199 @@
+@keyframes wheelAni {
+    0% {
+        transform: translate(0, 0);
+    }
+
+    50% {
+        transform: translate(0, 3px);
+    }
+
+    100% {
+        transform: translate(0, 0);
+    }
+
+}
+
+.floatNav {
+    z-index: 12;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    letter-spacing: -0.04rem;
+
+    top: 120px;
+    left: 20px;
+
+    & li {
+        list-style: none;
+        line-height: 1;
+
+        font-size: 14px;
+    }
+
+    > .scroll-down {
+        &::before {
+            content: '';
+            display: block;
+            width: 14px;
+            height: 20px;
+            /*https://www.jaseng.co.kr/images/renewal-v3/mouse-bk.png*/
+            background: url(./img/mouse-bk.png) no-repeat 50% 0;
+        }
+
+        &::after {
+            content: '';
+            display: block;
+            width: 14px;
+            height: 10px;
+            margin-top: 5px;
+            /*https://www.jaseng.co.kr/images/renewal-v3/mouse-bk-arr.png*/
+            background: url(./img/mouse-bk-arr.png) no-repeat 50% 0;
+
+            animation: wheelAni 0.7s infinite;
+        }
+
+        &.white::before {
+            /*https://www.jaseng.co.kr/images/renewal-v3/mouse-w.png*/
+            background: url(./img/mouse-w.png) no-repeat 50% 0;
+        }
+
+        &.white::after {
+            /*https://www.jaseng.co.kr/images/renewal-v3/mouse-w-arr.png*/
+            background: url(./img/mouse-w-arr.png) no-repeat 50% 0;
+        }
+    }
+
+    .bounce {
+        animation: wheelAni 0.7s infinite;
+    }
+}
+
+
+/*!*   secetion이 sticky 효과를 주려면 css로 주면 된다. *!
+.sections {
+    !* body scroll대신 section scroll이 되기 위해선, sections부모에 overflow:auto *!
+    overflow: auto;
+    height: 100vh;
+    !*height: 100%; 이거로 주면, 스냅 작동 안함.*!
+
+    !* y mandatory로 snapping 효과를 만든다.*!
+    -ms-scroll-snap-type: y mandatory;
+    scroll-snap-type: y mandatory;
+
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    !* 마지막, 자식들은 스냅 align까지 지정해줘야 거기로 정렬된다.*!
+
+    > div {
+        scroll-snap-align: center;
+    }*/
+
+
+html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+
+.sections {
+    /* body scroll대신 section scroll이 되기 위해선, sections부모에 overflow:auto */
+    height: 100vh;
+    overflow-y: auto;
+    -ms-scroll-snap-type: y mandatory;
+    scroll-snap-type: y mandatory;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+
+    display: flex;
+    flex-direction: column;
+
+    > div {
+        height: 100vh;
+        flex-shrink: 0;
+        scroll-snap-align: center; /* 기본값 */
+    }
+
+
+    > div > a {
+        /* 필름은 a태그의 after로 줘서, 내용물보다 제일 아래 깔리게 두고 -> 내부 text만 z-index를 추가로 준다.. */
+
+        &.has-title::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        &.has-no-title-video:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgb(71, 85, 105, 0.15);
+            /*background-color: rgb(71, 85, 105, 0.05);*/
+        }
+
+        &.has-no-title-image:after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /*background-color: rgb(71, 85, 105, 0.05);*/
+        }
+
+
+        /*  youtube  */
+        /* 2. 그래서 부모div를 씌워 처리하는데  */
+
+        .video-box {
+            position: relative;
+            /*height: 0;*/
+            /* 유튜브영상 비율을 고려하여 전체화면 되게 하는*/
+            padding-bottom: 56.25%;
+            /**/
+            /*padding-bottom: 47.6%;*/
+
+
+            /* 1.iframe을 w100해도 검은화면이 가득참.  */
+
+            iframe {
+                position: absolute;
+
+                width: 100%;
+                /* 전체화면으로 부모 padding-bottom: 56.25%; 일시 -> height 만땅    */
+                height: 100%;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+
+
+                /*  부모 padding-bottom: 47.6%;일시 -> height 일정 100% */
+                /*     padding-bottom: 65.25vw; */
+                /*     top:50%; */
+                /*     left:50%; */
+                /*     transform: translate(-50%); */
+            }
+        }
+    }
+}
+
+
+.fullscreen {
+    width: 24px;
+    height: 24px;
+
+    opacity: 0.5;
+
+    font-size: 20px;
+    line-height: 40px;
+    text-align: center;
+    cursor: pointer;
+}

@@ -1,0 +1,186 @@
+/*@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');*/
+:root {
+    /*  */
+    --greyf1: #f1f3f6;
+    --greyf2: #f2f2f2;
+
+    /* font */
+    --grey3c: #3c3c3c;
+    /*--main: #1ECECB;*/
+    --green: #00b5b2;
+    --green-bold: #047e7c;
+    /*--submain: #FC5230;*/
+    --submain-25: rgba(252, 82, 48, 0.25);
+    --purple6f: #6f49fa;
+}
+
+html, body, code {
+    font-family: Pretendard, "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", sans-serif;
+    margin: 0;
+    font-size: 100%;
+    line-height: 1.65;
+}
+
+
+/* base.html */
+/* sticky footer */
+#page-container {
+    position: relative;
+    min-height: 100vh;
+}
+
+#content-wrap {
+    padding-bottom: 5em;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+
+
+    /*background-color: var(--main);*/
+    background-color: var(--theme-primary);
+    padding: 1em;
+    color: white;
+
+
+    & a {
+        color: inherit;
+    }
+
+    & a#title {
+        display: flex;
+        align-items: center;
+
+        font-weight: bold;
+        text-decoration: none;
+        font-size: 150%;
+    }
+
+    & img#logo {
+        height: 2em;
+        margin-right: 0.4em;
+    }
+
+
+    & .links {
+        display: inline-block;
+        list-style-type: none;
+        padding-left: inherit;
+
+        & li {
+            display: inline-block;
+            padding: 0 1em;
+        }
+
+        & li a {
+            text-decoration: none;
+        }
+    }
+}
+
+
+.content {
+    & .layout-center {
+        /*margin: 1em;*/
+        width: 1185px;
+        /*margin: 0 auto;*/
+        /* 기본 위쪽 여백 추가 */
+        margin: 60px auto 0;
+
+        /*@media (max-width: 767px) {*/
+        @media (max-width: 991px) {
+            margin: 0;
+            width: 100%;
+            /* w100%에  추가로 padding을 주면, box-sizing: border-box 안주면 가로스크롤이 생긴다.*/
+            /* -> 여기선 bootstrap reboot에서 처리해줘서 생략했다.*/
+            box-sizing: border-box;
+            /* header 모바일 패딩과 동일한 값 */
+            /*padding: 0 15px 0 ;*/
+            /* 모바일에서 section mt까지 대체 */
+            /* 특히 section-border도 반영하려면, margin대신 padding으로 */
+            padding: 20px;
+        }
+    }
+
+    .section-border {
+        @media (min-width: 0px) and (max-width: 991px) {
+            border-bottom: .8rem solid var(--greyf1);
+        }
+    }
+}
+
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    height: 5em;
+    width: 100%;
+
+    /*background-color: var(--green);*/
+    background-color: var(--theme-primary);
+    color: white;
+    text-align: center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    & a {
+        color: inherit;
+
+    }
+
+    & #credit {
+        margin-top: 0.75em;
+        font-size: 80%;
+    }
+}
+
+
+/* index.html */
+
+.posts-index {
+    & .post {
+        padding: 0.5em 0;
+    }
+
+    & .post .title {
+        font-size: 150%;
+    }
+}
+
+.btn-seemore {
+    color: white;
+    /*background-color: var(--green);*/
+    background-color: var(--theme-primary);
+    margin: 1em auto;
+    padding: 1em;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-seemore:hover {
+    filter: brightness(85%);
+}
+
+
+/* archive.html -> archive/index.html */
+
+/* blog.html -> blog/index.html */
+.post-preview .title {
+    font-size: 2em;
+
+    a {
+        /*color: var(--green);*/
+        color: var(--theme-primary);
+    }
+
+    img {
+        max-width: 100%;
+    }
+}
+
+

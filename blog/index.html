@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- font -->
+    <link rel="stylesheet" as="style" crossorigin
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200..900&display=swap" rel="stylesheet">
+
+
+    <style>
+        :root {
+            --theme-primary: #FC5230;
+            --theme-secondary: #1ECECB;
+                /* --theme-primary를 80% 유지하고 검은색 20% 섞어서 어둡게 */
+            --theme-primary-dark: color-mix(in srgb, var(--theme-primary) 80%, black 20%);
+
+            /* --theme-secondary도 동일하게 적용 */
+            --theme-secondary-dark: color-mix(in srgb, var(--theme-secondary) 80%, black 20%);
+
+            /* 로고 주소 */
+
+            --h3-title-logo-url: url("https://front.chojaeseong.com/images/png/profile/sub/02.png");
+        }
+    </style>
+    <link rel="stylesheet" href="../static/code-highlights.css">
+    <link rel="stylesheet" href="../static/common.css">
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="../static/mixin.css">
+    <link rel="stylesheet" href="../static/article.css">
+
+    <title>블로그 | 조재성 원장</title>
+
+    <!--https://github.dev/Hybridhash/FastAPI-HTMX-->
+    
+    <!-- alinepjs-->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body
+>
+   <!--     x-data="{navFixed: false}"
+        @scroll.window="navFixed = (window.pageYOffset > $refs.nav.getBoundingClientRect().height * 2 ) ? true : false, console.log(navFixed)"-->
+<div id="page-container">
+    <div id="content-wrap">
+        <div class="nav" x-ref="nav"
+        >
+
+<!--             :class="navFixed ? 'position-fixed top-0 left-0 w-100' : 'position-relative'"-->
+
+            <a id="title" href="../">
+                <img id="logo" src="http://hani.chojaeseong.com/images/logo.png"/>조재성 원장
+            </a>
+            <ul class="links">
+                <li><a href="../">Home</a></li>
+                <li><a href="../blog">블로그</a></li>
+                <li><a href="../archive">Archive</a></li>
+                <li><a href="../ads">원내광고</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+                
+            <div class="layout-center">
+                
+<div class="post-preview">
+    <div class="title">
+        <a href="/blog/dfa">test1</a>
+    </div>
+    
+    <div class="date">
+        2025년 03월 11일
+    </div>
+    
+    <!-- 작성자 -->
+    
+
+    <!-- 내용 -->
+    <div class="article">
+        
+        <p>1</p>
+
+        
+    </div>
+</div>
+<div class="post-preview">
+    <div class="title">
+        <a href="/blog/4">test4 youtube</a>
+    </div>
+    
+    <div class="date">
+        2025년 03월 13일
+    </div>
+    
+    <!-- 작성자 -->
+    
+
+    <!-- 내용 -->
+    <div class="article">
+        
+
+        요약글이 없는 post입니다.
+        
+    </div>
+</div>
+<div class="post-preview">
+    <div class="title">
+        <a href="/blog/nested/post/3">포스트 메인</a>
+    </div>
+    
+    <div class="date">
+        2023년 03월 15일
+    </div>
+    
+    <!-- 작성자 -->
+    
+
+    <!-- 내용 -->
+    <div class="article">
+        
+
+        요약글이 없는 post입니다.
+        
+    </div>
+</div>
+<div class="post-preview">
+    <div class="title">
+        <a href="/about">소개</a>
+    </div>
+    
+    <div class="date">
+        2023년 03월 13일
+    </div>
+    
+    <!-- 작성자 -->
+    
+
+    <!-- 내용 -->
+    <div class="article">
+        
+
+        요약글이 없는 post입니다.
+        
+    </div>
+</div>
+<div class="post-preview">
+    <div class="title">
+        <a href="">피부미용</a>
+    </div>
+    
+    <div class="date">
+        2023년 03월 12일
+    </div>
+    
+    <!-- 작성자 -->
+    
+
+    <!-- 내용 -->
+    <div class="article">
+        
+
+        요약글이 없는 post입니다.
+        
+    </div>
+</div>
+
+
+
+
+
+
+
+            </div>
+                
+        </div>
+    </div>
+    <div class="footer">
+        
+        <div id="copyright">
+            Copyright &copy; <span id="year"></span>(주) 김석영 주식회사
+        </div>
+        
+        
+        <div id="credit">
+            Made with <a href="https://github.com/pagekeytech/markdown-sitegen">MDR</a> from <a
+                href="https://www.pagekeytech.com/">남룡북매</a>
+        </div>
+        
+    </div>
+</div>
+
+<script src="../static/main.js"></script>
+
+</body>
+</html>

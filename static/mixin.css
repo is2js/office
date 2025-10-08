@@ -1,0 +1,26 @@
+.bg-img {
+    background: no-repeat var(--bg-x, center) var(--bg-y, center) var(--bg-color, transparent);
+    background-size: var(--bg-img-width, auto) var(--bg-img-height, auto);
+}
+
+
+.bg-img-x-center {
+    --bg-x: center;
+}
+
+
+.bg-img-y-center {
+    --bg-y: center;
+}
+
+.bg-img-color-transparent {
+    --bg-color: transparent;
+}
+
+.bg-img-width-auto {
+    --bg-img-width: auto;
+}
+
+.bg-img-height-auto {
+    --bg-img-height: auto;
+}

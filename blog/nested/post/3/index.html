@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- font -->
+    <link rel="stylesheet" as="style" crossorigin
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200..900&display=swap" rel="stylesheet">
+
+
+    <style>
+        :root {
+            --theme-primary: #FC5230;
+            --theme-secondary: #1ECECB;
+                /* --theme-primary를 80% 유지하고 검은색 20% 섞어서 어둡게 */
+            --theme-primary-dark: color-mix(in srgb, var(--theme-primary) 80%, black 20%);
+
+            /* --theme-secondary도 동일하게 적용 */
+            --theme-secondary-dark: color-mix(in srgb, var(--theme-secondary) 80%, black 20%);
+
+            /* 로고 주소 */
+
+            --h3-title-logo-url: url("https://front.chojaeseong.com/images/png/profile/sub/02.png");
+        }
+    </style>
+    <link rel="stylesheet" href="../../../../../static/code-highlights.css">
+    <link rel="stylesheet" href="../../../../../static/common.css">
+    <link rel="stylesheet" href="../../../../../static/style.css">
+    <link rel="stylesheet" href="../../../../../static/mixin.css">
+    <link rel="stylesheet" href="../../../../../static/article.css">
+
+    <title>포스트 메인 | 조재성 원장</title>
+
+    <!--https://github.dev/Hybridhash/FastAPI-HTMX-->
+    
+    <!-- alinepjs-->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body
+>
+   <!--     x-data="{navFixed: false}"
+        @scroll.window="navFixed = (window.pageYOffset > $refs.nav.getBoundingClientRect().height * 2 ) ? true : false, console.log(navFixed)"-->
+<div id="page-container">
+    <div id="content-wrap">
+        <div class="nav" x-ref="nav"
+        >
+
+<!--             :class="navFixed ? 'position-fixed top-0 left-0 w-100' : 'position-relative'"-->
+
+            <a id="title" href="../../../../../">
+                <img id="logo" src="http://hani.chojaeseong.com/images/logo.png"/>조재성 원장
+            </a>
+            <ul class="links">
+                <li><a href="../../../../../">Home</a></li>
+                <li><a href="../../../../../blog">블로그</a></li>
+                <li><a href="../../../../../archive">Archive</a></li>
+                <li><a href="../../../../../ads">원내광고</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+                
+            <div class="layout-center">
+                
+<!-- 제목 -->
+<h1 class="post-title">포스트 메인</h1>
+
+
+<!-- youtube -->
+
+
+
+<!-- 내용 -->
+<div class="article">
+<ul>
+<li>https://www.youtube.com/watch?v=rB1uyE7tJKw&amp;list=PL3Kz_hCNpKSQ5gDVSWvrQ-9COk0CLLrTs</li>
+</ul>
+<h3 id="_1">패키지 설치</h3>
+<ol>
+<li>
+<p>패키지 2개 설치</p>
+<ul>
+<li>
+<p><code>frontmatter</code>: md render시 무시되는 front matter data를 파싱하기 위해서</p>
+<ul>
+<li><code>poetry add frontmatter</code></li>
+</ul>
+<p><img alt="image-20250305193844779" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250305193844779.png"></p>
+</li>
+<li>
+<p><code>markdown</code>: md를 html로 렌더링</p>
+<ul>
+<li><strong>패키지잇슈로 3.11.6 버전에서 poetry add가 안됨.</strong></li>
+</ul>
+</li>
+</ul>
+<p>​   <img alt="image-20250305193854759" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250305193854759.png"></p>
+<p>​   -  <code>pip install markdown</code></p>
+</li>
+<li>
+<p><strong>그냥 venv -&gt; pip install로 2개 설치함.</strong></p>
+</li>
+</ol>
+<div class="codehilite"><pre><span></span><code>.\.venv\Scripts\activate
+
+pip install frontmatter markdown
+</code></pre></div>
+
+<ol>
+<li>
+<p>markdown.markdown(' 마크다운# 등의 텍스트 ')를 print하면 html로 나온다.</p>
+<ul>
+<li><code>#</code>이 <code>h1태그</code>로 바껴서 나온다.</li>
+</ul>
+<p>```python
+import markdown</p>
+<p>if <strong>name</strong> == '<strong>main</strong>':
+    import markdown
+    print(markdown.markdown('#Hellow markdown'))</p>
+<h1 id="hellow-markdown"><h1>Hellow markdown</h1></h1>
+<p>```</p>
+</li>
+</ol>
+<h3 id="cli-setuppyname-cli">cli를 사용할 수 있게 setup.py(name이 cli명령어)</h3>
+<ul>
+<li>http://stackoverflow.com/questions/56534678/how-to-create-a-cli-in-python-that-can-be-installed-with-pip</li>
+</ul>
+<p><img alt="image-20250305200916047" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250305200916047.png"></p>
+<ol>
+<li>
+<p>루트에 setup.py 생성</p>
+<ul>
+<li><strong>핵심은 entry_points안에 console_scripts 내부에 <code>name = 패키지명(폴더/init).패키지내실행py파일명:내부함수명</code>을 넣어주는 것 같다.</strong></li>
+<li><strong>추후 <code>name</code>이 <code>cli명령어</code>가 되므로 짧게 짓는다..</strong></li>
+</ul>
+<p>```python
+from distutils.core import setup</p>
+<p>setup(
+    name='mdr',
+    version='1.0.0',
+    description='Markdown Renderer',
+    author='JaeSeong Cho',
+    author_email='tingstyle1@gmail.com',
+    packages=['markdown_renderer'],
+    entry_points={
+        'console_scripts': [
+            'mdr = markdown_renderer.cli:cli_entry_point'
+        ],
+    },
+    install_requires=[
+        'markdown',
+        'frontmatter',
+    ],
+)
+```</p>
+</li>
+<li>
+<p><strong>명시해둔 python패키지 폴더인 <code>markdown_renderer</code> 생성 및 <code>cli.py</code> 및 <code>내부 함수 cli_entry_point</code> 작성</strong></p>
+<p><img alt="image-20250305202048414" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250305202048414.png"></p>
+<p><code>python
+def cli_entry_point():
+    print('cli_entry_point')</code></p>
+</li>
+<li>
+<p>영상에서는 pip install -e로 올려놓고 설치하는 것 같은데 <code>pip install setup.py</code>를 하면 cli가 작동하게 된다.</p>
+<p><code>shell
+(.venv) PS C:\Users\cho_desktop\PycharmProjects\markdown&gt; mdr
+cli_entry_point</code></p>
+</li>
+<li>
+<p><strong>이제 함수작성 때마다 <code>pip install setup.py</code>를 해줘야하므로, 일단 내용부터 작성하여 내부실행시키자.</strong></p>
+<p>```python
+def cli_entry_point():
+    print('cli_entry_point22')</p>
+<p>if <strong>name</strong> == '<strong>main</strong>':
+    cli_entry_point()
+```</p>
+</li>
+</ol>
+<h3 id="cli-setup-cli_entry_point">cli setup해서 사용전 cli_entry_point 함수 내용 작성</h3>
+<ol>
+<li>
+<p>md들이 있는 폴더가 존재해야한다</p>
+<p>```python
+import os.path</p>
+<p>def cli_entry_point():
+    SOURCE_DIR = '../docs'
+    OUTPUT_DIR = '../html'</p>
+<div class="codehilite"><pre><span></span><code><span class="gh">#</span> 1) source폴더명이 존재하고 &amp;&amp; 그게 진짜 디렉토리라면,
+if os.path.exists(SOURCE_DIR) and os.path.isdir(SOURCE_DIR):
+    ...
+else:
+    print(f&quot;&#39;{SOURCE_DIR}&#39; 폴더가 존재하지 않습니다.&quot;)
+</code></pre></div>
+
+<p>if <strong>name</strong> == '<strong>main</strong>':
+    cli_entry_point()
+```</p>
+</li>
+<li>
+<p>내부 폴더 및 파일들을 <code>os.walk()</code>로 가져온다</p>
+<p>```python</p>
+<h1 id="1-source">1) source폴더명이 존재하고 &amp;&amp; 그게 진짜 디렉토리라면,</h1>
+<p>if os.path.exists(SOURCE_DIR) and os.path.isdir(SOURCE_DIR):
+    # 2) os.walk로 root, 내부dirs, files를 가져온다.
+    for root, inner_dirs, files in os.walk(SOURCE_DIR):
+        # 3) root를 출력한다.
+        print(root)
+        # 4) dirs를 출력한다.
+        print(inner_dirs)
+        # 5) files를 출력한다.
+        print(files)
+```</p>
+</li>
+<li>
+<p><strong>파일중에 .md로 끝내는 것들만 root + 파일이름을 가져온다.</strong></p>
+<p>```python
+files_to_render = []</p>
+<h1 id="2-oswalk-root-dirs-files">2) os.walk로 root, 내부dirs, files를 가져온다.</h1>
+<p>for root, inner_dirs, files in os.walk(SOURCE_DIR):
+    # print(root) # ../docs
+    # print(inner_dirs) # print(files)
+    # [] # ['1 cli.md']</p>
+<div class="codehilite"><pre><span></span><code>for filename in files:
+    # 3) 파일명이 .md로 끝나는지 확인하고 그렇다면, root + filename을 합쳐서 파일 경로를 저장한다. 
+    if filename.lower().endswith(&#39;.md&#39;):
+        files_to_render.append(os.path.join(root, filename))
+</code></pre></div>
+
+<h1 id="printfiles_to_render-docs1-climd">print(files_to_render) # ['../docs\1 cli.md']</h1>
+<p>```</p>
+</li>
+<li>
+<p><strong>버전차이로 frontmatter.load()는 안되서, f.read() -&gt; frontmatter.FrontMatter.read()로 읽어서 확인해봤음.</strong></p>
+<ul>
+<li><strong>문제는 <code>frontmatter가 없으면 아예 body도 None</code></strong></li>
+</ul>
+<p>```python</p>
+<h1 id="4-md-file-frontmatter-markdown">4) 랜더할 md file들을 순회하면서, frontmatter를 뽑아내고, markdown으로 변환한다.</h1>
+<p>for file_to_render in files_to_render:
+    with open(file_to_render, 'r', encoding='utf-8') as f:
+        content = f.read()
+        # c = frontmatter.loads(content) # 버전 차이?
+        post = frontmatter.Frontmatter.read(content)
+        print(post)
+        # {'attributes': None, 'body': '', 'frontmatter': ''}
+        # =&gt; md파일에 ---로 프론트매터를 넣고 나면
+        # {
+        #   'attributes': {'title': '넣었다'},
+        #   'body': '- https://www.youtube.com/wat',
+        #   'frontmatter': "\ntitle: '넣었다'\n"
+        # }
+```</p>
+<ul>
+<li>frontmatter가 없으면 일단은 pass하도록 한다.</li>
+</ul>
+<p>```python</p>
+<h1 id="4-md-file-frontmatter-markdown_1">4) 랜더할 md file들을 순회하면서, frontmatter를 뽑아내고, markdown으로 변환한다.</h1>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="n">file_to_render</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">files_to_render</span><span class="p">:</span>
+<span class="w">        </span><span class="n">with</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">file_to_render</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;r&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="n">f</span><span class="p">:</span>
+<span class="w">            </span><span class="n">content</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+<span class="w">            </span><span class="c1"># c = frontmatter.loads(content) # 버전 차이?</span>
+<span class="w">            </span><span class="n">post</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">frontmatter</span><span class="o">.</span><span class="n">Frontmatter</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">content</span><span class="p">)</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="n">post</span><span class="p">[</span><span class="s1">&#39;attributes&#39;</span><span class="p">]:</span>
+<span class="w">                </span><span class="c1"># {&#39;attributes&#39;: None, &#39;body&#39;: &#39;&#39;, &#39;frontmatter&#39;: &#39;&#39;}</span>
+<span class="w">                </span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;frontmatter가 없는 파일: {file_to_render}&#39;</span><span class="p">)</span>
+<span class="w">                </span><span class="k">continue</span>
+<span class="w">            </span><span class="k">else</span><span class="p">:</span>
+<span class="w">                </span><span class="c1"># {</span>
+<span class="w">                </span><span class="c1">#   &#39;attributes&#39;: {&#39;title&#39;: &#39;넣었다&#39;},</span>
+<span class="w">                </span><span class="c1">#   &#39;body&#39;: &#39;- https://www.youtube.com/wat&#39;,</span>
+<span class="w">                </span><span class="c1">#   &#39;frontmatter&#39;: &quot;\ntitle: &#39;넣었다&#39;\n&quot;</span>
+<span class="w">                </span><span class="c1"># }</span>
+<span class="w">                </span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;frontmatter: {post[&#39;attributes&#39;]}&quot;</span><span class="p">)</span>
+<span class="w">                </span><span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="s2">&quot;body: {post[&#39;body&#39;][:10]}&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>```</p>
+</li>
+<li>
+<p>frontmatter를 가진 post객체에서 body만 markdown.markdown으로 랜더링한 뒤, html파일로 쓴다.</p>
+<ul>
+<li><strong>이 때, 상대경로 유지중이며, join시 문제가 생겨, OUTPUT_DIR을 SOURCE_DIR로 대체하도록 html파일명을 생성한다.</strong></li>
+</ul>
+<p>```python</p>
+<h1 id="4-md-file-frontmatter-markdown_2">4) 랜더할 md file들을 순회하면서, frontmatter를 뽑아내고, markdown으로 변환한다.</h1>
+<p>for file_to_render in files_to_render:
+    with open(file_to_render, 'r', encoding='utf-8') as f:
+        content = f.read()
+        # c = frontmatter.loads(content) # 버전 차이?
+        post = frontmatter.Frontmatter.read(content)</p>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="n">frontmatter없는</span><span class="w"> </span><span class="err">파일은</span><span class="w"> </span><span class="n">pass</span>
+<span class="w">    </span><span class="nf">if</span><span class="w"> </span><span class="kr">not</span><span class="w"> </span><span class="n">post</span><span class="p">[</span><span class="s">&#39;attributes&#39;</span><span class="p">]</span><span class="o">:</span>
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="p">{</span><span class="s">&#39;attributes&#39;</span><span class="o">:</span><span class="w"> </span><span class="n">None</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;body&#39;</span><span class="o">:</span><span class="w"> </span><span class="s">&#39;&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;frontmatter&#39;</span><span class="o">:</span><span class="w"> </span><span class="s">&#39;&#39;</span><span class="p">}</span>
+<span class="w">        </span><span class="n">print</span><span class="p">(</span><span class="n">f</span><span class="s">&#39;frontmatter가 없는 파일: {file_to_render}&#39;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">continue</span>
+
+<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="err">#</span><span class="w">   </span><span class="s">&#39;attributes&#39;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="s">&#39;title&#39;</span><span class="o">:</span><span class="w"> </span><span class="s">&#39;넣었다&#39;</span><span class="p">},</span>
+<span class="w">    </span><span class="err">#</span><span class="w">   </span><span class="s">&#39;body&#39;</span><span class="o">:</span><span class="w"> </span><span class="s">&#39;- https://www.youtube.com/wat&#39;</span><span class="p">,</span>
+<span class="w">    </span><span class="err">#</span><span class="w">   </span><span class="s">&#39;frontmatter&#39;</span><span class="o">:</span><span class="w"> </span><span class="s">&quot;\ntitle: &#39;</span><span class="err">넣었다</span><span class="s">&#39;\n&quot;</span>
+<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="p">}</span>
+
+<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="mi">6</span><span class="p">)</span><span class="w"> </span><span class="n">frontmatter가</span><span class="w"> </span><span class="err">있는</span><span class="w"> </span><span class="err">파일은</span><span class="p">,</span><span class="w"> </span><span class="n">markdown으로</span><span class="w"> </span><span class="err">변환후</span><span class="w"> </span><span class="n">html로</span><span class="w"> </span><span class="err">써서</span><span class="w"> </span><span class="err">저장한다</span><span class="p">.</span>
+<span class="w">    </span><span class="n">html</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">markdown</span><span class="p">.</span><span class="n">markdown</span><span class="p">(</span><span class="n">post</span><span class="p">[</span><span class="s">&#39;body&#39;</span><span class="p">])</span>
+
+<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="mi">7</span><span class="p">)</span><span class="w"> </span><span class="n">md파일</span><span class="w"> </span><span class="err">경로</span><span class="w"> </span><span class="err">그대로</span><span class="p">,</span><span class="w"> </span><span class="n">html로</span><span class="w"> </span><span class="err">바꿔서</span><span class="w"> </span><span class="err">저장</span>
+<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">  </span><span class="n">OUTPUT_DIRSOURCE_DIR을</span><span class="w"> </span><span class="err">공백으로</span><span class="w"> </span><span class="err">대체</span><span class="w"> </span><span class="err">제거</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">md를</span><span class="w"> </span><span class="n">html로</span><span class="w"> </span><span class="err">교체</span><span class="w"> </span><span class="mi">2</span><span class="err">번</span><span class="w"> </span><span class="n">replace</span>
+<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="n">output_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">OUTPUT_DIR</span><span class="p">,</span><span class="w"> </span><span class="n">file_to_render</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="n">SOURCE_DIR</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;&#39;</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;.md&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;.html&#39;</span><span class="p">))</span>
+<span class="w">    </span><span class="n">output_file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">file_to_render</span><span class="p">.</span><span class="n">replace</span><span class="p">(</span><span class="n">SOURCE_DIR</span><span class="p">,</span><span class="w"> </span><span class="n">OUTPUT_DIR</span><span class="p">).</span><span class="n">replace</span><span class="p">(</span><span class="s">&#39;.md&#39;</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;.html&#39;</span><span class="p">))</span>
+
+<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="mi">8</span><span class="p">)</span><span class="w"> </span><span class="err">파일경로</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">dirname</span><span class="p">()</span><span class="w"> </span><span class="err">경로를</span><span class="w"> </span><span class="err">만들어준다</span><span class="p">.</span>
+<span class="w">    </span><span class="n">os</span><span class="p">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">output_file</span><span class="p">),</span><span class="w"> </span><span class="n">exist_ok</span><span class="o">=</span><span class="kr">True</span><span class="p">)</span>
+
+<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="mi">9</span><span class="p">)</span><span class="w"> </span><span class="n">html로</span><span class="w"> </span><span class="err">변환된</span><span class="w"> </span><span class="err">내용을</span><span class="w"> </span><span class="err">파일에</span><span class="w"> </span><span class="err">쓴다</span><span class="p">.</span>
+<span class="w">    </span><span class="n">with</span><span class="w"> </span><span class="n">open</span><span class="p">(</span><span class="n">output_file</span><span class="p">,</span><span class="w"> </span><span class="s">&#39;w&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">encoding</span><span class="o">=</span><span class="s">&#39;utf-8&#39;</span><span class="p">)</span><span class="w"> </span><span class="kr">as</span><span class="w"> </span><span class="n">f</span><span class="o">:</span>
+<span class="w">        </span><span class="n">f</span><span class="p">.</span><span class="n">write</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+</code></pre></div>
+
+<p>```</p>
+<p><img alt="image-20250305221423272" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250305221423272.png"></p>
+</li>
+</ol>
+<h3 id="renderignore-render">.renderignore파일을 만들어서, 거기포함된 것은 render목록에서 제외시키기</h3>
+<ol>
+<li>
+<p>source_dir인 <code>../docs</code>에 <code>.renderignore</code> 파일을 만든다.</p>
+</li>
+<li>
+<p>os.walk로 순회하기 전에, source_dir에 ignore파일이 존재하면, 거기에 있는 파일명을 모아둔다.</p>
+<p>```python</p>
+<h1 id="1-source_1">1) source폴더명이 존재하고 &amp;&amp; 그게 진짜 디렉토리라면,</h1>
+<p>if os.path.exists(SOURCE_DIR) and os.path.isdir(SOURCE_DIR):</p>
+<div class="codehilite"><pre><span></span><code>files_to_render = []
+
+files_to_render_ignore = []
+<span class="gh">#</span> 10) SOURCE_DIR에 .renderignore 파일이 존재하면 읽어서 모아둔다.
+render_ignore = os.path.join(SOURCE_DIR, &#39;.renderignore&#39;)
+if os.path.exists(render_ignore):
+    with open(render_ignore, &#39;r&#39;, encoding=&#39;utf-8&#39;) as f:
+        files_to_render_ignore = f.read().split(&#39;\n&#39;)
+
+        # 2) os.walk로 root, 내부dirs, files를 가져온다.
+        for root, inner_dirs, files in os.walk(SOURCE_DIR):
+</code></pre></div>
+
+<p>```</p>
+</li>
+<li>
+<p>os.walk중에는 files단위로 나오니까, 개별파일을 md파일인지 확인하여 append하기 전에,  renderignore에 포함되면 무시한다.</p>
+<ul>
+<li>
+<p>코드 리팩토링 들어감</p>
+</li>
+<li>
+<p>조건 2개</p>
+<ul>
+<li>.renderignore파일 pass</li>
+<li>md파일도 아니고 renderignore도 아니라면 pass</li>
+<li>md파일이라도 renderignore에 포함되면 pass</li>
+</ul>
+<p>```python</p>
+<h1 id="2-oswalk-root-dirs-files_1">2) os.walk로 root, 내부dirs, files를 가져온다.</h1>
+<p>for root, inner_dirs, file_names in os.walk(SOURCE_DIR):</p>
+<div class="codehilite"><pre><span></span><code><span class="cp"># print(root) # ../docs</span>
+<span class="cp"># print(inner_dirs)</span>
+<span class="cp"># print(file_names)</span>
+<span class="cp"># [] # [&#39;1 cli.md&#39;]</span>
+
+<span class="cp"># 11) md파일인지 확인하기 전에</span>
+<span class="cp"># append될 file(상대경로)과, file의 맨 끝 파일명 file_basename을 이용하여 검사</span>
+<span class="n">for</span><span class="w"> </span><span class="n">file_name</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="n">file_names</span><span class="o">:</span>
+<span class="w">    </span><span class="n">file</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="nf">join</span><span class="p">(</span><span class="n">root</span><span class="p">,</span><span class="w"> </span><span class="n">file_name</span><span class="p">)</span>
+<span class="w">    </span><span class="n">file_basename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">os</span><span class="p">.</span><span class="n">path</span><span class="p">.</span><span class="n">basename</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="mi">11</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="n">renderignore</span><span class="w"> </span><span class="err">파일이면</span><span class="w"> </span><span class="n">pass</span>
+<span class="w">    </span><span class="nf">if</span><span class="w"> </span><span class="n">file_basename</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s">&#39;.renderignore&#39;</span><span class="o">:</span>
+<span class="w">        </span><span class="n">continue</span>
+
+<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="mi">11</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="n">md파일도</span><span class="w"> </span><span class="err">아니면서</span><span class="w"> </span><span class="p">.</span><span class="n">renderignore도</span><span class="w"> </span><span class="err">아닌</span><span class="w"> </span><span class="err">것</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">pass</span>
+<span class="w">    </span><span class="nf">if</span><span class="w"> </span><span class="kr">not</span><span class="w"> </span><span class="n">file_basename</span><span class="p">.</span><span class="n">lower</span><span class="p">().</span><span class="kd">ends</span><span class="n">with</span><span class="p">(</span><span class="s">&#39;.md&#39;</span><span class="p">)</span><span class="o">:</span>
+<span class="w">        </span><span class="n">print</span><span class="p">(</span><span class="n">f</span><span class="s">&#39;  SOURCE_DIR 폴더에 md파일이 아닌 것이 존재 &gt;&gt; {file_basename}&#39;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">continue</span>
+
+<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="mi">11</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="err">파일명이</span><span class="w"> </span><span class="p">.</span><span class="n">renderignore에</span><span class="w"> </span><span class="err">포함되어</span><span class="w"> </span><span class="err">있다면</span><span class="p">,</span><span class="w"> </span><span class="n">pass</span>
+<span class="w">    </span><span class="nf">if</span><span class="w"> </span><span class="n">file_basename</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="n">files_to_render_ignore</span><span class="o">:</span>
+<span class="w">        </span><span class="n">print</span><span class="p">(</span><span class="n">f</span><span class="s">&quot;  제외된 파일 목록 &gt;&gt; {file_basename}&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="n">continue</span>
+
+<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="err">파일명이</span><span class="w"> </span><span class="p">.</span><span class="n">md로</span><span class="w"> </span><span class="err">끝나는지</span><span class="w"> </span><span class="err">확인하고</span><span class="w"> </span><span class="err">그렇다면</span><span class="p">,</span><span class="w"> </span><span class="n">root</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">filename을</span><span class="w"> </span><span class="err">합쳐서</span><span class="w"> </span><span class="err">파일</span><span class="w"> </span><span class="err">경로를</span><span class="w"> </span><span class="err">저장한다</span><span class="p">.</span>
+<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="nf">if</span><span class="w"> </span><span class="n">filename</span><span class="p">.</span><span class="n">lower</span><span class="p">().</span><span class="kd">ends</span><span class="n">with</span><span class="p">(</span><span class="s">&#39;.md&#39;</span><span class="p">)</span><span class="o">:</span>
+<span class="w">    </span><span class="n">files_to_render</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+
+<span class="n">print</span><span class="p">(</span><span class="n">f</span><span class="s">&quot;files_to_render  &gt;&gt; {files_to_render}&quot;</span><span class="p">)</span>
+</code></pre></div>
+
+<p>```</p>
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="jinja2-render-frontmatter">jinja2 도입 - render하면서 frontmatter정보도 변수로 넘길 수 있다?!</h3>
+<ol>
+<li>
+<p>설치 및 setup.py에 추가하기</p>
+<p><code>shell
+(.venv) PS C:\Users\cho_desktop\PycharmProjects\markdown&gt; pip install jinja2</code></p>
+<p>```python
+from distutils.core import setup</p>
+<p>setup(
+    name='mdr',
+    version='1.0.0',
+    description='Markdown Renderer',
+    author='JaeSeong Cho',
+    author_email='tingstyle1@gmail.com',
+    packages=['markdown_renderer'],
+    entry_points={
+        'console_scripts': [
+            'mdr = markdown_renderer.cli:cli_entry_point'
+        ],
+    },
+    install_requires=[
+        'markdown',
+        'frontmatter',
+        'jinja2'
+    ],
+)
+```</p>
+</li>
+<li>
+<p>output_dir을 ../html에서 build로 변경</p>
+<p><code>python
+def cli_entry_point():
+    SOURCE_DIR = '../docs'  # 상대경로
+    # OUTPUT_DIR = '../html'  # 상대경로
+    OUTPUT_DIR = 'build'  # 상대경로</code></p>
+<ul>
+<li><strong>패키지 &gt; build폴더에 빌드된다.</strong></li>
+</ul>
+<p><img alt="image-20250306101611829" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250306101611829.png"></p>
+</li>
+<li>
+<p>패키지 내부 template_dir를 web으로 정하고, jinja2환경변수로 env변수에 template폴더를 지정한다.</p>
+<p>```python</p>
+<h2 id="render-logic">Render Logic</h2>
+<h1 id="12-fread-jinja2-env-envget_template">12) 순회하며 f.read()할텐데, 그 전에, jinja2 env파일을 만들고, env.get_template()을 이용하여 채울 템플릿을 가져온다.</h1>
+<p>env = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR))</p>
+<h1 id="4-md-file-frontmatter-markdown_3">4) 랜더할 md file들을 순회하면서, frontmatter를 뽑아내고, markdown으로 변환한다.</h1>
+<p>for file_to_render in files_to_render:
+    with open(file_to_render, 'r', encoding='utf-8') as f:
+        content = f.read()
+```</p>
+<p><code>python
+def cli_entry_point():
+    SOURCE_DIR = '../docs'  # 소스는 패키지 밖의 루트 폴더에서
+    # OUTPUT_DIR = '../html'  # 상대경로
+    OUTPUT_DIR = 'build'  # 빌드는 패키지 내부의 폴더에서
+    TEMPLATE_DIR = 'md_templates' # 템플릿도 패키지내부 폴더에서 제공할 것으로 지정</code></p>
+</li>
+<li>
+<p>env변수에 적힌 template_dir에서 contents.html을 가져오도록 패키지내부 폴더생성, contents.html 생성을 해준다.</p>
+<p><img alt="image-20250306102359473" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250306102359473.png"></p>
+<p><code>python
+env = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR))
+content_template = env.get_template('contents.html')</code></p>
+</li>
+<li>
+<p>이제 f.write()로 html을 쓰기전에, <strong>template변수.render(body=html)</strong>을 통해 <code>한번 render된 html</code>을 쓰게 한다.</p>
+<p>```python</p>
+<h1 id="9-html">9) html로 변환된 내용을 파일에 쓴다.</h1>
+<h1 id="13-html-templaterender">13) html -&gt; template.render()한 것을 쓰도록 로직 추가</h1>
+<p>content = content_template.render(title=post['attributes']['title'], body=html)
+with open(output_file, 'w', encoding='utf-8') as f:
+    f.write(content)
+```</p>
+<ul>
+<li><strong>이대로 실행하면 1 cli.html 빌드된 것에는 아무것도 안뜬다. 왜냐면 변수로 넘긴 것을 html에서 jinja문법으로 받아서 써야하기 때문</strong></li>
+</ul>
+<p><img alt="image-20250306103119440" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250306103119440.png"></p>
+</li>
+<li>
+<p><strong>이제 md_templates 폴더에 <code>base.html</code>을 만들고 <code>detail.html</code>은 base.html 상속한 뒤, 내부에서 사용해보자.</strong></p>
+<p>```html
+&lt;!DOCTYPE html&gt;
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title></p>
+<p></head>
+<body>
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
+```</p>
+</li>
+<li>
+<p><strong>body=html을 변수로 받은 contents.html은 base상속 이후, <code>block</code>에서 <code>{{ body }}</code>를 사용하여 표기되게 한다.</strong></p>
+<p _="%" _base.html_="&quot;base.html&quot;" extends>```html</p>
+<p>{% block content %}
+<h1>제목</h1>
+{{ body }}
+{% endblock content %}
+```</p>
+<p><img alt="image-20250306104745458" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250306104745458.png">
+<img alt="image-20250306104755097" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250306104755097.png"></p>
+</li>
+</ol>
+<h3 id="indexhtml">index.html 도입하기</h3>
+<ul>
+<li>
+<p>개별 contents들을 render -&gt; 쓰기 한 이후에 index는 따로다.</p>
+</li>
+<li>
+<p>template 변수 생성</p>
+<ul>
+<li>html에는 test=, posts 보내기</li>
+</ul>
+<p>```python</p>
+<h2 id="render-index">Render index</h2>
+<p>index_template = env.get_template('index.html')
+```</p>
+<p _="%" _base.html_="&quot;base.html&quot;" extends>```html</p>
+<p>{% block title %}Home{% endblock %}</p>
+<p>{% block content %}</p>
+<p><h2>Recent Posts</h2></p>
+<p>{{ test }}</p>
+<p _="%" endfor>{% for post in posts[0:5] %}</p>
+<p>{% endblock %}
+```</p>
+</li>
+<li>
+<p>개별 posts를 써야하는데 일단은 사용x</p>
+<p>```python</p>
+<h2 id="render-index_1">Render index</h2>
+<p>index_template = env.get_template('index.html')
+index = index_template.render(test='index test', posts=[])
+index_file = os.path.join(OUTPUT_DIR, 'index.html')
+with open(index_file, 'w', encoding='utf-8') as f:
+    f.write(index)
+```</p>
+<p><img alt="image-20250306110937725" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250306110937725.png"></p>
+</li>
+</ul>
+<h3 id="manfestin-template">manfest.in 도입 -&gt; 패키지에 template파일도 같이 설치되게</h3>
+<ul>
+<li>MANIFEST.in 파일은 파이썬 패키지에 포함시키고 싶은 파일을 담는 파일입니다. readme 파일이나 라이선스 파일과 같은 파일이 이에 해당합니다. </li>
+</ul>
+<p>MANIFEST.in 파일의 용도</p>
+<ul>
+<li>내부 패키지 디렉터리에 있지 않지만 포함시키고 싶은 파일을 담습니다. </li>
+<li>소스 배포판을 만들 때 사용됩니다. </li>
+<li>
+<p>MANIFEST.in 파일이 없으면 기본 파일 집합만으로 매니페스트를 만듭니다. </p>
+</li>
+<li>
+<p>root에 생성하여 recursive로 패키지에 template파일 전체를 포함시키게 한다.</p>
+<p><code>recursive-include markdown_renderer/md_templates *</code></p>
+</li>
+<li>
+<p>setup.py에 package_data로 명시해준다.</p>
+<ul>
+<li>setuptools를 사용하진 않지만 import해주라고 한다.</li>
+</ul>
+<p>```python
+import setuptools
+from distutils.core import setup</p>
+<p>setup(
+    name='mdr',
+    version='1.0.0',
+    description='Markdown Renderer',
+    author='JaeSeong Cho',
+    author_email='tingstyle1@gmail.com',
+    packages=['markdown_renderer'],
+    entry_points={
+        'console_scripts': [
+            'mdr = markdown_renderer.cli:cli_entry_point'
+        ],
+    },
+    install_requires=[
+        'markdown',
+        'frontmatter',
+        'jinja2'
+    ],
+    package_data={
+        'markdown_renderer': ['md_templates/*']
+    }
+)
+```</p>
+</li>
+<li>
+<p><code>python setup.py bdist_wheel</code> 이나 <code>python setup.py install</code>이나 동일한 듯하다.</p>
+<ul>
+<li>
+<p><strong><code>bdist_wheel</code>로  실행하면 dist폴더가 생성되며, 내부에 wheel 파일이 생성된다.</strong></p>
+<ul>
+<li>
+<p>이건 unzip으로 맥에서 풀어야한다 나는 install로 하자</p>
+<p><img alt="image-20250306112032399" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250306112032399.png"></p>
+</li>
+</ul>
+</li>
+<li>
+<p>그래도 에러</p>
+<p>```
+error: [WinError 32] 다른 프로세스가 파일을 사용 중이기 때문에 프로세스가 액세스 할 수 없습니다: 'c:\users\cho_desktop\pycharmprojects\markdown\.venv\lib\site-packages
+\mdr-1.0.0-py3.11.egg'</p>
+<p>```</p>
+</li>
+<li>
+<p><code>mdr</code> 명령어로 해봤는데, 파일명만 뜬다?</p>
+</li>
+</ul>
+</li>
+</ul>
+<h3 id="posts-index">리팩토링포함, posts로 전환 index처리까지</h3>
+<h4 id="render-posts-render-path">render전에 posts 라고 미리 render할 경로 검사후 모아놓기 + path속성 처리</h4>
+<ul>
+<li>
+<p>os.walk로 읽은 파일의 경로 file -&gt; full_path</p>
+</li>
+<li>
+<p>render할 file 경로 -&gt; files_full_path_to_render</p>
+</li>
+<li>
+<p>패키지내 build폴더 삭제로직 먼저 하도록 추가</p>
+<p>```python</p>
+<h1 id="14-build">14) build폴더 삭제 미리 해놓기</h1>
+<p>if os.path.exists(OUTPUT_DIR):
+    shutil.rmtree(OUTPUT_DIR)
+```</p>
+</li>
+<li>
+<p>render전 post정보를 먼저 추출한다.</p>
+<ul>
+<li>path 속성이 있고, 그게 중복이 아니라면 가능</li>
+</ul>
+<p>```python
+post_paths = {} # 모든 post에 대한 path들을 모은다. TODO: DB에서 검사</p>
+<h1 id="4-md-file-frontmatter">4) 랜더할 md file들을 순회하면서, frontmatter 추출</h1>
+<p>for file_full_path in files_full_path_to_render:
+    with open(file_full_path, 'r', encoding='utf-8') as f:
+        content = f.read()
+        post = frontmatter.Frontmatter.read(content)  # c = frontmatter.loads(content) # 버전 차이?</p>
+<div class="codehilite"><pre><span></span><code><span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="n">frontmatter없는</span><span class="w"> </span><span class="n">파일은</span><span class="w"> </span><span class="n">pass</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="s1">&#39;attributes&#39;</span><span class="ow">not</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nl">post</span><span class="p">:</span>
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="err">{</span><span class="s1">&#39;attributes&#39;</span><span class="err">:</span><span class="w"> </span><span class="k">None</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;body&#39;</span><span class="err">:</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;frontmatter&#39;</span><span class="err">:</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="err">}</span>
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="n">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="s1">&#39;해당파일에 frontmatter가 빠짐: &#39;</span><span class="p">,</span><span class="w"> </span><span class="n">file_full_path</span><span class="p">)</span>
+<span class="w">        </span><span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;🤣 frontmatter가 없는 파일 수정 요망: {file_full_path}&#39;</span><span class="p">)</span>
+<span class="w">        </span><span class="k">continue</span>
+
+<span class="w">        </span><span class="err">##</span><span class="w"> </span><span class="n">front용</span><span class="w"> </span><span class="n">path지정</span><span class="p">(</span><span class="n">백엔드</span><span class="w"> </span><span class="n">달리면</span><span class="w"> </span><span class="n">필요</span><span class="w"> </span><span class="n">없을</span><span class="w"> </span><span class="n">듯</span><span class="p">)</span>
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="mi">15</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">path</span><span class="w"> </span><span class="n">속성이</span><span class="w"> </span><span class="n">있다면</span><span class="p">,</span><span class="w"> </span><span class="n">파일명이</span><span class="w"> </span><span class="n">아니라</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">path</span><span class="o">]</span><span class="p">.</span><span class="n">html로</span><span class="w"> </span><span class="n">상대</span><span class="w"> </span><span class="n">경로를</span><span class="w"> </span><span class="n">지정한다</span><span class="p">.</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="s1">&#39;path&#39;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">post</span><span class="o">[</span><span class="n">&#39;attributes&#39;</span><span class="o">]</span><span class="err">:</span>
+<span class="w">            </span><span class="err">#</span><span class="w"> </span><span class="mi">15</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="n">path는</span><span class="w"> </span><span class="n">중복이</span><span class="w"> </span><span class="n">아니여야</span><span class="w"> </span><span class="n">한다</span><span class="p">.</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="n">post</span><span class="o">[</span><span class="n">&#39;attributes&#39;</span><span class="o">][</span><span class="n">&#39;path&#39;</span><span class="o">]</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nl">post_paths</span><span class="p">:</span>
+<span class="w">                </span><span class="err">#</span><span class="w"> </span><span class="n">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;중복된 path가 있습니다: {post[&quot;path&quot;]}&#39;</span><span class="p">)</span>
+<span class="w">                </span><span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;🤣 중복된 path를 가진 파일 : {file_full_path}&#39;</span><span class="p">)</span>
+<span class="w">                </span><span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;post_paths &gt;&gt; {post_paths}&#39;</span><span class="p">)</span>
+<span class="w">                </span><span class="k">continue</span>
+<span class="w">                </span><span class="err">#</span><span class="w"> </span><span class="mi">15</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="n">중복이</span><span class="w"> </span><span class="n">아닌</span><span class="w"> </span><span class="n">path는</span><span class="w"> </span><span class="n">True로</span><span class="w"> </span><span class="n">체크해서</span><span class="w"> </span><span class="n">추후</span><span class="w"> </span><span class="n">중복이</span><span class="w"> </span><span class="n">안되게</span><span class="w"> </span><span class="n">한다</span><span class="p">.</span>
+<span class="w">                </span><span class="n">post_paths</span><span class="o">[</span><span class="n">post[&#39;path&#39;</span><span class="o">]</span><span class="err">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">True</span>
+</code></pre></div>
+
+<p>```</p>
+<ul>
+<li>이렇게 모은 것들을 posts라고 한다.</li>
+</ul>
+<p>```python
+        posts = []  # 
+        post_paths = {}  # 모든 post에 대한 path들을 모은다. TODO: DB에서 검사
+        # 4) 랜더할 md file들을 순회하면서, frontmatter 추출
+        for file_full_path in files_full_path_to_render:
+            with open(file_full_path, 'r', encoding='utf-8') as f:
+                content = f.read()
+                post = frontmatter.Frontmatter.read(content)  # c = frontmatter.loads(content) # 버전 차이?</p>
+<div class="codehilite"><pre><span></span><code><span class="w">            </span><span class="err">#</span><span class="w"> </span><span class="mi">5</span><span class="p">)</span><span class="w"> </span><span class="n">frontmatter없는</span><span class="w"> </span><span class="n">파일은</span><span class="w"> </span><span class="n">pass</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="s1">&#39;attributes&#39;</span><span class="w"> </span><span class="ow">not</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nl">post</span><span class="p">:</span>
+<span class="w">                </span><span class="err">#</span><span class="w"> </span><span class="err">{</span><span class="s1">&#39;attributes&#39;</span><span class="err">:</span><span class="w"> </span><span class="k">None</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;body&#39;</span><span class="err">:</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;frontmatter&#39;</span><span class="err">:</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="err">}</span>
+<span class="w">                </span><span class="err">#</span><span class="w"> </span><span class="n">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="s1">&#39;해당파일에 frontmatter가 빠짐: &#39;</span><span class="p">,</span><span class="w"> </span><span class="n">file_full_path</span><span class="p">)</span>
+<span class="w">                </span><span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;🤣 frontmatter가 없는 파일 수정 요망: {file_full_path}&#39;</span><span class="p">)</span>
+<span class="w">                </span><span class="k">continue</span>
+
+<span class="w">            </span><span class="err">##</span><span class="w"> </span><span class="n">front용</span><span class="w"> </span><span class="n">path지정</span><span class="p">(</span><span class="n">백엔드</span><span class="w"> </span><span class="n">달리면</span><span class="w"> </span><span class="n">필요</span><span class="w"> </span><span class="n">없을</span><span class="w"> </span><span class="n">듯</span><span class="p">)</span>
+<span class="w">            </span><span class="err">#</span><span class="w"> </span><span class="mi">15</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="k">path</span><span class="w"> </span><span class="n">속성이</span><span class="w"> </span><span class="n">있다면</span><span class="p">,</span><span class="w"> </span><span class="n">파일명이</span><span class="w"> </span><span class="n">아니라</span><span class="p">,</span><span class="w"> </span><span class="o">[</span><span class="n">path</span><span class="o">]</span><span class="p">.</span><span class="n">html로</span><span class="w"> </span><span class="n">상대</span><span class="w"> </span><span class="n">경로를</span><span class="w"> </span><span class="n">지정한다</span><span class="p">.</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="s1">&#39;path&#39;</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">post</span><span class="o">[</span><span class="n">&#39;attributes&#39;</span><span class="o">]</span><span class="err">:</span>
+<span class="w">                </span><span class="err">#</span><span class="w"> </span><span class="mi">15</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="n">path는</span><span class="w"> </span><span class="n">중복이</span><span class="w"> </span><span class="n">아니여야</span><span class="w"> </span><span class="n">한다</span><span class="p">.</span>
+<span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="n">post</span><span class="o">[</span><span class="n">&#39;attributes&#39;</span><span class="o">][</span><span class="n">&#39;path&#39;</span><span class="o">]</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nl">post_paths</span><span class="p">:</span>
+<span class="w">                    </span><span class="err">#</span><span class="w"> </span><span class="n">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;중복된 path가 있습니다: {post[&quot;path&quot;]}&#39;</span><span class="p">)</span>
+<span class="w">                    </span><span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;🤣 중복된 path를 가진 파일 : {file_full_path}&#39;</span><span class="p">)</span>
+<span class="w">                    </span><span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">&#39;post_paths &gt;&gt; {post_paths}&#39;</span><span class="p">)</span>
+<span class="w">                    </span><span class="k">continue</span>
+<span class="w">                </span><span class="err">#</span><span class="w"> </span><span class="mi">15</span><span class="o">-</span><span class="mi">3</span><span class="p">)</span><span class="w"> </span><span class="n">중복이</span><span class="w"> </span><span class="n">아닌</span><span class="w"> </span><span class="n">path는</span><span class="w"> </span><span class="n">True로</span><span class="w"> </span><span class="n">체크해서</span><span class="w"> </span><span class="n">추후</span><span class="w"> </span><span class="n">중복이</span><span class="w"> </span><span class="n">안되게</span><span class="w"> </span><span class="n">한다</span><span class="p">.</span>
+<span class="w">                </span><span class="n">post_paths</span><span class="o">[</span><span class="n">post[&#39;attributes&#39;</span><span class="o">][</span><span class="n">&#39;path&#39;</span><span class="o">]</span><span class="err">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">True</span>
+
+<span class="w">            </span><span class="n">posts</span><span class="p">.</span><span class="n">append</span><span class="p">(</span><span class="n">post</span><span class="p">)</span>
+</code></pre></div>
+
+<p>```</p>
+</li>
+</ul>
+<h4 id="datetime-index">datetime속성을 추가해야 역순이후 index처리 가능</h4>
+<ul>
+<li>
+<p>date(string, 2025-02-03)을 datetime으로 바꾼 뒤, <code>date_parsed</code>로서 시간비교하게 한다.</p>
+<ul>
+<li>이 때, 미래 날짜(오늘과 비교해서 크면) 건너띈다.</li>
+</ul>
+<p>```python</p>
+<h1 id="15-3-date-date_parsed-str-datetime">15-3) 'date' 속성을 검사하여 있다면, 'date_parsed' 속성으로 str -&gt; datetime으로 바꿔 넣어놓는다.</h1>
+<p>if 'date' in post['attributes']:
+    # 'date': 2023-02-20
+    post['attributes']['date_parsed'] = post['attributes']['date'].strptime('%Y-%m-%d')</p>
+<div class="codehilite"><pre><span></span><code><span class="gh">#</span> 15-4) 근데, 발행날짜가 미래면, 무시하도록 한다.
+<span class="gh">#</span> 오늘 00시 발행법: datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
+<span class="gh">#</span> &gt;&gt; datetime.datetime(2025, 3, 8, 0, 0)
+if post[&#39;date_parsed&#39;] &gt; datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time()):
+    print(f&#39;🤣 미래 날짜의 파일 : {file_full_path}&#39;)
+    continue
+</code></pre></div>
+
+<p>```</p>
+</li>
+<li>
+<p>posts를 순회하며 html로 쓸 때, sorted()로 정렬한다.</p>
+<p>```python
+env = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR))
+content_template = env.get_template('contents.html')</p>
+<h1 id="16-render-post-date_parsed-get">16) render하기 전, post를 date_parsed로 정렬. 속성 없을 수도 있으니, .get()으로 가져온다.</h1>
+<p>sorted(
+    posts,
+    key=lambda x: x['attributes'].get('date_parsed', datetime.datetime.min),
+    reverse=True,
+)
+```</p>
+</li>
+<li>
+<p>index처리를 위해서, enumerate로 순회하여, 총갯수 len(posts)와 i를 비교하여 next, prev post처리를 한다.</p>
+<p>```python</p>
+<h1 id="render">render</h1>
+<p>for i, post in enumerate(posts):
+    # 17-1) init prev/next
+    prev_post = next_post = None
+    # 아직 안끝났으면, next post객체를 넣어놓기
+    if i &lt; len(posts) - 1:
+        next_post = posts[i + 1]
+    # 0번째가 아니면, prev post객체를 넣어놓기
+    if i &gt; 0:
+        prev_post = posts[i - 1]
+```</p>
+</li>
+</ul>
+<h4 id="prev-next-post-jinja">prev, next post는 jinja이후 변수로 넘겨줘서 가능한 것</h4>
+<ol>
+<li>
+<p>path를 속성으로 가지고 있으면, <strong>해당path의 시작페이지 index.html</strong>로 간주하도록</p>
+<ul>
+<li><code>'path': /blog/nested/post</code> 형식으로 카테고리 형식으로 사용하게 될 듯.</li>
+</ul>
+</li>
+<li>
+<p>path를 직접 넣어준 post만  path + <code>/index.html</code>로 주소를 바꿔주고, 처리해준다.</p>
+</li>
+<li>
+<p><strong>path를 안넣어준 post에 대해서는, 직접 파일명으로 변경해줘야하는데, 이미 os.walk()를 지나간 상태라. os.walk()순회시 attributes에 넣어줘야할 것 같다.</strong></p>
+<p><code>python
+if 'path' in post['attributes']:
+    #...
+else:
+    # 15-4) path가 없으면, 파일명 .md -&gt;.html 변경 기존 로직이 적용하는 file_full_path를 나중에 쓰기 위해
+    #       file_full_path속성으로 저장해놓는다.
+    post['attributes']['file_full_path'] = file_full_path</code></p>
+</li>
+<li>
+<p>이제 path가 있으면 path + /index.html  없으면 file_full_path를 outfut_dir 대체 및 html로 변경한 이름을 relative_path변수에 저장해놓는다</p>
+</li>
+<li></li>
+</ol>
+</div>
+
+<!-- 이전 post / 다음 post -->
+
+<div>
+    이전:
+    <a href="../../../../..//blog/4">test4 youtube</a>
+</div>
+
+
+<div>
+    다음:
+    <a href="../../../../..//about">소개</a>
+</div>
+
+
+
+<!-- 작성자 -->
+
+
+
+            </div>
+                
+        </div>
+    </div>
+    <div class="footer">
+        
+        <div id="copyright">
+            Copyright &copy; <span id="year"></span>(주) 김석영 주식회사
+        </div>
+        
+        
+        <div id="credit">
+            Made with <a href="https://github.com/pagekeytech/markdown-sitegen">MDR</a> from <a
+                href="https://www.pagekeytech.com/">남룡북매</a>
+        </div>
+        
+    </div>
+</div>
+
+<script src="../../../../../static/main.js"></script>
+
+<script src="../../../../../static/article.js"></script>
+
+</body>
+</html>

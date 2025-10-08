@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- font -->
+    <link rel="stylesheet" as="style" crossorigin
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200..900&display=swap" rel="stylesheet">
+
+
+    <style>
+        :root {
+            --theme-primary: #FC5230;
+            --theme-secondary: #1ECECB;
+                /* --theme-primary를 80% 유지하고 검은색 20% 섞어서 어둡게 */
+            --theme-primary-dark: color-mix(in srgb, var(--theme-primary) 80%, black 20%);
+
+            /* --theme-secondary도 동일하게 적용 */
+            --theme-secondary-dark: color-mix(in srgb, var(--theme-secondary) 80%, black 20%);
+
+            /* 로고 주소 */
+
+            --h3-title-logo-url: url("https://front.chojaeseong.com/images/png/profile/sub/02.png");
+        }
+    </style>
+    <link rel="stylesheet" href="../static/code-highlights.css">
+    <link rel="stylesheet" href="../static/common.css">
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="../static/mixin.css">
+    <link rel="stylesheet" href="../static/article.css">
+
+    <title>아카이브 | 조재성 원장</title>
+
+    <!--https://github.dev/Hybridhash/FastAPI-HTMX-->
+    
+<link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+<link href="../static/ads.css" rel="stylesheet">
+
+<script defer src="https://cdn.jsdelivr.net/npm/@alpinejs/intersect@3.x.x/dist/cdn.min.js"></script>
+<script src="https://www.youtube.com/iframe_api"></script>
+
+
+    <!-- alinepjs-->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body
+>
+   <!--     x-data="{navFixed: false}"
+        @scroll.window="navFixed = (window.pageYOffset > $refs.nav.getBoundingClientRect().height * 2 ) ? true : false, console.log(navFixed)"-->
+<div id="page-container">
+    <div id="content-wrap">
+        <div class="nav" x-ref="nav"
+        >
+
+<!--             :class="navFixed ? 'position-fixed top-0 left-0 w-100' : 'position-relative'"-->
+
+            <a id="title" href="../">
+                <img id="logo" src="http://hani.chojaeseong.com/images/logo.png"/>조재성 원장
+            </a>
+            <ul class="links">
+                <li><a href="../">Home</a></li>
+                <li><a href="../blog">블로그</a></li>
+                <li><a href="../archive">Archive</a></li>
+                <li><a href="../ads">원내광고</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+                
+<script>
+    const adsData = {"autoPlayDuration": 1500, "isAutoPlay": false, "pauseTimeoutDuration": 3000, "slides": {"\uad11\uace01": {"isMute": false, "subtitle": "\uc6d0\ub0b4\uad11\uace0 \uc911\uc785\ub2c8\ub2e4. \uc18c\ub9ac \uc74c\uc18c\uac70 \uc548\ud55c \uc601\uc0c1\uc785\ub2c8\ub2e4.", "title": "\uccab\ubc88\uc9f8 \uc601\uc0c1111111111", "type": "video", "youtubeId": "pbGSI140UPw"}, "\uad11\uace02": {"isMute": false, "subtitle": "\uc6d0\ub0b4\uad11\uace0 \uc911\uc785\ub2c8\ub2e4. \uc18c\ub9ac \uc74c\uc18c\uac70 \uc911\uc778 \uc601\uc0c1\uc785\ub2c8\ub2e4.", "title": "\ub450\ubc88\uc9f8 \uc601\uc0c112222222222222222", "type": "video", "youtubeId": "EMycmLvx9Hc"}, "\uad11\uace03": {"subtitle": "\u314b\u314b\u314b\u314b", "title": "\uccab\ubc88\uc9f8 \uadf8\ub9bc", "type": "image", "url": "https://picstargram.s3.ap-northeast-2.amazonaws.com/post/93a4051d-089c-4bbe-bbea-8e2dc8298190_4700.webp"}, "\uad11\uace04": {"subtitle": "\u314b\u314b\u314b\u314b", "title": "2\ubc88\uc9f8 \uadf8\ub9bc", "type": "image", "url": "https://picstargram.s3.ap-northeast-2.amazonaws.com/post/9a6ebc3f-ff00-46d9-b395-248cf7fc1642_4700.webp"}}};
+</script>
+<!--x-data='{ ads: adsData }'-->
+<!--<div class="ads fixed inset-0"-->
+<div class="ads relative w-full h-full "
+     x-data="ads"
+     x-init="Object.assign($data, adsData);
+     $data.slides = Object.values($data.slides);
+     console.log($data);
+     console.log('activeSection', activeSection);
+    "
+     x-ref="ads"
+>
+<!--      :style="isFullScreen ? 'overflow-y: hidden;' : 'overflow-y: auto;'"-->
+
+    <div class="fixed flex flex-col justify-center space-y-4 px-10
+    floatNav
+">
+        <ul>
+            <template x-for="(slide, i) in slides" :key="i">
+                <li class="w-auto">
+                    <a :href="`#section-${i}`"
+                       class="cursor flex items-center"
+                       x-data="{ hovered: false }"
+                       @mouseenter="hovered = true"
+                       @mouseleave="hovered = false"
+                    >
+                        <!-- bar -->
+                        <span class="inline-block h-10 relative"
+                              :class="{
+                          'bg-white' : isActiveSection(i),
+                          'bg-gray-400' : !isActiveSection(i),
+                          }"
+                              :style="hovered? 'width: 6px; left: -1px; background-color: #1ECECB;' : 'width: 4px;'"
+                        ></span>
+                        <!-- title -->
+                        <span class="inline-block pl-3 text-sm"
+                              :class="{
+                                'text-white font-bold': isActiveSection(i),
+                                'text-gray-400': !isActiveSection(i),
+                                'font-bold': hovered,
+                                'bounce': isActiveSection(i)
+                                }"
+                              :style="hovered ? 'color: #1ECECB;' : ''"
+                              x-text="slide.title ? slide.title : '섹션 ' + (i+1) + '' "></span>
+
+                    </a>
+                </li>
+            </template>
+        </ul>
+
+        <!-- 마우스 스크롤 -->
+        <span class="scroll-down block -ml-1 mt-10 h-8.5"
+              :class="{'white' : hasActiveSectionTitle() }"
+        ></span>
+
+        <!-- 재생여부 -->
+        <button @click="togglePause"
+                x-data="{hovered: false}"
+                @mouseenter="hovered = true"
+                @mouseleave="hovered = false"
+                class="block -ml-2 px-1 py-1 bg-transparent text-sm"
+                :class="hovered ? 'text-white font-bold' : 'text-gray-400'"
+        >
+            <span x-text="!isAutoPlay ? '자동재생' : (isPaused ? '다시시작' : '일시정지')"></span>
+        </button>
+
+        <!-- 🔇 전체 음소거 토글 버튼 -->
+        <button
+                @click="toggleMuteAll"
+                x-data="{hovered: false}"
+                @mouseenter="hovered = true"
+                @mouseleave="hovered = false"
+                class="fixed top-4 right-4 z-12 bg-transparent text-sm px-4 py-2 rounded"
+                :class="hovered ? 'text-white font-bold' : 'text-gray-400'"
+                x-text="isMutedAll ? '🔇 전체 음소거 해제' : '🔈 전체 음소거'"
+        ></button>
+
+        <!-- 전체화면 토글-->
+        <button
+                @click="toggleFullScreen"
+                class="fixed  right-12 bottom-12 z-12 bg-transparent
+                                        fullscreen block  bg-img d-none d-md-block
+                        "
+                x-data="{hovered: false}"
+                @mouseenter="hovered = true"
+                @mouseleave="hovered = false"
+                :style="`background-image: url('../static/img/fullscreen-${isFullScreen ? 'off' : 'on' }.svg');`"
+        ></button>
+    </div>
+
+
+    <!-- 전체화면일 땐, 세로형스크롤을 감추기( 그전엔 확인용으로는 가지고 있어야할 듯) -->
+    <main class="sections" @wheel="pauseOnInteraction" @touchstart="pauseOnInteraction"
+          :style="isFullScreen ? 'overflow-y: hidden;' : 'overflow-y: auto;'"
+    >
+        <template x-for="(slide, i) in slides" :key="i">
+            <div :id="`section-${i}`"
+                 class="h-screen relative"
+                 x-intersect.half="
+                        increaseActiveSection(i); // +1만 하는게 아니라 length 나눈 값 + 1로 처음부터 시작하게 한다.
+                        // 현재 activeSection의 슬라이드가, userInteract후 & 전체음소거가 아니면, 소리를 켜고,  나머지 슬라이드는 일시정지한다.
+                        controlVideoSection(i);
+                "
+            >
+                <!--               :class="slide.title ? 'has-title' : 'has-no-title'"-->
+                <a href="#" class="block h-full w-full"
+                   :class="slide.title
+                               ? 'has-title'
+                               : (slide.youtubeId ? 'has-no-title-video' : 'has-no-title-image')"
+                   @click="pauseOnInteraction"
+                >
+                    <template x-if="slide.type == 'image'">
+                        <img :src="slide.url" alt="" class="block w-full h-full object-cover">
+                    </template>
+                    <template x-if="slide.type == 'video'">
+                        <div class="video-box block w-full h-full object-cover">
+                            <iframe
+                                    :id="`yt-${i}`"
+                                    allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture;"
+                                    :src="`https://www.youtube.com/embed/${slide.youtubeId}?enablejsapi=1&rel=0&autoplay=1&controls=0&disablekb=1&vq=hd1440&mute=1&loop=1&playlist=${slide.youtubeId}`"
+                                    allowfullscreen></iframe>
+                        </div>
+                    </template>
+
+
+                    <div class="absolute z-10"
+                         style="left:120px; bottom:100px;"
+                         x-show="slide.title"
+                    >
+                        <p class="text-white text-5xl font-bold" x-text="slide.title"></p>
+                        <p class="text-white mt-5 text-3xl" x-text="slide.subtitle"></p>
+                    </div>
+                </a>
+            </div>
+        </template>
+    </main>
+</div>
+
+
+        </div>
+    </div>
+    <div class="footer">
+        
+        <div id="copyright">
+            Copyright &copy; <span id="year"></span>(주) 김석영 주식회사
+        </div>
+        
+        
+        <div id="credit">
+            Made with <a href="https://github.com/pagekeytech/markdown-sitegen">MDR</a> from <a
+                href="https://www.pagekeytech.com/">남룡북매</a>
+        </div>
+        
+    </div>
+</div>
+
+<script src="../static/main.js"></script>
+
+<script src="../static/ads.js"></script>
+
+</body>
+</html>

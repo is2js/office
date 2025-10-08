@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- font -->
+    <link rel="stylesheet" as="style" crossorigin
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200..900&display=swap" rel="stylesheet">
+
+
+    <style>
+        :root {
+            --theme-primary: #FC5230;
+            --theme-secondary: #1ECECB;
+                /* --theme-primary를 80% 유지하고 검은색 20% 섞어서 어둡게 */
+            --theme-primary-dark: color-mix(in srgb, var(--theme-primary) 80%, black 20%);
+
+            /* --theme-secondary도 동일하게 적용 */
+            --theme-secondary-dark: color-mix(in srgb, var(--theme-secondary) 80%, black 20%);
+
+            /* 로고 주소 */
+
+            --h3-title-logo-url: url("https://front.chojaeseong.com/images/png/profile/sub/02.png");
+        }
+    </style>
+    <link rel="stylesheet" href="../../../static/code-highlights.css">
+    <link rel="stylesheet" href="../../../static/common.css">
+    <link rel="stylesheet" href="../../../static/style.css">
+    <link rel="stylesheet" href="../../../static/mixin.css">
+    <link rel="stylesheet" href="../../../static/article.css">
+
+    <title>test4 youtube | 조재성 원장</title>
+
+    <!--https://github.dev/Hybridhash/FastAPI-HTMX-->
+    
+    <!-- alinepjs-->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body
+>
+   <!--     x-data="{navFixed: false}"
+        @scroll.window="navFixed = (window.pageYOffset > $refs.nav.getBoundingClientRect().height * 2 ) ? true : false, console.log(navFixed)"-->
+<div id="page-container">
+    <div id="content-wrap">
+        <div class="nav" x-ref="nav"
+        >
+
+<!--             :class="navFixed ? 'position-fixed top-0 left-0 w-100' : 'position-relative'"-->
+
+            <a id="title" href="../../../">
+                <img id="logo" src="http://hani.chojaeseong.com/images/logo.png"/>조재성 원장
+            </a>
+            <ul class="links">
+                <li><a href="../../../">Home</a></li>
+                <li><a href="../../../blog">블로그</a></li>
+                <li><a href="../../../archive">Archive</a></li>
+                <li><a href="../../../ads">원내광고</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+                
+            <div class="layout-center">
+                
+<!-- 제목 -->
+<h1 class="post-title">test4 youtube</h1>
+
+
+<!-- youtube -->
+
+<div class="youtube">
+    <!--<iframe width="100%" style="aspect-ratio: 16 / 9;"-->
+    <iframe
+            src="https://www.youtube.com/embed/5P9bZCHE-iE"
+            title="YouTube video player"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            frameborder="none"
+            allowfullscreen>
+    </iframe>
+</div>
+
+
+
+<!-- 내용 -->
+<div class="article">
+<ul>
+<li>youtbe든 shorts는 아무것도 안주면 width 100% 이 기본이며, short의 경우 너무 길진다.
+<div class="shorts" style="display: flex;  flex-wrap:wrap; justify-content: center; align-items: center; margin = 0.5em auto; width: 100%;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" frameborder="0" height="100%" src="https://www.youtube.com/embed/5P9bZCHE-iE?controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;fs=0&amp;cc_load_policy=0&amp;iv_load_policy=3&amp;autoplay=0&amp;mute=0&amp;showinfo=0" style="aspect-ratio: 9 / 16; max-width:100%; display: block; margin: 0 auto;" title="YouTube video player"></iframe>
+</div>
+</li>
+<li>shorts  width 50%
+<div class="shorts" style="display: flex;  flex-wrap:wrap; justify-content: center; align-items: center; margin = 0.5em auto; width: 100%;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" frameborder="0" src="https://www.youtube.com/embed/5P9bZCHE-iE?controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;fs=0&amp;cc_load_policy=0&amp;iv_load_policy=3&amp;autoplay=0&amp;mute=0&amp;showinfo=0" style="aspect-ratio: 9 / 16; max-width:100%; display: block; margin: 0 auto;" title="YouTube video player" width="50%"></iframe>
+</div>
+</li>
+<li>
+<p>shorts width 100px
+<div class="shorts" style="display: flex;  flex-wrap:wrap; justify-content: center; align-items: center; margin = 0.5em auto; width: 100%;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" frameborder="0" src="https://www.youtube.com/embed/5P9bZCHE-iE?controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;fs=0&amp;cc_load_policy=0&amp;iv_load_policy=3&amp;autoplay=0&amp;mute=0&amp;showinfo=0" style="aspect-ratio: 9 / 16; max-width:100%; display: block; margin: 0 auto;" title="YouTube video player" width="100px"></iframe>
+</div>
+</p>
+</li>
+<li>
+<p>shorts에서는 width가 들어가도 height 준 것이 우선이다.</p>
+<ul>
+<li>height 150px width 100px
+<div class="shorts" style="display: flex;  flex-wrap:wrap; justify-content: center; align-items: center; margin = 0.5em auto; width: 100%;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" frameborder="0" height="150px" src="https://www.youtube.com/embed/5P9bZCHE-iE?controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;fs=0&amp;cc_load_policy=0&amp;iv_load_policy=3&amp;autoplay=0&amp;mute=0&amp;showinfo=0" style="aspect-ratio: 9 / 16; max-width:100%; display: block; margin: 0 auto;" title="YouTube video player"></iframe>
+</div>
+</li>
+</ul>
+</li>
+<li>
+<p>shorts 태그는 height를 우선순으로 한다. width 80% height 150px -&gt; height 150px
+<div class="shorts" style="display: flex;  flex-wrap:wrap; justify-content: center; align-items: center; margin = 0.5em auto; width: 100%;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" frameborder="0" height="150px" src="https://www.youtube.com/embed/5P9bZCHE-iE?controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;fs=0&amp;cc_load_policy=0&amp;iv_load_policy=3&amp;autoplay=0&amp;mute=0&amp;showinfo=0" style="aspect-ratio: 9 / 16; max-width:100%; display: block; margin: 0 auto;" title="YouTube video player"></iframe>
+</div>
+</p>
+</li>
+<li>shorts w300px height 200px -&gt; height 200px 
+    <div class="shorts" style="display: flex;  flex-wrap:wrap; justify-content: center; align-items: center; margin = 0.5em auto; width: 100%;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" frameborder="0" height="200px" src="https://www.youtube.com/embed/5P9bZCHE-iE?controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;fs=0&amp;cc_load_policy=0&amp;iv_load_policy=3&amp;autoplay=0&amp;mute=0&amp;showinfo=0" style="aspect-ratio: 9 / 16; max-width:100%; display: block; margin: 0 auto;" title="YouTube video player"></iframe>
+</div>
+</li>
+<li>youtube
+<div class="youtube" style="display: flex;  flex-wrap:wrap; justify-content: center; align-items: center; margin = 0.5em auto; width: 100%;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" frameborder="0" src="https://www.youtube.com/embed/5P9bZCHE-iE?controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;fs=0&amp;cc_load_policy=0&amp;iv_load_policy=3&amp;autoplay=0&amp;mute=0&amp;showinfo=0" style="aspect-ratio: 16 / 9; max-width:100%; display: block; margin: 0 auto;" title="YouTube video player" width="50%"></iframe>
+</div>
+<div class="youtube" style="display: flex;  flex-wrap:wrap; justify-content: center; align-items: center; margin = 0.5em auto; width: 100%;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" frameborder="0" src="https://www.youtube.com/embed/5P9bZCHE-iE?controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;fs=0&amp;cc_load_policy=0&amp;iv_load_policy=3&amp;autoplay=0&amp;mute=0&amp;showinfo=0" style="aspect-ratio: 16 / 9; max-width:100%; display: block; margin: 0 auto;" title="YouTube video player" width="100%"></iframe>
+</div>
+</li>
+<li>쇼츠는 아싸리 표안에 3~4개를 넣는게 낳은 것 같다 </li>
+</ul>
+<table>
+<thead>
+<tr>
+<th>어깨</th>
+<th>허리</th>
+<th>등</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<div class="shorts" style="display: flex;  flex-wrap:wrap; justify-content: center; align-items: center; margin = 0.5em auto; width: 100%;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" frameborder="0" height="100%" src="https://www.youtube.com/embed/bGU6G-F8Sfk?controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;fs=0&amp;cc_load_policy=0&amp;iv_load_policy=3&amp;autoplay=0&amp;mute=0&amp;showinfo=0" style="aspect-ratio: 9 / 16; max-width:100%; display: block; margin: 0 auto;" title="YouTube video player"></iframe>
+</div>
+</td>
+<td>
+<div class="shorts" style="display: flex;  flex-wrap:wrap; justify-content: center; align-items: center; margin = 0.5em auto; width: 100%;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" frameborder="0" height="100%" src="https://www.youtube.com/embed/9GCgfnwNXIY?controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;fs=0&amp;cc_load_policy=0&amp;iv_load_policy=3&amp;autoplay=0&amp;mute=0&amp;showinfo=0" style="aspect-ratio: 9 / 16; max-width:100%; display: block; margin: 0 auto;" title="YouTube video player"></iframe>
+</div>
+</td>
+<td>
+<div class="shorts" style="display: flex;  flex-wrap:wrap; justify-content: center; align-items: center; margin = 0.5em auto; width: 100%;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" frameborder="0" height="100%" src="https://www.youtube.com/embed/5P9bZCHE-iE?controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;fs=0&amp;cc_load_policy=0&amp;iv_load_policy=3&amp;autoplay=0&amp;mute=0&amp;showinfo=0" style="aspect-ratio: 9 / 16; max-width:100%; display: block; margin: 0 auto;" title="YouTube video player"></iframe>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>무릎</th>
+<th>발목</th>
+<th>발바닥</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<div class="shorts" style="display: flex;  flex-wrap:wrap; justify-content: center; align-items: center; margin = 0.5em auto; width: 100%;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" frameborder="0" height="100%" src="https://www.youtube.com/embed/bGU6G-F8Sfk?controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;fs=0&amp;cc_load_policy=0&amp;iv_load_policy=3&amp;autoplay=0&amp;mute=0&amp;showinfo=0" style="aspect-ratio: 9 / 16; max-width:100%; display: block; margin: 0 auto;" title="YouTube video player"></iframe>
+</div>
+</td>
+<td>
+<div class="shorts" style="display: flex;  flex-wrap:wrap; justify-content: center; align-items: center; margin = 0.5em auto; width: 100%;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" frameborder="0" height="100%" src="https://www.youtube.com/embed/9GCgfnwNXIY?controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;fs=0&amp;cc_load_policy=0&amp;iv_load_policy=3&amp;autoplay=0&amp;mute=0&amp;showinfo=0" style="aspect-ratio: 9 / 16; max-width:100%; display: block; margin: 0 auto;" title="YouTube video player"></iframe>
+</div>
+</td>
+<td>
+<div class="shorts" style="display: flex;  flex-wrap:wrap; justify-content: center; align-items: center; margin = 0.5em auto; width: 100%;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" frameborder="0" height="100%" src="https://www.youtube.com/embed/sPTUnq4DAKc?controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;fs=0&amp;cc_load_policy=0&amp;iv_load_policy=3&amp;autoplay=0&amp;mute=0&amp;showinfo=0" style="aspect-ratio: 9 / 16; max-width:100%; display: block; margin: 0 auto;" title="YouTube video player"></iframe>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table>
+<tbody>
+<tr>
+<td>
+<div class="shorts" style="display: flex;  flex-wrap:wrap; justify-content: center; align-items: center; margin = 0.5em auto; width: 100%;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" frameborder="0" height="100%" src="https://www.youtube.com/embed/5P9bZCHE-iE?controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;fs=0&amp;cc_load_policy=0&amp;iv_load_policy=3&amp;autoplay=0&amp;mute=0&amp;showinfo=0" style="aspect-ratio: 9 / 16; max-width:100%; display: block; margin: 0 auto;" title="YouTube video player"></iframe>
+</div>
+</td>
+<td>
+<div class="shorts" style="display: flex;  flex-wrap:wrap; justify-content: center; align-items: center; margin = 0.5em auto; width: 100%;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" frameborder="0" height="100%" src="https://www.youtube.com/embed/9GCgfnwNXIY?controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;fs=0&amp;cc_load_policy=0&amp;iv_load_policy=3&amp;autoplay=0&amp;mute=0&amp;showinfo=0" style="aspect-ratio: 9 / 16; max-width:100%; display: block; margin: 0 auto;" title="YouTube video player"></iframe>
+</div>
+</td>
+<td>
+<div class="shorts" style="display: flex;  flex-wrap:wrap; justify-content: center; align-items: center; margin = 0.5em auto; width: 100%;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" frameborder="0" height="100%" src="https://www.youtube.com/embed/5P9bZCHE-iE?controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;fs=0&amp;cc_load_policy=0&amp;iv_load_policy=3&amp;autoplay=0&amp;mute=0&amp;showinfo=0" style="aspect-ratio: 9 / 16; max-width:100%; display: block; margin: 0 auto;" title="YouTube video player"></iframe>
+</div>
+</td>
+</tr>
+<tr>
+<td>
+<div class="shorts" style="display: flex;  flex-wrap:wrap; justify-content: center; align-items: center; margin = 0.5em auto; width: 100%;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" frameborder="0" height="100%" src="https://www.youtube.com/embed/5P9bZCHE-iE?controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;fs=0&amp;cc_load_policy=0&amp;iv_load_policy=3&amp;autoplay=0&amp;mute=0&amp;showinfo=0" style="aspect-ratio: 9 / 16; max-width:100%; display: block; margin: 0 auto;" title="YouTube video player"></iframe>
+</div>
+</td>
+<td>
+<div class="shorts" style="display: flex;  flex-wrap:wrap; justify-content: center; align-items: center; margin = 0.5em auto; width: 100%;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" frameborder="0" height="100%" src="https://www.youtube.com/embed/9GCgfnwNXIY?controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;fs=0&amp;cc_load_policy=0&amp;iv_load_policy=3&amp;autoplay=0&amp;mute=0&amp;showinfo=0" style="aspect-ratio: 9 / 16; max-width:100%; display: block; margin: 0 auto;" title="YouTube video player"></iframe>
+</div>
+</td>
+<td>
+<div class="shorts" style="display: flex;  flex-wrap:wrap; justify-content: center; align-items: center; margin = 0.5em auto; width: 100%;">
+<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="true" frameborder="0" height="100%" src="https://www.youtube.com/embed/5P9bZCHE-iE?controls=0&amp;modestbranding=1&amp;rel=0&amp;playsinline=1&amp;fs=0&amp;cc_load_policy=0&amp;iv_load_policy=3&amp;autoplay=0&amp;mute=0&amp;showinfo=0" style="aspect-ratio: 9 / 16; max-width:100%; display: block; margin: 0 auto;" title="YouTube video player"></iframe>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>Item</th>
+<th>Price</th>
+<th><em>Quantity</em></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Apple</strong></td>
+<td>$1</td>
+<td><em>5</em></td>
+</tr>
+<tr>
+<td><strong>Bread</strong></td>
+<td>$2</td>
+<td><em>2</em></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">:Item</th>
+<th style="text-align: right;">Price:</th>
+<th style="text-align: center;">:Quantity:</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Apple</td>
+<td style="text-align: right;">$1</td>
+<td style="text-align: center;">5</td>
+</tr>
+<tr>
+<td style="text-align: left;">Bread</td>
+<td style="text-align: right;">$2</td>
+<td style="text-align: center;">2</td>
+</tr>
+</tbody>
+</table>
+<p>유튜브</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+</code></pre></div>
+
+<table>
+<thead>
+<tr>
+<th>그림</th>
+<th>치료</th>
+<th>금액</th>
+<th><strong>환급 여부</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><img alt="약침1" height="90%" src="https://www.akomnews.com/data/editor/2304/20230403102343_48d9e6f1d2c1dca040f2b8f6f6abeb60_ymmw.jpg" width="170px"></td>
+<td><code>통증약침</code></td>
+<td>+8000</td>
+<td>X</td>
+</tr>
+<tr>
+<td><img alt="약침1" src="https://www.akomnews.com/data/editor/2304/20230403102343_48d9e6f1d2c1dca040f2b8f6f6abeb60_ymmw.jpg"></td>
+<td><code>봉침</code></td>
+<td>+12000</td>
+<td>X</td>
+</tr>
+<tr>
+<td><img alt="약침1" src="https://www.akomnews.com/data/editor/2304/20230403102343_48d9e6f1d2c1dca040f2b8f6f6abeb60_ymmw.jpg"></td>
+<td><code>대용량약침</code></td>
+<td>+15000</td>
+<td>X</td>
+</tr>
+<tr>
+<td><img alt="약침1" src="https://www.akomnews.com/data/editor/2304/20230403102343_48d9e6f1d2c1dca040f2b8f6f6abeb60_ymmw.jpg"></td>
+<td><code>약침</code>+<br><strong>추나+충격파</strong></td>
+<td>+20000</td>
+<td><strong>1만원</strong><br><strong>초과금액 환급</strong></td>
+</tr>
+</tbody>
+</table>
+<h3 id="_1">근육 검사를 통한 재활 프로그램</h3>
+<ol>
+<li>극상근ㅁㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄹ<ul>
+<li>ㅇㄴㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄹ</li>
+<li>하이픈 ㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄹ</li>
+</ul>
+</li>
+<li>극하근ㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄹ</li>
+<li>소원근ㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄻㄴㅇㄹ</li>
+<li>ㅋcccc<ol>
+<li>ㅇ<ol>
+<li>ㅇ  </li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h3 id="_2">치료비용 안내</h3>
+<ul>
+<li>d<ul>
+<li>ㅋㅋㅋㅋㅋ <ul>
+<li>ㅋㅋㅋㅋㅋ </li>
+</ul>
+</li>
+</ul>
+</li>
+<li>d
+        - ㅋㅋㅋㅋㅋ </li>
+<li>sbh<ul>
+<li>인대 </li>
+</ul>
+</li>
+</ul>
+<h5 id="_3">약침</h5>
+<ul>
+<li>`블럭`은 <code>통증약침</code>은ㄴㅇㄻㄴㅇㄻㄴㅇㄹ<ul>
+<li>ㅋ     </li>
+</ul>
+</li>
+<li>**진하게**는 <strong>봉약침</strong>으ㅜㄴㅇ ㅁㄴㅇㄹ<ul>
+<li>ㅎ    </li>
+</ul>
+</li>
+<li>***이탤릭은*** <strong><em>대용량약침</em></strong>ㄴㅁㅇㄻㄴㅇㄻㄴㅇㄹ</li>
+<li><a href="http://www.naver.com">초음파대용량약침</a> 하이퍼 링크입니다.<ul>
+<li>클릭하세요</li>
+</ul>
+</li>
+</ul>
+<hr>
+<ul>
+<li>추나<ul>
+<li>통증약침</li>
+<li>충격파</li>
+<li>경추/요추 추나</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p><code>인용문</code>입니다.........<br>
+zzzz<br>
+<img alt="title" src="../../static/img/조원장_증명사진.png" width="45%">
+<img alt="title" src="../../static/img/조원장_증명사진.png" width="45%"></p>
+</blockquote>
+<p><img alt="title" src="../../static/img/조원장_증명사진.png" width="45%">
+<img alt="title" src="../../static/img/조원장_증명사진.png" width="45%">
+<img alt="title" src="../../static/img/조원장_증명사진.png">
+<img alt="title" src="../../static/img/조원장_증명사진.png" width="33%">
+<img alt="title" src="../../static/img/조원장_증명사진.png" width="33%">
+<img alt="title" src="../../static/img/조원장_증명사진.png" width="33%"></p>
+<ul>
+<li>ㅇㅁㄴㅇㄻㄴㅇㄻㄴ~~~ㅇㄻㄴㅇㄹ~~~ㄴㅁㅇㄻㄴㅇㄻㄴㅇ</li>
+</ul>
+<p><img alt="title" height="100%" src="../../static/img/조원장_증명사진.png" width="100%"></p>
+<h5 id="_4">큰 분류</h5>
+<table>
+<thead>
+<tr>
+<th><strong>약침</strong></th>
+<th><strong><em>약침+추나+충격파</em></strong></th>
+<th>그림</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>+8000</td>
+<td>+20000 -&gt; 실비환급시 0</td>
+<td><img alt="약침1" src="https://www.akomnews.com/data/editor/2304/20230403102343_48d9e6f1d2c1dca040f2b8f6f6abeb60_ymmw.jpg"></td>
+</tr>
+</tbody>
+</table>
+<h5 id="_5">약침 종류</h5>
+<table>
+<thead>
+<tr>
+<th>약침종류</th>
+<th>금액</th>
+<th>실비환급후 금액</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>(염좌)통증약침</td>
+<td>+ 8000원</td>
+<td>환급없음</td>
+</tr>
+<tr>
+<td>(인대)<code>봉침</code></td>
+<td>+ 12000원</td>
+<td>환급없음</td>
+</tr>
+<tr>
+<td>(디스크)대용량약침</td>
+<td>+ 15000원</td>
+<td>환급없음</td>
+</tr>
+<tr>
+<td><strong><em>약침+추나+충격파</em></strong></td>
+<td>+ 20000원</td>
+<td><code>추가금액 환급</code></td>
+</tr>
+</tbody>
+</table>
+<p><img alt="약침1" src="https://www.akomnews.com/data/editor/2304/20230403102343_48d9e6f1d2c1dca040f2b8f6f6abeb60_ymmw.jpg" width="45%">
+<img alt="약침1" src="https://www.akomnews.com/data/editor/2304/20230403102343_48d9e6f1d2c1dca040f2b8f6f6abeb60_ymmw.jpg" width="45%">
+<img alt="약침1" src="https://www.akomnews.com/data/editor/2304/20230403102343_48d9e6f1d2c1dca040f2b8f6f6abeb60_ymmw.jpg" width="25%"></p>
+<p><img alt="약침 -halfwidth" src="https://www.akomnews.com/data/editor/2304/20230403102343_48d9e6f1d2c1dca040f2b8f6f6abeb60_ymmw.jpg"></p>
+<p><img alt="조원장" src="../../static/img/조원장_증명사진.png">
+<img alt="조원장 -fullwidth" src="../../static/img/조원장_증명사진.png">
+<img alt="김원장 -halfwidth" src="https://front.chojaeseong.com/images/png/profile/main/01.png">
+<img alt="img.png" src="../../static/img/img.png"></p>
+<p><img alt="Picture of the Beach -2inline" src="../../static/img/조원장_증명사진.png">
+<img alt="Picture of the Beach -2inline" src="../../static/img/조원장_증명사진.png"></p>
+<p><img alt="Picture of the Beach -3inline" src="../../static/img/조원장_증명사진.png">
+<img alt="Picture of the Beach -3inline" src="../../static/img/조원장_증명사진.png">
+<img alt="Picture of the Beach -3inline" src="../../static/img/조원장_증명사진.png"></p>
+</div>
+
+<!-- 이전 post / 다음 post -->
+
+<div>
+    이전:
+    <a href="../../..//blog/dfa">test1</a>
+</div>
+
+
+<div>
+    다음:
+    <a href="../../..//blog/nested/post/3">포스트 메인</a>
+</div>
+
+
+
+<!-- 작성자 -->
+
+
+<div class="authorContent">
+    <div class="contentWrapper">
+        <div class="textContent">
+            
+            <h2 class="medium">안녕하세요. <span class="highlight">조재성 원장</span>입니다.<br>
+                무엇이든 편하게 여쭤보세요.
+            </h2>
+            <div class="paragraph">재활, 통계, 프로그래밍을 전공한 수석졸업 한의사입니다.<br>전문적인 지식을 바탕으로 상담과 의료서비스를 제공해드리겠습니다.
+            </div>
+            
+        </div>
+    </div>
+    
+    <div class="linkBtns">
+        
+        <a target="_self" href="mailto:tingstyle1@gmail.com"
+           class="emailBtn">
+            <div class="content">이메일</div>
+        </a>
+        
+        
+        <a target="_self" href="mailto:tingstyle@hanmail.net"
+           class="chatBtn">
+            <div class="content">카카오톡</div>
+        </a>
+        
+    </div>
+
+    <img alt="Hostman's Support" title="Hostman's Support Team"
+         class="imgAbsoluteBottomRight"
+         src="https://front.chojaeseong.com/images/png/profile/sub/02.png">
+    
+</div>
+
+
+
+            </div>
+                
+        </div>
+    </div>
+    <div class="footer">
+        
+        <div id="copyright">
+            Copyright &copy; <span id="year"></span>(주) 김석영 주식회사
+        </div>
+        
+        
+        <div id="credit">
+            Made with <a href="https://github.com/pagekeytech/markdown-sitegen">MDR</a> from <a
+                href="https://www.pagekeytech.com/">남룡북매</a>
+        </div>
+        
+    </div>
+</div>
+
+<script src="../../../static/main.js"></script>
+
+<script src="../../../static/article.js"></script>
+
+</body>
+</html>
