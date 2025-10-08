@@ -114,5 +114,9 @@
     ```
    
 
-6. settings > pages에 `gh-pages`브랜치와 `/root`폴더로 설정
+6. settings > pages에서
+    - deploy form a branch를 통해 배포가 `~.github.io/레포명`으로 되는 것을 확인한다.
+       - . `gh-pages`브랜치와 `/root`폴더로 설정
+    - 이렇게 branch를 통한 정적인 배포는 단점이 커스텀 도메인이 없는 경우 `~.github.io/레포명`으로서 `레포명이 path로 붙어벼려 index.html에 걸어둔 상대경로가 꼬이게 된다.`
+    - 
     
