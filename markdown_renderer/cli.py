@@ -491,8 +491,8 @@ def render_html(page, config, env, posts, title='Home', root_path_back_level=0, 
         index_relative_root_path = get_relative_root_path(page, is_test=True)
         static_path = os.path.join(index_relative_root_path, 'md_templates', 'static')
     else:
-        # index_relative_root_path = get_relative_root_path(page)
-        # static_path = os.path.join(index_relative_root_path, 'static')
+        index_relative_root_path = get_relative_root_path(page)
+        static_path = os.path.join(index_relative_root_path, 'static')
 
         # 외부 빌드라도, root index는 상대주소가 default ../ + ../static이 아니라 ./ + ./static이 되어야 한다.
         # 지금 서버 띄울 땐 --directory build처리된 상태로 겉만 일케 띄워졌지만, 파일들 입장에선 build -> 루트 -> static으로 들어간다.
@@ -500,26 +500,10 @@ def render_html(page, config, env, posts, title='Home', root_path_back_level=0, 
         # 그래서 조건에 github actions용 환경변수로 판단해서 index.html일 때는 ../를 붙이지 않도록 한다.
 
         GITHUB_ACTIONS = os.getenv('GITHUB_ACTIONS', 'false').lower() == 'true'
-        # index를 제외하고 모든 상대 주소 맨 앞에 repo명을 붙여야 한다.
-        full_repo_name = os.getenv('GITHUB_REPOSITORY', '') # user/repo
-        repo_name_only = full_repo_name.split('/')[-1]
-        print(f"GITHUB_ACTIONS  >> {GITHUB_ACTIONS}")
-        print(f"repo_name_only  >> {repo_name_only}")
-
-        if GITHUB_ACTIONS:
-            if page == 'index.html':
+        # full_repo_name = os.getenv('GITHUB_REPOSITORY', '') # user/repo
+        # repo_name_only = full_repo_name.split('/')[-1] # repo
+        if GITHUB_ACTIONS and page == 'index.html':
                 index_relative_root_path = './' # 강제로 build폴더없이 루트가 되는 상황이니 ./로 지정
-                static_path = os.path.join(index_relative_root_path, 'static')
-            else:
-                index_relative_root_path = get_relative_root_path(page)
-                static_path = os.path.join(index_relative_root_path, 'static')
-                # index를 제외하곤 전부     마지막 경로 앞에 /office(레포명)이 붙어야한다...
-                # -> 레포명이 붙음에 따라, static주소 맨앞에 단순 /office만 추가되어야한다.
-                # static_path = os.path.join(index_relative_root_path, '../static')
-                # static_path = os.path.join(index_relative_root_path, repo_name_only, 'static')
-
-
-
         else:
             index_relative_root_path = get_relative_root_path(page)
             static_path = os.path.join(index_relative_root_path, 'static')
