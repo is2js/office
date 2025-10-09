@@ -498,7 +498,8 @@ def render_html(page, config, env, posts, title='Home', root_path_back_level=0, 
         # 지금 서버 띄울 땐 --directory build처리된 상태로 겉만 일케 띄워졌지만, 파일들 입장에선 build -> 루트 -> static으로 들어간다.
         # github에선 아예 build폴더가 존재하지 않기 때문에 index.html에서 ../static이 되면 안된다. ./static이 되어야 한다.
         # 그래서 조건에 github actions용 환경변수로 판단해서 index.html일 때는 ../를 붙이지 않도록 한다.
-        GITHUB_ACTIONS = os.getenv('GITHUB_ACTIONS', 'false').lower == 'true'
+
+        GITHUB_ACTIONS = os.getenv('GITHUB_ACTIONS', 'false').lower() == 'true'
         print(f"GITHUB_ACTIONS  >> {GITHUB_ACTIONS}")
         if GITHUB_ACTIONS and page == 'index.html':
             index_relative_root_path = './'
