@@ -118,5 +118,61 @@
     - deploy form a branch를 통해 배포가 `~.github.io/레포명`으로 되는 것을 확인한다.
        - . `gh-pages`브랜치와 `/root`폴더로 설정
     - 이렇게 branch를 통한 정적인 배포는 단점이 커스텀 도메인이 없는 경우 `~.github.io/레포명`으로서 `레포명이 path로 붙어벼려 index.html에 걸어둔 상대경로가 꼬이게 된다.`
-    - 
+    - 또한, master 커밋시 gh-pages로 build폴더의 내용물이 가긴하지만,  deployment 트리거가 제대로 작동안되는 경우가 많아서 
+    - v4로 바꿈
+    ```yml
+          - name: Deploy
+            uses: peaceiris/actions-gh-pages@v4
+            with:
+              github_token: ${{ secrets.GITHUB_TOKEN }} # 자동생성 되어 있는 토큰
+              publish_dir: ./build
+    ```
+
+7. 문제는 is2js.github.io/<레포명>으로서 path기본에 <레포명>까지가 기본이 되어버린다.
+    - 로컬에서 명령어로 --directory build로  build의 index.html이 path없이 localhost:7777에 떴지만
+    - github pages에서는 is2js.github.io/<레포명>으로서 path에 레포명이 붙어버려 gh-pages 루트 index.html이 github.io/office/에서 index.html이 되는데
+    - 문제는, 상대 경로들이 전부 ../static/ 형태로 들어가져있으므로, 클릭하면 path에 해당하는 /office가 사라져서 에러가 난다.
+    - 그러므로 개별 repo github pages를 만들 땐, localhost:포트번호로 띄울게 아니라 repo명까지 고려해서 클릭이 되게 한다.
+    - 일단 index.html의 상대경로를 ../에서 ./로 강제한다.
+    ```python
+    def render_html(page, config, env, posts, title='Home', root_path_back_level=0, **others):
+        html_template = env.get_template(page)
     
+        if __name__ == '__main__':
+            # is_test=True -> 내부에서 ../ 갯수 줄이는 것 안함.
+            relative_root_path = get_relative_root_path(page, is_test=True)
+            static_path = os.path.join(relative_root_path, 'md_templates', 'static')
+        else:
+            relative_root_path = get_relative_root_path(page)
+            # static_path = os.path.join(relative_root_path, 'static')
+    
+            GITHUB_ACTIONS = os.getenv('GITHUB_ACTIONS', 'false').lower() == 'true'
+            if GITHUB_ACTIONS and page == 'index.html':
+                relative_root_path = './' # 강제로 build폴더없이 루트가 되는 상황이니 ./로 지정
+    
+            static_path = os.path.join(relative_root_path, 'static')
+    ```
+    - 이렇게 하면, .io/레포명에서 index.html의 static들이 ./static/으로 잡혀 잘 보이게 된다.
+    - 하지만, 다른 페이지들에서는  링크 등이 ../static/으로 잡혀서 -> 클릭시 `도메인 기준` ../static으로 가므로 .io/office/~ 부분이 .io/~로 office가 안먹히게 된다.  
+
+### ~~가비아 서브도메인을 통해 .io/레포명 전체를 root로 인식시키기~~
+
+
+1. 가비아 > 서비스 관리 > 도메인 관리 > DNS 정보 > `도메인 선택후 DNS 관리`까지 들어가야 서브도메인들이 보인다.
+    - 참고) https://is2js.github.io/blog_raw/ 의 깃허브페이지는 `CNAME` + 호스트 `서브도메인명(blog)` + 값/위치 `is2js.github.io.`로 설정되어있다.
+        - 즉, 값/위치에는 is2js.github.io.까지만 설정하면 되고, 레포명은 안적어줘도 된다. 특히 `io.`으로 .으로 끝내는 것이 희한하다.
+        - app.chojaeseong.com 의 경우, A 레코드로 IP주소를 넣어주는데, 타회사 도메인의 경우, .(dot)으로 끝내는가보다.
+2. 레코드 추가 > `CNAME` 선택 후 `office(레포명 or 서브도메인명)`을 .chojaeseong.com(도메인)앞에 위치시키고 값/위치는 `깃허브아이디.github.io`까지만 설정해준다.
+3. 이제 우리 github repository > settings > pages에서
+    - Custom domain에 `office.chojaeseong.com`을 입력하고 save를 눌러준다.
+    - 그러면, CNAME 파일이 없다고 에러가 뜬다. 
+
+- 나는 지금 가비아 도메인 -> aws route 53에서 인증받고 있으므로 aws에서 연결만 해주면 된다.
+
+### 이미 gabia <-> route53 연결 및 certicate 인증된 도메인이라 -> gabia설정 및 DNS A레코드 추가 생략. aws route 53에서만 CNAME 추가
+- CNAME을 직접 추가하는게 아니라 aws route 53에서 등록하고 custom domain을 입력시, 알아서 CNAME처리도 된다고 한다.
+
+1. aws route 53 > 호스트 영역 > 해당 도메인 클릭
+2. 레코드 생성 > 레코드 유형 `CNAME` 선택. 레코드 이름에는 `서브도메인명`을 입력. 값에는 `깃허브아이디.github.io`만 입력
+3. github repo > settings > pages > custom domain에 `서브도메인명.도메인`을 입력 후 save
+4. 
