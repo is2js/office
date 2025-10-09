@@ -512,11 +512,11 @@ def render_html(page, config, env, posts, title='Home', root_path_back_level=0, 
                 static_path = os.path.join(index_relative_root_path, 'static')
             else:
                 index_relative_root_path = get_relative_root_path(page)
+                static_path = os.path.join(index_relative_root_path, 'static')
                 # index를 제외하곤 전부     마지막 경로 앞에 /office(레포명)이 붙어야한다...
                 # -> 레포명이 붙음에 따라, static주소 맨앞에 단순 /office만 추가되어야한다.
-                # static_path = os.path.join(index_relative_root_path, 'static')
                 # static_path = os.path.join(index_relative_root_path, '../static')
-                static_path = os.path.join(index_relative_root_path, repo_name_only, 'static')
+                # static_path = os.path.join(index_relative_root_path, repo_name_only, 'static')
 
 
 
