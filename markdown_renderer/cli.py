@@ -506,7 +506,9 @@ def render_html(page, config, env, posts, title='Home', root_path_back_level=0, 
                 index_relative_root_path = './' # 강제로 build폴더없이 루트가 되는 상황이니 ./로 지정
                 print(f"깃헙액션 index root_path >> {index_relative_root_path}")
             else:
-                index_relative_root_path = os.path.join(repo_name_only, static_path)
+                index_relative_root_path = os.path.join(repo_name_only, index_relative_root_path)
+                static_path = os.path.join(index_relative_root_path, 'static')
+
                 print(f"깃헙액션 not index root_path >> {index_relative_root_path}")
 
 
