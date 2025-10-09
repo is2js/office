@@ -488,11 +488,12 @@ def render_html(page, config, env, posts, title='Home', root_path_back_level=0, 
 
     if __name__ == '__main__':
         # is_test=True -> 내부에서 ../ 갯수 줄이는 것 안함.
-        index_relative_root_path = get_relative_root_path(page, is_test=True)
-        static_path = os.path.join(index_relative_root_path, 'md_templates', 'static')
+        relative_root_path = get_relative_root_path(page, is_test=True)
+        static_path = os.path.join(relative_root_path, 'md_templates', 'static')
     else:
-        index_relative_root_path = get_relative_root_path(page)
-        static_path = os.path.join(index_relative_root_path, 'static')
+        relative_root_path = get_relative_root_path(page)
+        # static_path = os.path.join(relative_root_path, 'static')
+
 
         # 외부 빌드라도, root index는 상대주소가 default ../ + ../static이 아니라 ./ + ./static이 되어야 한다.
         # 지금 서버 띄울 땐 --directory build처리된 상태로 겉만 일케 띄워졌지만, 파일들 입장에선 build -> 루트 -> static으로 들어간다.
@@ -502,26 +503,27 @@ def render_html(page, config, env, posts, title='Home', root_path_back_level=0, 
         # full_repo_name = os.getenv('GITHUB_REPOSITORY', '') # user/repo
         # repo_name_only = full_repo_name.split('/')[-1] # repo
         if GITHUB_ACTIONS and page == 'index.html':
-                index_relative_root_path = './' # 강제로 build폴더없이 루트가 되는 상황이니 ./로 지정
+            relative_root_path = './' # 강제로 build폴더없이 루트가 되는 상황이니 ./로 지정
 
+        static_path = os.path.join(relative_root_path, 'static')
 
 
 
 
 
     print(f"page  >> {page}")
-    print(f"index_relative_root_path  >> {index_relative_root_path}")
+    print(f"relative_root_path  >> {relative_root_path}")
     print(f"static_path  >> {static_path}")
 
     # 강제로 중간에 path를 추가한다면 ex> pagination으로 blog/1 blog/2
     # static은 한칸 뒤로, 링크도 {{ root_path }} /원래 path가 연결되려면 현재에서 1칸 뒤로
     if root_path_back_level:
-        index_relative_root_path = os.path.join('../' * root_path_back_level, index_relative_root_path)
-        static_path = os.path.join('../' * root_path_back_level, index_relative_root_path, 'static')
+        relative_root_path = os.path.join('../' * root_path_back_level, relative_root_path)
+        static_path = os.path.join('../' * root_path_back_level, relative_root_path, 'static')
 
     html = html_template.render(
         config=config,
-        root_path=index_relative_root_path,
+        root_path=relative_root_path,
         static_path=static_path,
         title=title,
         posts=posts,
