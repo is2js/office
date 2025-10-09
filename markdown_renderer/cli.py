@@ -325,7 +325,7 @@ def cli_entry_point():
 
     # def render_html(page, config, env, posts, title = 'Home')
     ## render index -> posts 전체 + index페이지 제목을 넘겨준다.
-    index = render_html('index.html', config, env, posts, title='상세질환 디자인')
+    index = render_html('index.html', config, env, posts, title='main')
     # print(f"config  >> {config}")
     # config  >> {'title': '조재성 원장', 'logoImg': 'http://hani.chojaeseong.com/images/logo.png', 'theme': {'primary': '#FC5230', 'sec
     # ondary': '#1ECECB'}, 'authors': {'조재성': {'name': '조재성 원장', 'comment': '재활, 통계, 프로그래밍을 전공한 수석졸업 한의사입니
@@ -487,11 +487,30 @@ def render_html(page, config, env, posts, title='Home', root_path_back_level=0, 
     html_template = env.get_template(page)
 
     if __name__ == '__main__':
+        # is_test=True -> 내부에서 ../ 갯수 줄이는 것 안함.
         index_relative_root_path = get_relative_root_path(page, is_test=True)
         static_path = os.path.join(index_relative_root_path, 'md_templates', 'static')
     else:
-        index_relative_root_path = get_relative_root_path(page)
-        static_path = os.path.join(index_relative_root_path, 'static')
+        # index_relative_root_path = get_relative_root_path(page)
+        # static_path = os.path.join(index_relative_root_path, 'static')
+
+        # 외부 빌드라도, root index는 상대주소가 default ../ + ../static이 아니라 ./ + ./static이 되어야 한다.
+        # 지금 서버 띄울 땐 --directory build처리된 상태로 겉만 일케 띄워졌지만, 파일들 입장에선 build -> 루트 -> static으로 들어간다.
+        # github에선 아예 build폴더가 존재하지 않기 때문에 index.html에서 ../static이 되면 안된다. ./static이 되어야 한다.
+        # 그래서 조건에 github actions용 환경변수로 판단해서 index.html일 때는 ../를 붙이지 않도록 한다.
+        GITHUB_ACTIONS = os.getenv('GITHUB_ACTIONS', 'false').lower == 'true'
+        print(f"GITHUB_ACTIONS  >> {GITHUB_ACTIONS}")
+        if GITHUB_ACTIONS and page == 'index.html':
+            index_relative_root_path = './'
+            static_path = os.path.join(index_relative_root_path, 'static')
+        else:
+            index_relative_root_path = get_relative_root_path(page)
+            static_path = os.path.join(index_relative_root_path, 'static')
+
+
+    print(f"page  >> {page}")
+    print(f"index_relative_root_path  >> {index_relative_root_path}")
+    print(f"static_path  >> {static_path}")
 
     # 강제로 중간에 path를 추가한다면 ex> pagination으로 blog/1 blog/2
     # static은 한칸 뒤로, 링크도 {{ root_path }} /원래 path가 연결되려면 현재에서 1칸 뒤로

@@ -45,9 +45,6 @@ jobs:
           pip install -e .
           mdr
 
-      - name: List files after Build site # 빌드 후 파일 목록 출력
-        run: |
-          ls ${{ github.workspace }}
 #python setup.py install
 #mdr
       # https://github.com/peaceiris/actions-gh-pages
@@ -58,8 +55,10 @@ jobs:
 #          github_token: ${{ secrets.GITHUB_TOKEN }} # GH_ACTIONS_TOKEN 도 따로 만들어뒀는데, default token인 듯.
 #          publish_dir: ./build
 
+
+# https://github.com/peaceiris/actions-gh-pages
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }} # 자동생성 되어 있는 토큰
           publish_dir: ./build
