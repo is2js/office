@@ -499,10 +499,15 @@ def render_html(page, config, env, posts, title='Home', root_path_back_level=0, 
         # BUT github에선 아예 build폴더가 존재하지 않기 때문에 index.html에서 ../static이 되면 안된다. ./static이 되어야 한다.
         # 그래서 조건에 github actions용 환경변수로 판단해서 index.html일 때는 ../를 붙이지 않도록 한다.
         GITHUB_ACTIONS = os.getenv('GITHUB_ACTIONS', 'false').lower() == 'true'
-        # full_repo_name = os.getenv('GITHUB_REPOSITORY', '') # user/repo
-        # repo_name_only = full_repo_name.split('/')[-1] # repo
-        if GITHUB_ACTIONS and page == 'index.html':
-            index_relative_root_path = './' # 강제로 build폴더없이 루트가 되는 상황이니 ./로 지정
+        full_repo_name = os.getenv('GITHUB_REPOSITORY', '') # user/repo
+        repo_name_only = full_repo_name.split('/')[-1] # repo
+        if GITHUB_ACTIONS:
+            if page == 'index.html':
+                index_relative_root_path = './' # 강제로 build폴더없이 루트가 되는 상황이니 ./로 지정
+                print(f"깃헙액션 index root_path >> {index_relative_root_path}")
+            else:
+                index_relative_root_path = os.path.join(repo_name_only, static_path)
+                print(f"깃헙액션 not index root_path >> {index_relative_root_path}")
 
 
 
