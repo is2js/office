@@ -205,3 +205,11 @@
             #### => 서브도메인을 통해 연결하여 /office(레포명)까지를 root로 인식하게 함.
     ```
 6. deploy시 is2js.github.io/office가 뜨지만, 우리 도메인 office.chojaeseong.com으로 잘 되는 것을 확인한다.
+
+
+### 문제점: push마다 gh-pages[bot]이 deploy를 해주는데, custom domain을 없애버린다.
+- 해결법:
+    - 만약, gh-pages 브랜치에 CNAME파일이 없다면, 직접 만들어서 커밋해준다.
+    - CNAME파일에는 `서브도메인명.도메인`만 적혀있어야 한다.
+    - 이렇게 하면, push마다 gh-pages[bot]이 deploy를 해주더라도 CNAME파일이 유지되면서 custom domain이 유지된다.
+- https://github.com/peaceiris/actions-gh-pages에 참고하여 CNAME 옵션을 yml에 추가한다.
