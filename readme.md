@@ -175,4 +175,33 @@
 1. aws route 53 > 호스트 영역 > 해당 도메인 클릭
 2. 레코드 생성 > 레코드 유형 `CNAME` 선택. 레코드 이름에는 `서브도메인명`을 입력. 값에는 `깃허브아이디.github.io`만 입력
 3. github repo > settings > pages > custom domain에 `서브도메인명.도메인`을 입력 후 save
-4. 
+4. 잠시 후, `Enforce HTTPS` 체크박스가 활성화되면 체크해준다.
+5. 급하게 만들어줬던 GITHUB ACTION시 index의 상대경로를 처리해주던 것을 주석처리해서 막는다.
+    ```python
+    def render_html(page, config, env, posts, title='Home', root_path_back_level=0, **others):
+        html_template = env.get_template(page)
+    
+        if __name__ == '__main__':
+            # is_test=True -> 내부에서 ../ 갯수 줄이는 것 안함.
+            relative_root_path = get_relative_root_path(page, is_test=True)
+            static_path = os.path.join(relative_root_path, 'md_templates', 'static')
+        else:
+            relative_root_path = get_relative_root_path(page)
+            static_path = os.path.join(relative_root_path, 'static')
+    
+    
+    
+            # 외부 빌드라도, root index는 상대주소가 default ../ + ../static이 아니라 ./ + ./static이 되어야 한다.
+            # 지금 서버 띄울 땐 --directory build처리된 상태로 겉만 일케 띄워졌지만, 파일들 입장에선 build -> 루트 -> static으로 들어간다.
+            # BUT github에선 아예 build폴더가 존재하지 않기 때문에 index.html에서 ../static이 되면 안된다. ./static이 되어야 한다.
+            # 그래서 조건에 github actions용 환경변수로 판단해서 index.html일 때는 ../를 붙이지 않도록 한다.
+    
+            # GITHUB_ACTIONS = os.getenv('GITHUB_ACTIONS', 'false').lower() == 'true'
+            # full_repo_name = os.getenv('GITHUB_REPOSITORY', '') # user/repo
+            # repo_name_only = full_repo_name.split('/')[-1] # repo
+            # if GITHUB_ACTIONS and page == 'index.html':
+            #     relative_root_path = './' # 강제로 build폴더없이 루트가 되는 상황이니 ./로 지정
+    
+            #### => 서브도메인을 통해 연결하여 /office(레포명)까지를 root로 인식하게 함.
+    ```
+6. deploy시 is2js.github.io/office가 뜨지만, 우리 도메인 office.chojaeseong.com으로 잘 되는 것을 확인한다.

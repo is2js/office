@@ -1,0 +1,1240 @@
+---
+title: '넣었다'
+date: '2023-02-20'
+---
+
+
+
+- https://www.youtube.com/watch?v=rB1uyE7tJKw&list=PL3Kz_hCNpKSQ5gDVSWvrQ-9COk0CLLrTs
+
+
+
+### 패키지 설치
+
+
+<!-- truncate -->
+
+1. 패키지 2개 설치
+
+
+    - `frontmatter`: md render시 무시되는 front matter data를 파싱하기 위해서
+
+        - `poetry add frontmatter`
+
+        ![image-20250305193844779](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250305193844779.png)
+
+    - `markdown`: md를 html로 렌더링
+
+        - **패키지잇슈로 3.11.6 버전에서 poetry add가 안됨.**
+
+    ​	![image-20250305193854759](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250305193854759.png)
+
+    ​	-  `pip install markdown`
+
+- **그냥 venv -> pip install로 2개 설치함.**
+
+```
+.\.venv\Scripts\activate
+
+pip install frontmatter markdown
+```
+
+
+
+
+
+
+
+2. markdown.markdown(' 마크다운# 등의 텍스트 ')를 print하면 html로 나온다.
+
+    - `#`이 `h1태그`로 바껴서 나온다.
+
+    ```python
+    import markdown
+    
+    if __name__ == '__main__':
+        import markdown
+        print(markdown.markdown('#Hellow markdown'))
+        
+    # <h1>Hellow markdown</h1>
+    ```
+
+    
+
+
+
+### cli를 사용할 수 있게 setup.py(name이 cli명령어)
+
+- http://stackoverflow.com/questions/56534678/how-to-create-a-cli-in-python-that-can-be-installed-with-pip
+
+![image-20250305200916047](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250305200916047.png)
+
+
+
+
+
+1. 루트에 setup.py 생성
+
+    - **핵심은 entry_points안에 console_scripts 내부에 `name = 패키지명(폴더/init).패키지내실행py파일명:내부함수명`을 넣어주는 것 같다.**
+    - **추후 `name`이 `cli명령어`가 되므로 짧게 짓는다..**
+
+    ```python
+    from distutils.core import setup
+    
+    setup(
+        name='mdr',
+        version='1.0.0',
+        description='Markdown Renderer',
+        author='JaeSeong Cho',
+        author_email='tingstyle1@gmail.com',
+        packages=['markdown_renderer'],
+        entry_points={
+            'console_scripts': [
+                'mdr = markdown_renderer.cli:cli_entry_point'
+            ],
+        },
+        install_requires=[
+            'markdown',
+            'frontmatter',
+        ],
+    )
+    ```
+
+2. **명시해둔 python패키지 폴더인 `markdown_renderer` 생성 및 `cli.py` 및 `내부 함수 cli_entry_point` 작성**
+
+    ![image-20250305202048414](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250305202048414.png)
+
+    ```python
+    def cli_entry_point():
+        print('cli_entry_point')
+    ```
+
+    
+
+
+
+3. 영상에서는 pip install -e로 올려놓고 설치하는 것 같은데 `pip install setup.py`를 하면 cli가 작동하게 된다.
+
+    ```shell
+    (.venv) PS C:\Users\cho_desktop\PycharmProjects\markdown> mdr
+    cli_entry_point
+    ```
+
+    
+
+
+
+4. **이제 함수작성 때마다 `pip install setup.py`를 해줘야하므로, 일단 내용부터 작성하여 내부실행시키자.**
+
+    ```python
+    def cli_entry_point():
+        print('cli_entry_point22')
+        
+        
+        
+    if __name__ == '__main__':
+        cli_entry_point()
+    ```
+
+    
+
+
+
+
+
+### cli setup해서 사용전 cli_entry_point 함수 내용 작성
+
+1. md들이 있는 폴더가 존재해야한다
+
+    ```python
+    import os.path
+    
+    
+    def cli_entry_point():
+        SOURCE_DIR = '../docs'
+        OUTPUT_DIR = '../html'
+    
+        # 1) source폴더명이 존재하고 && 그게 진짜 디렉토리라면,
+        if os.path.exists(SOURCE_DIR) and os.path.isdir(SOURCE_DIR):
+            ...
+        else:
+            print(f"'{SOURCE_DIR}' 폴더가 존재하지 않습니다.")
+    
+    
+    
+    
+    
+    
+    
+    if __name__ == '__main__':
+        cli_entry_point()
+    ```
+
+    
+
+
+
+
+
+2. 내부 폴더 및 파일들을 `os.walk()`로 가져온다
+
+    ```python
+    # 1) source폴더명이 존재하고 && 그게 진짜 디렉토리라면,
+    if os.path.exists(SOURCE_DIR) and os.path.isdir(SOURCE_DIR):
+        # 2) os.walk로 root, 내부dirs, files를 가져온다.
+        for root, inner_dirs, files in os.walk(SOURCE_DIR):
+            # 3) root를 출력한다.
+            print(root)
+            # 4) dirs를 출력한다.
+            print(inner_dirs)
+            # 5) files를 출력한다.
+            print(files)
+    ```
+
+    
+
+3. **파일중에 .md로 끝내는 것들만 root + 파일이름을 가져온다.**
+
+    ```python
+    files_to_render = []
+    
+    # 2) os.walk로 root, 내부dirs, files를 가져온다.
+    for root, inner_dirs, files in os.walk(SOURCE_DIR):
+        # print(root) # ../docs
+        # print(inner_dirs) # print(files)
+        # [] # ['1 cli.md']
+    
+        for filename in files:
+            # 3) 파일명이 .md로 끝나는지 확인하고 그렇다면, root + filename을 합쳐서 파일 경로를 저장한다. 
+            if filename.lower().endswith('.md'):
+                files_to_render.append(os.path.join(root, filename))
+                
+                
+    # print(files_to_render) # ['../docs\\1 cli.md']
+    
+    ```
+
+    
+
+
+
+4. **버전차이로 frontmatter.load()는 안되서, f.read() -> frontmatter.FrontMatter.read()로 읽어서 확인해봤음.**
+
+    - **문제는 `frontmatter가 없으면 아예 body도 None`**
+
+    ```python
+    # 4) 랜더할 md file들을 순회하면서, frontmatter를 뽑아내고, markdown으로 변환한다.
+    for file_to_render in files_to_render:
+        with open(file_to_render, 'r', encoding='utf-8') as f:
+            content = f.read()
+            # c = frontmatter.loads(content) # 버전 차이?
+            post = frontmatter.Frontmatter.read(content)
+            print(post)
+            # {'attributes': None, 'body': '', 'frontmatter': ''}
+            # => md파일에 ---로 프론트매터를 넣고 나면
+            # {
+            #   'attributes': {'title': '넣었다'},
+            #   'body': '- https://www.youtube.com/wat',
+            #   'frontmatter': "\ntitle: '넣었다'\n"
+            # }
+    ```
+
+    - frontmatter가 없으면 일단은 pass하도록 한다.
+
+    ```python
+    # 4) 랜더할 md file들을 순회하면서, frontmatter를 뽑아내고, markdown으로 변환한다.
+            for file_to_render in files_to_render:
+                with open(file_to_render, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                    # c = frontmatter.loads(content) # 버전 차이?
+                    post = frontmatter.Frontmatter.read(content)
+                    if not post['attributes']:
+                        # {'attributes': None, 'body': '', 'frontmatter': ''}
+                        print(f'frontmatter가 없는 파일: {file_to_render}')
+                        continue
+                    else:
+                        # {
+                        #   'attributes': {'title': '넣었다'},
+                        #   'body': '- https://www.youtube.com/wat',
+                        #   'frontmatter': "\ntitle: '넣었다'\n"
+                        # }
+                        print(f"frontmatter: {post['attributes']}")
+                        print(f"body: {post['body'][:10]}")
+    ```
+
+5. frontmatter를 가진 post객체에서 body만 markdown.markdown으로 랜더링한 뒤, html파일로 쓴다.
+
+    - **이 때, 상대경로 유지중이며, join시 문제가 생겨, OUTPUT_DIR을 SOURCE_DIR로 대체하도록 html파일명을 생성한다.**
+
+    ```python
+    # 4) 랜더할 md file들을 순회하면서, frontmatter를 뽑아내고, markdown으로 변환한다.
+    for file_to_render in files_to_render:
+        with open(file_to_render, 'r', encoding='utf-8') as f:
+            content = f.read()
+            # c = frontmatter.loads(content) # 버전 차이?
+            post = frontmatter.Frontmatter.read(content)
+    
+            # 5) frontmatter없는 파일은 pass
+            if not post['attributes']:
+                # {'attributes': None, 'body': '', 'frontmatter': ''}
+                print(f'frontmatter가 없는 파일: {file_to_render}')
+                continue
+    
+            # {
+            #   'attributes': {'title': '넣었다'},
+            #   'body': '- https://www.youtube.com/wat',
+            #   'frontmatter': "\ntitle: '넣었다'\n"
+            # }
+    
+            # 6) frontmatter가 있는 파일은, markdown으로 변환후 html로 써서 저장한다.
+            html = markdown.markdown(post['body'])
+    
+            # 7) md파일 경로 그대로, html로 바꿔서 저장
+            # ->  OUTPUT_DIRSOURCE_DIR을 공백으로 대체 제거 + md를 html로 교체 2번 replace
+            # output_file = os.path.join(OUTPUT_DIR, file_to_render.replace(SOURCE_DIR, '').replace('.md', '.html'))
+            output_file = os.path.join(file_to_render.replace(SOURCE_DIR, OUTPUT_DIR).replace('.md', '.html'))
+    
+            # 8) 파일경로 + os.path.dirname() 경로를 만들어준다.
+            os.makedirs(os.path.dirname(output_file), exist_ok=True)
+    
+            # 9) html로 변환된 내용을 파일에 쓴다.
+            with open(output_file, 'w', encoding='utf-8') as f:
+                f.write(html)
+    ```
+
+    ![image-20250305221423272](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250305221423272.png)
+
+
+
+
+
+
+### .renderignore파일을 만들어서, 거기포함된 것은 render목록에서 제외시키기
+
+1. source_dir인 `../docs`에 `.renderignore` 파일을 만든다.
+
+2. os.walk로 순회하기 전에, source_dir에 ignore파일이 존재하면, 거기에 있는 파일명을 모아둔다.
+
+    ```python
+    # 1) source폴더명이 존재하고 && 그게 진짜 디렉토리라면,
+    if os.path.exists(SOURCE_DIR) and os.path.isdir(SOURCE_DIR):
+    
+        files_to_render = []
+    
+        files_to_render_ignore = []
+        # 10) SOURCE_DIR에 .renderignore 파일이 존재하면 읽어서 모아둔다.
+        render_ignore = os.path.join(SOURCE_DIR, '.renderignore')
+        if os.path.exists(render_ignore):
+            with open(render_ignore, 'r', encoding='utf-8') as f:
+                files_to_render_ignore = f.read().split('\n')
+    
+    
+                # 2) os.walk로 root, 내부dirs, files를 가져온다.
+                for root, inner_dirs, files in os.walk(SOURCE_DIR):
+    ```
+
+    
+
+3. os.walk중에는 files단위로 나오니까, 개별파일을 md파일인지 확인하여 append하기 전에,  renderignore에 포함되면 무시한다.
+
+    - 코드 리팩토링 들어감
+
+    - 조건 2개
+
+        - .renderignore파일 pass
+        - md파일도 아니고 renderignore도 아니라면 pass
+        - md파일이라도 renderignore에 포함되면 pass
+
+        ```python
+        # 2) os.walk로 root, 내부dirs, files를 가져온다.
+        for root, inner_dirs, file_names in os.walk(SOURCE_DIR):
+        
+            # print(root) # ../docs
+            # print(inner_dirs)
+            # print(file_names)
+            # [] # ['1 cli.md']
+        
+            # 11) md파일인지 확인하기 전에
+            # append될 file(상대경로)과, file의 맨 끝 파일명 file_basename을 이용하여 검사
+            for file_name in file_names:
+                file = os.path.join(root, file_name)
+                file_basename = os.path.basename(file)
+        
+                # 11-1) renderignore 파일이면 pass
+                if file_basename == '.renderignore':
+                    continue
+        
+                # 11-2) md파일도 아니면서 .renderignore도 아닌 것 -> pass
+                if not file_basename.lower().endswith('.md'):
+                    print(f'  SOURCE_DIR 폴더에 md파일이 아닌 것이 존재 >> {file_basename}')
+                    continue
+        
+                # 11-3) 파일명이 .renderignore에 포함되어 있다면, pass
+                if file_basename in files_to_render_ignore:
+                    print(f"  제외된 파일 목록 >> {file_basename}")
+                    continue
+        
+                # 3) 파일명이 .md로 끝나는지 확인하고 그렇다면, root + filename을 합쳐서 파일 경로를 저장한다.
+                # if filename.lower().endswith('.md'):
+                files_to_render.append(file)
+        
+            print(f"files_to_render  >> {files_to_render}")
+        ```
+
+        
+
+
+
+
+
+### jinja2 도입 - render하면서 frontmatter정보도 변수로 넘길 수 있다?!
+
+1. 설치 및 setup.py에 추가하기
+
+    ```shell
+    (.venv) PS C:\Users\cho_desktop\PycharmProjects\markdown> pip install jinja2
+    ```
+
+    ```python
+    from distutils.core import setup
+    
+    setup(
+        name='mdr',
+        version='1.0.0',
+        description='Markdown Renderer',
+        author='JaeSeong Cho',
+        author_email='tingstyle1@gmail.com',
+        packages=['markdown_renderer'],
+        entry_points={
+            'console_scripts': [
+                'mdr = markdown_renderer.cli:cli_entry_point'
+            ],
+        },
+        install_requires=[
+            'markdown',
+            'frontmatter',
+            'jinja2'
+        ],
+    )
+    ```
+
+    
+
+
+
+
+
+2. output_dir을 ../html에서 build로 변경
+
+    ```python
+    def cli_entry_point():
+        SOURCE_DIR = '../docs'  # 상대경로
+        # OUTPUT_DIR = '../html'  # 상대경로
+        OUTPUT_DIR = 'build'  # 상대경로
+    ```
+
+    
+
+    - **패키지 > build폴더에 빌드된다.**
+
+    ![image-20250306101611829](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250306101611829.png)
+
+
+
+
+
+3. 패키지 내부 template_dir를 web으로 정하고, jinja2환경변수로 env변수에 template폴더를 지정한다.
+
+    ```python
+    ## Render Logic
+    # 12) 순회하며 f.read()할텐데, 그 전에, jinja2 env파일을 만들고, env.get_template()을 이용하여 채울 템플릿을 가져온다.
+    env = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR))
+    # 4) 랜더할 md file들을 순회하면서, frontmatter를 뽑아내고, markdown으로 변환한다.
+    for file_to_render in files_to_render:
+        with open(file_to_render, 'r', encoding='utf-8') as f:
+            content = f.read()
+    ```
+
+    ```python
+    def cli_entry_point():
+        SOURCE_DIR = '../docs'  # 소스는 패키지 밖의 루트 폴더에서
+        # OUTPUT_DIR = '../html'  # 상대경로
+        OUTPUT_DIR = 'build'  # 빌드는 패키지 내부의 폴더에서
+        TEMPLATE_DIR = 'md_templates' # 템플릿도 패키지내부 폴더에서 제공할 것으로 지정
+    ```
+
+    
+
+
+
+3. env변수에 적힌 template_dir에서 contents.html을 가져오도록 패키지내부 폴더생성, contents.html 생성을 해준다.
+
+    ![image-20250306102359473](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250306102359473.png)
+
+    ```python
+    env = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR))
+    content_template = env.get_template('contents.html')
+    ```
+
+    
+
+
+
+
+
+
+
+4. 이제 f.write()로 html을 쓰기전에, **template변수.render(body=html)**을 통해 `한번 render된 html`을 쓰게 한다.
+
+    ```python
+    # 9) html로 변환된 내용을 파일에 쓴다.
+    # 13) html -> template.render()한 것을 쓰도록 로직 추가
+    content = content_template.render(title=post['attributes']['title'], body=html)
+    with open(output_file, 'w', encoding='utf-8') as f:
+        f.write(content)
+    ```
+
+    - **이대로 실행하면 1 cli.html 빌드된 것에는 아무것도 안뜬다. 왜냐면 변수로 넘긴 것을 html에서 jinja문법으로 받아서 써야하기 때문**
+
+    ![image-20250306103119440](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250306103119440.png)
+
+
+
+
+
+5. **이제 md_templates 폴더에 `base.html`을 만들고 `detail.html`은 base.html 상속한 뒤, 내부에서 사용해보자.**
+
+    ```html
+    <!DOCTYPE html>
+    <html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title></title>
+    
+    </head>
+    <body>
+        {% block content %}
+        {% endblock %}
+    </body>
+    </html>
+    ```
+
+    
+
+6. **body=html을 변수로 받은 contents.html은 base상속 이후, `block`에서 `{{ body }}`를 사용하여 표기되게 한다.**
+
+    ```html
+    {% extends "base.html" %}
+    
+    {% block content %}
+    <h1>제목</h1>
+    {{ body }}
+    {% endblock content %}
+    ```
+
+    ![image-20250306104745458](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250306104745458.png)
+    ![image-20250306104755097](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250306104755097.png)
+
+
+
+
+
+###  index.html 도입하기
+
+- 개별 contents들을 render -> 쓰기 한 이후에 index는 따로다.
+
+1. template 변수 생성
+
+    - html에는 test=, posts 보내기
+
+    ```python
+    ## Render index
+    index_template = env.get_template('index.html')
+    ```
+
+    ```html
+    {% extends "base.html" %}
+    
+    {% block title %}Home{% endblock %}
+    
+    {% block content %}
+    
+    <h2>Recent Posts</h2>
+    
+    {{ test }}
+    
+    {% for post in posts[0:5] %}
+    {% endfor %}
+    
+    
+    {% endblock %}
+    ```
+
+    
+
+
+
+
+
+2. 개별 posts를 써야하는데 일단은 사용x
+
+    ```python
+    ## Render index
+    index_template = env.get_template('index.html')
+    index = index_template.render(test='index test', posts=[])
+    index_file = os.path.join(OUTPUT_DIR, 'index.html')
+    with open(index_file, 'w', encoding='utf-8') as f:
+        f.write(index)
+    ```
+
+    ![image-20250306110937725](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250306110937725.png)
+
+
+
+
+
+
+### manfest.in 도입 -> 패키지에 template파일도 같이 설치되게
+
+- MANIFEST.in 파일은 파이썬 패키지에 포함시키고 싶은 파일을 담는 파일입니다. readme 파일이나 라이선스 파일과 같은 파일이 이에 해당합니다. 
+
+MANIFEST.in 파일의 용도
+
+- 내부 패키지 디렉터리에 있지 않지만 포함시키고 싶은 파일을 담습니다. 
+- 소스 배포판을 만들 때 사용됩니다. 
+- MANIFEST.in 파일이 없으면 기본 파일 집합만으로 매니페스트를 만듭니다. 
+
+
+
+1. root에 생성하여 recursive로 패키지에 template파일 전체를 포함시키게 한다.
+
+    ```
+    recursive-include markdown_renderer/md_templates *
+    ```
+
+2. setup.py에 package_data로 명시해준다.
+
+    - setuptools를 사용하진 않지만 import해주라고 한다.
+
+    ```python
+    import setuptools
+    from distutils.core import setup
+    
+    setup(
+        name='mdr',
+        version='1.0.0',
+        description='Markdown Renderer',
+        author='JaeSeong Cho',
+        author_email='tingstyle1@gmail.com',
+        packages=['markdown_renderer'],
+        entry_points={
+            'console_scripts': [
+                'mdr = markdown_renderer.cli:cli_entry_point'
+            ],
+        },
+        install_requires=[
+            'markdown',
+            'frontmatter',
+            'jinja2'
+        ],
+        package_data={
+            'markdown_renderer': ['md_templates/*']
+        }
+    )
+    ```
+
+    
+
+
+
+
+
+3. `python setup.py bdist_wheel` 이나 `python setup.py install`이나 동일한 듯하다.
+
+    - **`bdist_wheel`로  실행하면 dist폴더가 생성되며, 내부에 wheel 파일이 생성된다.**
+
+        - 이건 unzip으로 맥에서 풀어야한다 나는 install로 하자
+
+            ![image-20250306112032399](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250306112032399.png)
+
+    - 그래도 에러
+
+        ```
+        error: [WinError 32] 다른 프로세스가 파일을 사용 중이기 때문에 프로세스가 액세스 할 수 없습니다: 'c:\\users\\cho_desktop\\pycharmprojects\\markdown\\.venv\\lib\\site-packages
+        \\mdr-1.0.0-py3.11.egg'
+        
+        ```
+
+        
+
+    - `mdr` 명령어로 해봤는데, 파일명만 뜬다?
+
+        
+
+
+
+
+
+
+
+
+
+###  리팩토링포함, posts로 전환 index처리까지
+
+
+
+#### render전에 posts 라고 미리 render할 경로 검사후 모아놓기 + path속성 처리
+
+
+
+- os.walk로 읽은 파일의 경로 file -> full_path
+
+- render할 file 경로 -> files_full_path_to_render
+
+- 패키지내 build폴더 삭제로직 먼저 하도록 추가
+
+    ```python
+    # 14) build폴더 삭제 미리 해놓기
+    if os.path.exists(OUTPUT_DIR):
+        shutil.rmtree(OUTPUT_DIR)
+    ```
+
+- render전 post정보를 먼저 추출한다.
+
+    - path 속성이 있고, 그게 중복이 아니라면 가능
+
+    ```python
+    post_paths = {} # 모든 post에 대한 path들을 모은다. TODO: DB에서 검사
+    # 4) 랜더할 md file들을 순회하면서, frontmatter 추출
+    for file_full_path in files_full_path_to_render:
+        with open(file_full_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+            post = frontmatter.Frontmatter.read(content)  # c = frontmatter.loads(content) # 버전 차이?
+    
+            # 5) frontmatter없는 파일은 pass
+            if 'attributes'not in post:
+                # {'attributes': None, 'body': '', 'frontmatter': ''}
+                # raise ValueError('해당파일에 frontmatter가 빠짐: ', file_full_path)
+                print(f'🤣 frontmatter가 없는 파일 수정 요망: {file_full_path}')
+                continue
+    
+                ## front용 path지정(백엔드 달리면 필요 없을 듯)
+                # 15-1) path 속성이 있다면, 파일명이 아니라, [path].html로 상대 경로를 지정한다.
+                if 'path' in post['attributes']:
+                    # 15-2) path는 중복이 아니여야 한다.
+                    if post['attributes']['path'] in post_paths:
+                        # raise ValueError(f'중복된 path가 있습니다: {post["path"]}')
+                        print(f'🤣 중복된 path를 가진 파일 : {file_full_path}')
+                        print(f'post_paths >> {post_paths}')
+                        continue
+                        # 15-3) 중복이 아닌 path는 True로 체크해서 추후 중복이 안되게 한다.
+                        post_paths[post['path']] = True
+    ```
+
+    - 이렇게 모은 것들을 posts라고 한다.
+
+    ```python
+            posts = []  # 
+            post_paths = {}  # 모든 post에 대한 path들을 모은다. TODO: DB에서 검사
+            # 4) 랜더할 md file들을 순회하면서, frontmatter 추출
+            for file_full_path in files_full_path_to_render:
+                with open(file_full_path, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                    post = frontmatter.Frontmatter.read(content)  # c = frontmatter.loads(content) # 버전 차이?
+    
+                    # 5) frontmatter없는 파일은 pass
+                    if 'attributes' not in post:
+                        # {'attributes': None, 'body': '', 'frontmatter': ''}
+                        # raise ValueError('해당파일에 frontmatter가 빠짐: ', file_full_path)
+                        print(f'🤣 frontmatter가 없는 파일 수정 요망: {file_full_path}')
+                        continue
+    
+                    ## front용 path지정(백엔드 달리면 필요 없을 듯)
+                    # 15-1) path 속성이 있다면, 파일명이 아니라, [path].html로 상대 경로를 지정한다.
+                    if 'path' in post['attributes']:
+                        # 15-2) path는 중복이 아니여야 한다.
+                        if post['attributes']['path'] in post_paths:
+                            # raise ValueError(f'중복된 path가 있습니다: {post["path"]}')
+                            print(f'🤣 중복된 path를 가진 파일 : {file_full_path}')
+                            print(f'post_paths >> {post_paths}')
+                            continue
+                        # 15-3) 중복이 아닌 path는 True로 체크해서 추후 중복이 안되게 한다.
+                        post_paths[post['attributes']['path']] = True
+    
+                    posts.append(post)
+    ```
+
+    
+
+
+
+
+
+#### datetime속성을 추가해야 역순이후 index처리 가능
+
+- date(string, 2025-02-03)을 datetime으로 바꾼 뒤, `date_parsed`로서 시간비교하게 한다.
+
+    - 이 때, 미래 날짜(오늘과 비교해서 크면) 건너띈다.
+- **희한한게, '' 따옴표 안붙이고 날짜 적으면 기본적으로 datetime.date로 파싱되어있다. frontmatter가 해주는 듯.**
+    
+    ```python
+    # 15-3) 'date' 속성을 검사하여 있다면, 'date_parsed' 속성으로 str -> datetime으로 바꿔 넣어놓는다.
+    if 'date' in post['attributes']:
+        # 'date': 2023-02-20
+        post['attributes']['date_parsed'] = datetime.datetime.            if 'date' in post['attributes']:
+            # 'date': 2023-02-20 -> datetime.date 
+            # 'date': '2023-02-20' -> string
+            if isinstance(post['attributes']['date'], str):
+                post['attributes']['date_parsed'] = datetime.datetime.strptime(post['attributes']['date'], '%Y-%m-%d')
+                else:
+                    post['attributes']['date_parsed'] = post['attributes']['date']strptime(post['attributes']['date'], '%Y-%m-%d')
+    
+    # 15-4) 근데, 발행날짜가 미래면, 무시하도록 한다.
+        # 오늘 00시 발행법: datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time())
+        # >> datetime.datetime(2025, 3, 8, 0, 0)
+        if post['date_parsed'] > datetime.datetime.combine(datetime.date.today(), datetime.datetime.min.time()):
+            print(f'🤣 미래 날짜의 파일 : {file_full_path}')
+            continue
+    ```
+    
+    
+
+
+
+- posts를 순회하며 html로 쓸 때, sorted()로 정렬한다.
+
+    ```python
+    env = jinja2.Environment(loader=jinja2.FileSystemLoader(TEMPLATE_DIR))
+    content_template = env.get_template('contents.html')
+    
+    # 16) render하기 전, post를 date_parsed로 정렬. 속성 없을 수도 있으니, .get()으로 가져온다.
+    sorted(
+        posts,
+        key=lambda x: x['attributes'].get('date_parsed', datetime.datetime.min),
+        reverse=True,
+    )
+    ```
+
+    
+
+
+
+- index처리를 위해서, enumerate로 순회하여, 총갯수 len(posts)와 i를 비교하여 next, prev post처리를 한다.
+
+    ```python
+    # render
+    for i, post in enumerate(posts):
+        # 17-1) init prev/next
+        prev_post = next_post = None
+        # 아직 안끝났으면, next post객체를 넣어놓기
+        if i < len(posts) - 1:
+            next_post = posts[i + 1]
+        # 0번째가 아니면, prev post객체를 넣어놓기
+        if i > 0:
+            prev_post = posts[i - 1]
+    ```
+
+
+
+
+
+
+
+#### prev, next post는 jinja이후 변수로 넘겨줘서 가능한 것
+
+
+
+1. path를 속성으로 가지고 있으면, **해당path의 시작페이지 index.html**로 간주하도록
+
+    - `'path': /blog/nested/post ` 형식으로 카테고리 형식으로 사용하게 될 듯.
+
+2. path를 직접 넣어준 post만  path + `/index.html`로 주소를 바꿔주고, 처리해준다.
+
+3. **path를 안넣어준 post에 대해서는, 직접 파일명으로 변경해줘야하는데, 이미 os.walk()를 지나간 상태라. os.walk()순회시 attributes에 넣어줘야할 것 같다.**
+
+    ```python
+    if 'path' in post['attributes']:
+    	#...
+    else:
+    	# 15-4) path가 없으면, 파일명 .md ->.html 변경 기존 로직이 적용하는 file_full_path를 나중에 쓰기 위해
+        #       file_full_path속성으로 저장해놓는다.
+        post['attributes']['file_full_path'] = file_full_path
+    ```
+
+4. 이제 path가 있으면 path + /index.html  없으면 file_full_path를 outfut_dir 대체 및 html로 변경한 이름을 relative_path변수에 저장해놓는다
+
+    ```python
+    # 18) 'path': /blog/nested/post 가 있으면, path + '/index.html'을 붙힌 상대주소를 만든다.
+    if 'path' in post['attributes']:
+        relative_path = post['attributes']['path'] + '/index.html'
+    else:
+    	relative_path = post['attributes']['file_full_path'].replace(SOURCE_DIR, '').replace('.md', '.html')
+        if relative_path.startswith('\\') or relative_path.startswith('/'):
+        	relative_path = relative_path[1:]
+        
+        # 19) root의 OUTPUT_DIR + [(/path/들)/index.html or 파일명.html] 상대경로 -> 폴더 없으면 생성까지
+        # 폴더 없으면 만들어주기 for path
+        output_file_full_path = os.path.join(OUTPUT_DIR, relative_path)
+        os.makedirs(os.path.dirname(output_file_full_path), exist_ok=True)
+    ```
+
+    
+
+5. md파일 만들어서 test
+
+    ```
+    ---
+    title: '넣었다'
+    path: /blog/nested/post
+    ---
+    ```
+
+    ```
+    relative_path  >> 1 cli.html
+    relative_path  >> blog/nested/post/index.html
+    ```
+
+    ![image-20250308211252955](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250308211252955.png)
+
+
+
+
+
+
+
+#### jinja를 통해 post body 및 prev/next post 객체 넘기면서 render하기
+
+- contents.html페이지를 렌더링
+- **이 때, markdown.markdown 친 것을 `post['body']`에 덮어씌운다.**
+
+```python
+# 20) render template
+# html = markdown.markdown(post['body'])
+post['body'] = markdown.markdown(post['body'])
+content = content_template.render(
+    post=post,
+    prev_post=prev_post,
+    next_post=next_post,
+    body=post['body'],
+
+    title=post['attributes'].get('title', None), 
+    subtitle=post['attributes'].get('subtitle', None), 
+    date=post['attributes'].get('date', None),
+)
+with open(output_file_full_path, 'w', encoding='utf-8') as f:
+    f.write(content)
+```
+
+- index페이지 렌더링 
+    - posts전체를 넘겨준다
+
+```python
+# render index -> posts 전체를 넘겨준다.
+index_template = env.get_template('index.html')
+index = index_template.render(posts=posts)
+
+index_file = os.path.join(OUTPUT_DIR, 'index.html')
+with open(index_file, 'w', encoding='utf-8') as f:
+    f.write(index)
+```
+
+
+
+
+
+
+
+### 스태틱 렌더링을 위해 작업하기
+
+- **`render시 {{ }}를 통해 css등을 가지러 패키지내부 >  템플릿 폴더 > static폴더까지 이동`을 해줘야하는 상황이다.**
+
+- **템플릿 html를 읽고 쓰는 `패키지 root > md_templates`에 `static폴더 /  main.css 등`**으로 가는 경로가 base.html에 필요하다
+
+    - **temaplate_dir 경로를 `__file__`기준으로해서 패키지내에서 작동하게 바꾼다.**
+
+    ```python
+    PACKAGE_DIR = os.path.dirname(__file__) # 패키지 폴더이름
+    TEMPLATE_DIR = os.path.join(PACKAGE_DIR, 'md_templates') # 템플릿도 패키지내부 폴더에서 제공할 것으로 지정
+    STATIC_DIR = os.path.join(TEMPLATE_DIR, 'static')
+    ```
+
+    ![image-20250308230255153](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250308230255153.png)
+
+    ```
+    PACKAGE_DIR  >> C:\Users\cho_desktop\PycharmProjects\markdown\markdown_renderer
+    TEMPLATE_DIR  >> C:\Users\cho_desktop\PycharmProjects\markdown\markdown_renderer\md_templates
+    STATIC_DIR_DIR  >> C:\Users\cho_desktop\PycharmProjects\markdown\markdown_renderer\md_templates\static
+    ```
+
+    
+
+
+
+
+
+
+
+#### path별로 build된 html에서 base.html에 들어갈 [패키지내 > md_templates > static > .css]의 경로가 서로 다르게 되어야한다. -> 패키지 루트의 상대적인 path를 jinja 변수로 렌덜이
+
+- **relative_path**  >> 1 cli.html /  **output_file** >> build\1 cli.html 
+- **relative_path**  >> blog/nested/post/index.html / **output_file** >> build\blog/nested/post/index.html
+
+
+
+1. **일단 output_file_path는 jinja base.html에서 렌더링시 아무필요가 없는 경로임.**
+
+    - **그렇다면, relative_path에서 `css가 들어있는 템플릿의 root`로 가야한다?**
+
+    - STATIC_DIR을 쓰면 될 듯?
+
+    ```html
+    <link rel="stylesheet" href="{{ static_dir }}/main.css">
+    ```
+
+    ```python
+    content = content_template.render(
+        static_dir=STATIC_DIR,
+    
+        post=post,
+        prev_post=prev_post,
+        next_post=next_post,
+    ```
+
+    
+
+2. **빌드해서 생성된 html을 보면, `기계의 물리적주소`가 나오게 되는데**
+
+    - **웹페이지는 `도메인을 root`로 하는 곳에서 static으로 가는 `상대주소`가 필요해서 `build시 필요한 STATIC_DIR`과 다른 `package_root_path`가 필요하다**
+
+    ```
+    <html lang="ko">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    
+        <link rel="stylesheet" href="C:\Users\cho_desktop\PycharmProjects\markdown\markdown_renderer\md_templates\static/main.css">
+    
+        <title></title>
+    
+    </head>
+    <body>
+    ```
+
+    - **post마다 relative_path가 `/a/b/c/index.html`형태로 경로가 있기 때문에 `서로 다른 root_path`가 적용되야한다?**
+        - 예를 들어, md_templates/
+            -   `../` 로 한칸뒤로 패키지 root로 간 뒤
+            - `md_templates/static`의 main.css를 가져와야한다.
+        - **하지만, path가 달린 html은, 훨씬 더 뒤로가서 패키지루트로 간 뒤, 진입해야한다.**
+
+        ```python
+        content = content_template.render(
+            static_dir='../md_templates/static',  # build폴더 path없는 것 기준 static 상대주소 경로
+        ```
+
+        ![image-20250308233357113](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250308233357113.png)
+
+    - 1cli.html은 주소가 잘 떨어지는데 **path를 가진 index.html은 css주소가 달라진다.**
+
+        ![image-20250308233424190](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250308233424190.png)
+
+
+
+
+
+
+
+3. **`relative_path를 참고`해서 `relative_static_dir` 주소를 뽑아내야한다.**
+
+    1. 패키지내부에 lib.py 유틸파일 생성
+
+        ![image-20250308225233178](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250308225233178.png)
+
+
+        ![image-20250308225247529](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250308225247529.png)
+    
+        ![image-20250308225300449](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250308225300449.png)
+    
+        ![image-20250308225355776](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250308225355776.png)
+
+4. **패키지 상대적인 root 패스를 찾아내야한다.**
+
+    - **split후 1개만 남은 paht없는 놈도 1개로 쳐서, `../`이 되니까 build에 있던 path없던 html도 `패키지 루트경로`에 가게된다.**
+
+    ```python
+    def get_relative_package_root_path(post_relative_path):
+        result = ''
+        # Get the number of slashes
+        num_dirs = len(list(filter(lambda x: len(x) > 0, post_relative_path.split('/'))))
+        for i in range(num_dirs):
+            result += '../'
+    
+        return result
+    ```
+
+    ```python
+    relative_package_root_path = get_relative_package_root_path(relative_path)
+    
+    content = content_template.render(
+        # static_dir='../md_templates/static',  # build폴더 path없는 것 기준 static 상대주소 경로
+        package_root_path=relative_package_root_path,
+    ```
+
+    
+
+5. 렌더링시 template_dir과 static_dir은 빌드를 위해 절대경로를 사용하는 상태라, 하드코딩해준다.
+
+    ```html
+    <link rel="stylesheet" href="{{ package_root_path }}md_templates/static/main.css">
+    ```
+
+    - path 속 indexh.html도 잘 작동한다.
+
+    ![image-20250309000201770](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250309000201770.png)
+
+
+
+
+
+
+
+
+
+
+
+#### 리팩토링 css파일명 및 내용
+
+-  main.css -> style.css
+
+    ```css
+    @import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+    
+    html, body {
+        font-family: 'Roboto', sans-serif;
+        background: green;
+    }
+    ```
+
+    
+
+
+
+
+
+
+
+
+
+### index 페이지 렌더링
+
+
+
+
+
+1. title과 posts전체를 index.html 템플릿에 넘긴다.
+
+    - index템플릿에서는ul태그안에 for문 넣어서 posts 순회
+
+    ```python
+    ## render index -> posts 전체를 넘겨준다.
+    index_template = env.get_template('index.html')
+    index = index_template.render(
+        titile='상세질환정보 디자인',
+        posts=posts,
+    )
+    
+    index_file = os.path.join(OUTPUT_DIR, 'index.html')
+    with open(index_file, 'w', encoding='utf-8') as f:
+        f.write(index)
+    ```
+
+    ```html
+    {% extends "base.html" %}
+    
+    {% block title -%}{{ title }}{%- endblock %}
+    
+    
+    {% block content %}
+    <ul>
+        {% for post in posts %}
+        <li><a href="{{ post['attributes']['path'] }}">{{ post['attributes']['title']}}</a></li>
+        {% endfor %}
+    </ul>
+    
+    
+    {% endblock %}
+    ```
+
+2. **결과... index.html은, 상대경로가 ../가 빠져있어서 css적용안됨.**
+
+    ```html
+        <link rel="stylesheet" href="md_templates/static/style.css">
+        <title>상세질환정보 디자인</title>
+    
+    </head>
+    <body>
+        
+    <ul>
+        
+        <li><a href="">넣었다</a></li>
+        
+        <li><a href="/blog/nested/post">넣었다</a></li>
+        
+        <li><a href="/about">넣었다</a></li>
+        
+    </ul>
+    ```
+
+    ![image-20250309120115877](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250309120115877.png)
+
+3. **사실상 `path를 가졌다면, 특정 다른페이지`를 의미하게 된다.**
+
+    ![image-20250309120237517](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250309120237517.png)
+
+4. **그런데 `path`를 클릭하면, `도메인이후로 path`가 적용되어, 우리 패키지내부  build로는 접근할 수 없게 된다. **
+
+    ![image-20250309120656027](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250309120656027.png))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+![image-20250309120037922](https://raw.githubusercontent.com/is2js/screenshots/main/image-20250309120037922.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

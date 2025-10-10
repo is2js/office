@@ -495,22 +495,20 @@ def render_html(page, config, env, posts, title='Home', root_path_back_level=0, 
         static_path = os.path.join(relative_root_path, 'static')
 
 
+
         # 외부 빌드라도, root index는 상대주소가 default ../ + ../static이 아니라 ./ + ./static이 되어야 한다.
         # 지금 서버 띄울 땐 --directory build처리된 상태로 겉만 일케 띄워졌지만, 파일들 입장에선 build -> 루트 -> static으로 들어간다.
         # BUT github에선 아예 build폴더가 존재하지 않기 때문에 index.html에서 ../static이 되면 안된다. ./static이 되어야 한다.
         # 그래서 조건에 github actions용 환경변수로 판단해서 index.html일 때는 ../를 붙이지 않도록 한다.
+
         # GITHUB_ACTIONS = os.getenv('GITHUB_ACTIONS', 'false').lower() == 'true'
         # full_repo_name = os.getenv('GITHUB_REPOSITORY', '') # user/repo
         # repo_name_only = full_repo_name.split('/')[-1] # repo
         # if GITHUB_ACTIONS and page == 'index.html':
         #     relative_root_path = './' # 강제로 build폴더없이 루트가 되는 상황이니 ./로 지정
 
-        # static_path = os.path.join(relative_root_path, 'static')
+        #### => 서브도메인을 통해 연결하여 /office(레포명)까지를 root로 인식하게 함.
 
-
-    print(f"page  >> {page}")
-    print(f"relative_root_path  >> {relative_root_path}")
-    print(f"static_path  >> {static_path}")
 
     # 강제로 중간에 path를 추가한다면 ex> pagination으로 blog/1 blog/2
     # static은 한칸 뒤로, 링크도 {{ root_path }} /원래 path가 연결되려면 현재에서 1칸 뒤로
