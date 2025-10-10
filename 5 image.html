@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- font -->
+    <link rel="stylesheet" as="style" crossorigin
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200..900&display=swap" rel="stylesheet">
+
+
+    <style>
+        :root {
+            --theme-primary: #FC5230;
+            --theme-secondary: #1ECECB;
+                /* --theme-primary를 80% 유지하고 검은색 20% 섞어서 어둡게 */
+            --theme-primary-dark: color-mix(in srgb, var(--theme-primary) 80%, black 20%);
+
+            /* --theme-secondary도 동일하게 적용 */
+            --theme-secondary-dark: color-mix(in srgb, var(--theme-secondary) 80%, black 20%);
+
+            /* 로고 주소 */
+
+            --h3-title-logo-url: url("https://front.chojaeseong.com/images/png/profile/sub/02.png");
+        }
+    </style>
+    <link rel="stylesheet" href="../static/code-highlights.css">
+    <link rel="stylesheet" href="../static/common.css">
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="../static/mixin.css">
+    <link rel="stylesheet" href="../static/article.css">
+
+    <title>피부미용 | 조재성 원장</title>
+
+    <!--https://github.dev/Hybridhash/FastAPI-HTMX-->
+    
+    <!-- alinepjs-->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body
+>
+   <!--     x-data="{navFixed: false}"
+        @scroll.window="navFixed = (window.pageYOffset > $refs.nav.getBoundingClientRect().height * 2 ) ? true : false, console.log(navFixed)"-->
+<div id="page-container">
+    <div id="content-wrap">
+        <div class="nav" x-ref="nav"
+        >
+
+<!--             :class="navFixed ? 'position-fixed top-0 left-0 w-100' : 'position-relative'"-->
+
+            <a id="title" href="../">
+                <img id="logo" src="http://hani.chojaeseong.com/images/logo.png"/>조재성 원장
+            </a>
+            <ul class="links">
+                <li><a href="../">Home</a></li>
+                <li><a href="../blog">블로그</a></li>
+                <li><a href="../archive">Archive</a></li>
+                <li><a href="../ads">원내광고</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+                
+            <div class="layout-center">
+                
+<!-- 제목 -->
+<h1 class="post-title">피부미용</h1>
+
+
+<!-- youtube -->
+
+
+
+<!-- 내용 -->
+<div class="article">
+<h3 id="oswalk-docssource_dir-buildstaticimg">os.walk 순회시 사용자입력 docs폴더(SOURCE_DIR)안에 있는 이미지 파일을 &gt; build/static/img로 가져온다</h3>
+<ol>
+<li>
+<p>os.walk시 image파일들도 같이 모은다.</p>
+<ul>
+<li><strong>md파일들 필터링 이전에 모아놔야한다.</strong></li>
+</ul>
+<p>```python</p>
+<h1 id="def-get_full_path_of_files_to_render">def get_full_path_of_files_to_render():</h1>
+<p>def get_full_path_of_files_to_render_and_images():
+    full_path_of_files_to_render = []
+    files_to_render_ignore = get_filenames_to_ignore()</p>
+<div class="codehilite"><pre><span></span><code><span class="nx">full_path_of_image_files</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[]</span>
+
+<span class="k">for</span><span class="w"> </span><span class="nx">root</span><span class="p">,</span><span class="w"> </span><span class="nx">inner_dirs</span><span class="p">,</span><span class="w"> </span><span class="nx">file_names</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">os</span><span class="p">.</span><span class="nx">walk</span><span class="p">(</span><span class="nx">SOURCE_DIR</span><span class="p">):</span>
+
+<span class="w">    </span><span class="k">for</span><span class="w"> </span><span class="nx">file_name</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nx">file_names</span><span class="p">:</span>
+<span class="w">        </span><span class="nx">full_path</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">os</span><span class="p">.</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">root</span><span class="p">,</span><span class="w"> </span><span class="nx">file_name</span><span class="p">)</span>
+<span class="w">        </span><span class="nx">file_basename</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nx">os</span><span class="p">.</span><span class="nx">path</span><span class="p">.</span><span class="nx">basename</span><span class="p">(</span><span class="nx">full_path</span><span class="p">)</span>
+
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="mi">11</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="nx">renderignore</span><span class="w"> </span><span class="nx">파일이면</span><span class="w"> </span><span class="nx">pass</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="nx">file_basename</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="err">&#39;</span><span class="p">.</span><span class="nx">renderignore</span><span class="err">&#39;</span><span class="p">:</span>
+<span class="w">            </span><span class="k">continue</span>
+
+<span class="w">        </span><span class="err">##</span><span class="w"> </span><span class="nx">이미지</span><span class="w"> </span><span class="nx">파일도</span><span class="w"> </span><span class="nx">복사해놓기</span><span class="w"> </span><span class="p">(</span><span class="nx">md파일</span><span class="w"> </span><span class="nx">필터링</span><span class="w"> </span><span class="nx">전</span><span class="p">)</span>
+<span class="w">        </span><span class="k">for</span><span class="w"> </span><span class="nx">image_type</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="p">[</span><span class="err">&#39;</span><span class="p">.</span><span class="nx">png</span><span class="err">&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="p">.</span><span class="nx">jpg</span><span class="err">&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="p">.</span><span class="nx">jpeg</span><span class="err">&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="p">.</span><span class="nx">gif</span><span class="err">&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="p">.</span><span class="nx">svg</span><span class="err">&#39;</span><span class="p">,</span><span class="w"> </span><span class="err">&#39;</span><span class="p">.</span><span class="nx">webp</span><span class="err">&#39;</span><span class="p">]:</span>
+<span class="w">            </span><span class="k">if</span><span class="w"> </span><span class="nx">file_basename</span><span class="p">.</span><span class="nx">lower</span><span class="p">().</span><span class="nx">endswith</span><span class="p">(</span><span class="nx">image_type</span><span class="p">):</span>
+<span class="w">                </span><span class="nx">print</span><span class="p">(</span><span class="nx">f</span><span class="err">&#39;</span><span class="w">  </span><span class="nx">이미지</span><span class="w"> </span><span class="nx">파일</span><span class="w"> </span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="p">{</span><span class="nx">file_basename</span><span class="p">}</span><span class="err">&#39;</span><span class="p">)</span>
+<span class="w">                </span><span class="nx">full_path_of_image_files</span><span class="p">.</span><span class="nx">append</span><span class="p">(</span><span class="nx">full_path</span><span class="p">)</span>
+
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="mi">11</span><span class="o">-</span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="nx">md파일도</span><span class="w"> </span><span class="nx">아니면서</span><span class="w"> </span><span class="p">.</span><span class="nx">renderignore도</span><span class="w"> </span><span class="nx">아닌</span><span class="w"> </span><span class="nx">것</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nx">pass</span>
+<span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="k">not</span><span class="w"> </span><span class="nx">file_basename</span><span class="p">.</span><span class="nx">lower</span><span class="p">().</span><span class="nx">endswith</span><span class="p">(</span><span class="err">&#39;</span><span class="p">.</span><span class="nx">md</span><span class="err">&#39;</span><span class="p">):</span>
+<span class="w">            </span><span class="nx">print</span><span class="p">(</span><span class="nx">f</span><span class="err">&#39;</span><span class="w">  </span><span class="nx">SOUR</span>
+
+<span class="k">return</span><span class="w"> </span><span class="nx">full_path_of_files_to_render</span><span class="p">,</span><span class="w"> </span><span class="nx">full_path_of_image_files</span>
+</code></pre></div>
+
+<p>def cli_entry_point():
+    print(f"start ")
+    # 1) source폴더명이 존재하고 &amp;&amp; 그게 진짜 디렉토리라면,
+    if not (os.path.exists(SOURCE_DIR) and os.path.isdir(SOURCE_DIR)):
+        print(f"'{SOURCE_DIR}' 폴더가 존재하지 않습니다.")
+        return</p>
+<div class="codehilite"><pre><span></span><code><span class="gh">#</span> files_full_path_to_render = get_full_path_of_files_to_render_and_images()
+files_full_path_to_render, image_files_full_path = get_full_path_of_files_to_render_and_images()
+</code></pre></div>
+
+<p>```</p>
+<p><img alt="image-20250315204411623" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250315204411623.png">
+<img alt="image-20250315204419334" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250315204419334.png"></p>
+</li>
+</ol>
+<h3 id="md-image-resub-buildstaticimg-render">md작성시에 썼던 image 경로 -&gt; re.sub()로 build/static/img로 바꿔서 render되어야한다.</h3>
+<ol>
+<li>
+<p>docs의 md를 작성할 땐, docs폴더에 추가해놓고 쓴다.</p>
+<p>```
+title: 'test4 youtube'
+path: /blog/4
+date: '2025-03-12'
+authors: [조재성]
+youtube: P_06Nvmunrk</p>
+<hr>
+<p>유튜브</p>
+<p><img alt="조원장" src="static/img/조원장_증명사진.png">
+```</p>
+<p><img alt="image-20250315210704562" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250315210704562.png"></p>
+<p><img alt="image-20250315210722737" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250315210722737.png"></p>
+</li>
+<li>
+<p><strong>하지만, build시에는 docs폴더가 아닌 <code>build / static / img</code> + <code>파일명</code>으로 받아져야한다.</strong></p>
+<p><img alt="image-20250315210901040" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250315210901040.png"></p>
+<p><img alt="image-20250315210852752" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250315210852752.png"></p>
+</li>
+<li>
+<p><strong>그래서 jinja render시 build / static / img 로 빌드조건을 줘야한다.</strong></p>
+<ul>
+<li><strong>내부빌드에서는 사용자입력폴더 docs까지 접근해야하는데, 아예 하지말자.??</strong></li>
+<li><strong>외부빌드에서는 /static/img로 접근해야한다.</strong></li>
+<li><strong><code>상대root주소 = build폴더</code>를 만든 뒤 &lt;-&gt; <code>markdown 파싱</code> 전에 넣어주자.</strong></li>
+</ul>
+<p>```python</p>
+<h2 id="render">외부 패키지 render시 이미지 경로 바꿔놓기</h2>
+<h1 id="docs_png-blog4-staticimg_png">docs/조원장_증명사진.png -&gt;  (현 blog/4) .. / .. /static/img/조원장_증명사진.png</h1>
+<h1 id="blog-build-static-img-_png">==&gt; ..(blog) /..(build) / static / img / 조원장_증명사진.png</h1>
+<p>if <strong>name</strong> != '<strong>main</strong>':
+    post['body'] = re.sub(
+        r"![(.+)]((.+))",
+        f'<img alt="\1" src="static/img/{os.path.dirname(os.path.dirname(relative_root_path))}/static/img/\2">',
+        post['body']
+    )
+```</p>
+<p><img alt="image-20250315222155532" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250315222155532.png"></p>
+<p><code>&lt;p&gt;&lt;img alt="조원장" src="../../static/img/조원장_증명사진.png" /&gt;</code></p>
+</li>
+<li>
+<p><strong>(src)부분이 http로 시작하는 경우는 제외시켜야한다.</strong></p>
+<ul>
+<li>2번째 그룹이 http로 안찾아지는 경우 에러가 발생해서 -&gt; chatgpt에게 물어보고 바꿈</li>
+</ul>
+<p><code>python
+if __name__ != '__main__':
+    # post['body'] = re.sub(
+    #     r"\!\[(.+)\]\((.+)\)",
+    #     f'![\\1](static/img/{os.path.dirname(os.path.dirname(relative_root_path))}/static/img/\\2)',
+    #     post['body']
+    # )
+    # http로 시작하는 경우는 제외
+    post['body'] = re.sub(
+        r"!\[(.+)\]\((?!http)([^)]+)\)",
+        lambda m: f'![{m.group(1)}](static/img/{os.path.dirname(os.path.dirname(relative_root_path))}/static/img/{m.group(2)})' if m.group(2)
+        else m.group(0),
+        post['body']
+    )</code></p>
+<p><code>&lt;p&gt;&lt;img alt="조원장" src="../../static/img/조원장_증명사진.png" /&gt;    
+&lt;img alt="김원장" src="https://front.chojaeseong.com/images/png/profile/main/01.png" /&gt;&lt;/p&gt;</code></p>
+</li>
+<li>
+<p><strong>같은 이미지주소를 가졌다면, 마지막 것만 변경 된다.</strong></p>
+<p><img alt="image-20250315230001570" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250315230001570.png"></p>
+<p><code>.+ → .+?: Greedy 매칭을 방지하여 정확한 부분만 매칭하도록 변경
+os.path.join() 사용: 경로 조합을 더 명확하게 만듦
+예제 경로 추가: relative_root_path를 예제로 지정하여 실행 가능하게 함</code></p>
+<p><code>python
+post['body'] = re.sub(
+                r"!\[(.+?)\]\((?!http)([^)]+)\)",
+                lambda
+                    m: f'![{m.group(1)}](static/img/{os.path.join(os.path.dirname(os.path.dirname(relative_root_path)), "static/img", m.group(2))})'
+                if m.group(2) else m.group(0),
+                post['body']
+            )</code></p>
+</li>
+<li>
+<p><strong>md에서 외부 build폴더에 복사되는 <code>이미지의 이름이 중복</code>되지 않게 해야한다.</strong></p>
+<p>```python</p>
+<h2 id="copy-static-files-and-images">copy static files and images</h2>
+<h1 id="main-x">외부에서 패키지로 사용시에만 == main실행 X:</h1>
+<p>if <strong>name</strong> != '<strong>main</strong>':
+    # 1) 패키지실행 속 static(대문자STATIC_DIR) 파일들: build폴더 &gt; static으로 복사
+    shutil.copytree(STATIC_DIR, os.path.join(OUTPUT_DIR, 'static'))</p>
+<div class="codehilite"><pre><span></span><code><span class="err">#</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span><span class="w"> </span><span class="n">docs의</span><span class="w"> </span><span class="nl">image파일들</span><span class="p">:</span><span class="w"> </span><span class="n">build폴더</span><span class="o">&gt;</span><span class="w"> </span><span class="k">static</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">img폴더</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">파일명으로</span><span class="w"> </span><span class="n">복사</span>
+<span class="n">os</span><span class="p">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="p">.</span><span class="k">path</span><span class="p">.</span><span class="k">join</span><span class="p">(</span><span class="n">STATIC_DIR</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;img&#39;</span><span class="p">),</span><span class="w"> </span><span class="n">exist_ok</span><span class="o">=</span><span class="k">True</span><span class="p">)</span>
+<span class="err">#</span><span class="w"> </span><span class="n">파일명은</span><span class="w"> </span><span class="mi">1</span><span class="n">개만</span><span class="w"> </span><span class="n">있어야</span><span class="w"> </span><span class="n">한다</span><span class="p">.</span>
+<span class="n">images_copied</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="err">{}</span>
+<span class="k">for</span><span class="w"> </span><span class="n">image_file_path</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nl">image_files_full_path</span><span class="p">:</span>
+<span class="w">    </span><span class="err">#</span><span class="w"> </span><span class="n">Make</span><span class="w"> </span><span class="n">sure</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="nc">image</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="k">is</span><span class="w"> </span><span class="k">unique</span>
+<span class="w">    </span><span class="n">image_filename</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">os</span><span class="p">.</span><span class="k">path</span><span class="p">.</span><span class="n">basename</span><span class="p">(</span><span class="n">image_file_path</span><span class="p">)</span>
+<span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="n">image_filename</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="nl">images_copied</span><span class="p">:</span>
+<span class="w">        </span><span class="n">raise</span><span class="w"> </span><span class="n">ValueError</span><span class="p">(</span>
+<span class="w">            </span><span class="s1">&#39;중복된 이름의 이미지 파일이 있습니다: 변경해주세요&#39;</span><span class="p">,</span>
+<span class="w">            </span><span class="n">image_file_path</span><span class="p">,</span>
+<span class="w">            </span><span class="n">images_copied</span><span class="o">[</span><span class="n">image_filename</span><span class="o">]</span><span class="p">)</span>
+<span class="w">        </span><span class="k">else</span><span class="err">:</span>
+<span class="w">            </span><span class="n">images_copied</span><span class="o">[</span><span class="n">image_filename</span><span class="o">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">image_file_path</span>
+
+<span class="w">            </span><span class="n">shutil</span><span class="p">.</span><span class="n">copy</span><span class="p">(</span><span class="n">image_file_path</span><span class="p">,</span><span class="w"> </span><span class="n">os</span><span class="p">.</span><span class="k">path</span><span class="p">.</span><span class="k">join</span><span class="p">(</span><span class="n">OUTPUT_DIR</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;static&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;img&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">os</span><span class="p">.</span><span class="k">path</span><span class="p">.</span><span class="n">basename</span><span class="p">(</span><span class="n">image_file_path</span><span class="p">)))</span>
+</code></pre></div>
+
+<p>```</p>
+</li>
+</ol>
+<h3 id="_1">명령어</h3>
+<div class="codehilite"><pre><span></span><code>python setup.py install
+mdr
+
+python -m http.server --directory build
+</code></pre></div>
+
+<h3 id="jinja">jinja참고</h3>
+<h4 id="jinja2-sort-set-sortattributereversetrue-">jinja2에서 sort: {% set 정렬데이터 = 데이터|sort(attribute='',reverse=True) %} -&gt; 다시 순회</h4>
+<p><img alt="image-20250311090346996" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250311090346996.png"></p>
+<h4 id="ab-for-dict-if-endif-if-update">속성이 여러개면 <code>a.b</code>로 정렬 + for문 내부 업뎃을 위해, dict로 변수 없뎃 + if문 내부에 문서들은 endif끝내기 전에 if update문 성공시에 연도 표시(달라지면 작성)</h4>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;archive&quot;</span><span class="p">&gt;</span>
+    {% set posts_sorted = posts | sort(attribute=&#39;attributes.date_parsed&#39;, reverse=True) %}
+    {% set prev_year = {&#39;value&#39;: &#39;0000&#39;} %}
+    {% for post in posts_sorted -%}
+    {% set curr_year = post[&#39;attributes&#39;][&#39;date_parsed&#39;].strftime(&#39;%Y&#39;) %}
+    {% if curr_year != prev_year[&#39;value&#39;] %}
+    {% if prev_year.update({&#39;value&#39;: curr_year}) %}{% endif %}
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;year&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>{{ curr_year }}년<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    {% endif %}
+
+
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;post&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;title&quot;</span><span class="p">&gt;</span>
+            {{ post[&#39;attributes&#39;][&#39;date_parsed&#39;].strftime(&#39;%b, %m월&#39;) }}: <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;{{ post[&#39;attributes&#39;][&#39;path&#39;] }}&quot;</span><span class="p">&gt;</span>{{
+            post[&#39;attributes&#39;][&#39;title&#39;]}}<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    {% endfor %}
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+{% endblock %}
+</code></pre></div>
+
+<h3 id="_2">코딩 참고</h3>
+<ul>
+<li>https://strftime.org/</li>
+</ul>
+<h2 id="-regex101com">- regex101.com</h2>
+</div>
+
+<!-- 이전 post / 다음 post -->
+
+<div>
+    이전:
+    <a href="..//blog/nested/post/3">포스트 메인</a>
+</div>
+
+
+<div>
+    다음:
+    <a href="..//about">소개</a>
+</div>
+
+
+
+<!-- 작성자 -->
+
+
+
+            </div>
+                
+        </div>
+    </div>
+    <div class="footer">
+        
+        <div id="copyright">
+            Copyright &copy; <span id="year"></span>(주) 김석영 주식회사
+        </div>
+        
+        
+        <div id="credit">
+            Made with <a href="https://github.com/pagekeytech/markdown-sitegen">MDR</a> from <a
+                href="https://www.pagekeytech.com/">남룡북매 test</a>
+        </div>
+        
+    </div>
+</div>
+
+<script src="../static/main.js"></script>
+
+<script src="../static/article.js"></script>
+
+</body>
+</html>

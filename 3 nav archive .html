@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- font -->
+    <link rel="stylesheet" as="style" crossorigin
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200..900&display=swap" rel="stylesheet">
+
+
+    <style>
+        :root {
+            --theme-primary: #FC5230;
+            --theme-secondary: #1ECECB;
+                /* --theme-primary를 80% 유지하고 검은색 20% 섞어서 어둡게 */
+            --theme-primary-dark: color-mix(in srgb, var(--theme-primary) 80%, black 20%);
+
+            /* --theme-secondary도 동일하게 적용 */
+            --theme-secondary-dark: color-mix(in srgb, var(--theme-secondary) 80%, black 20%);
+
+            /* 로고 주소 */
+
+            --h3-title-logo-url: url("https://front.chojaeseong.com/images/png/profile/sub/02.png");
+        }
+    </style>
+    <link rel="stylesheet" href="../static/code-highlights.css">
+    <link rel="stylesheet" href="../static/common.css">
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="../static/mixin.css">
+    <link rel="stylesheet" href="../static/article.css">
+
+    <title>3번째 | 조재성 원장</title>
+
+    <!--https://github.dev/Hybridhash/FastAPI-HTMX-->
+    
+    <!-- alinepjs-->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body
+>
+   <!--     x-data="{navFixed: false}"
+        @scroll.window="navFixed = (window.pageYOffset > $refs.nav.getBoundingClientRect().height * 2 ) ? true : false, console.log(navFixed)"-->
+<div id="page-container">
+    <div id="content-wrap">
+        <div class="nav" x-ref="nav"
+        >
+
+<!--             :class="navFixed ? 'position-fixed top-0 left-0 w-100' : 'position-relative'"-->
+
+            <a id="title" href="../">
+                <img id="logo" src="http://hani.chojaeseong.com/images/logo.png"/>조재성 원장
+            </a>
+            <ul class="links">
+                <li><a href="../">Home</a></li>
+                <li><a href="../blog">블로그</a></li>
+                <li><a href="../archive">Archive</a></li>
+                <li><a href="../ads">원내광고</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+                
+            <div class="layout-center">
+                
+<!-- 제목 -->
+<h1 class="post-title">3번째</h1>
+
+
+<!-- youtube -->
+
+
+
+<!-- 내용 -->
+<div class="article">
+<h3 id="basehtml-nav">base.html에 nav 추가하기</h3>
+<!-- truncate -->
+<ul>
+<li>body내부 전체를 div#page-container로 싸고<ul>
+<li>foot 대비 section을 div.content-wrap으로 싸고<ul>
+<li>div.nav<ul>
+<li>a태그안에 img#logo 추가<ul>
+<li>static/img/logo.png 추가</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>div.content</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h4 id="nav-ahref-path-1">nav 메뉴는 a[href]=에 내가 준 path들 1번째 것들만 나열한다.</h4>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;page-container&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;content-wrap&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;nav&quot;</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">a</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;title&quot;</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;{{ root_path }}&quot;</span><span class="p">&gt;&lt;</span><span class="nt">img</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;logo&quot;</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;{{ static_path }}/img/logo.png&quot;</span><span class="p">/&gt;</span>{{ config[&#39;title&#39;] }}{{ config[&#39;title&#39;] }}<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">ul</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;links&quot;</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;{{ root_path }}&quot;</span><span class="p">&gt;</span>Home<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;{{ root_path }}blog&quot;</span><span class="p">&gt;</span>Blog<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+                <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;{{ root_path }}archive&quot;</span><span class="p">&gt;</span>Archive<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+            <span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;content&quot;</span><span class="p">&gt;</span>
+            {% block content %}
+            {% endblock %}
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<ul>
+<li>css</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="p">@</span><span class="k">import</span><span class="w"> </span><span class="nt">url</span><span class="o">(</span><span class="s1">&#39;https://fonts.googleapis.com/css2?family=Roboto&amp;display=swap&#39;</span><span class="o">)</span><span class="p">;</span>
+
+<span class="nt">html</span><span class="o">,</span><span class="w"> </span><span class="nt">body</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">font-family</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;Roboto&#39;</span><span class="p">,</span><span class="w"> </span><span class="kc">sans-serif</span><span class="p">;</span>
+<span class="w">    </span><span class="k">margin</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+<span class="w">    </span><span class="k">line-height</span><span class="p">:</span><span class="w"> </span><span class="mf">1.65</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="c">/* base.html */</span>
+<span class="c">/* sticky footer */</span>
+<span class="p">#</span><span class="nn">page-container</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">position</span><span class="p">:</span><span class="w"> </span><span class="kc">relative</span><span class="p">;</span>
+<span class="w">    </span><span class="k">min-height</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="kt">vh</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">#</span><span class="nn">content-wrap</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">padding-bottom</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="kt">em</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">.</span><span class="nc">nav</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="mh">#1ECECB</span><span class="p">;</span>
+<span class="w">    </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="kt">em</span><span class="p">;</span>
+<span class="w">    </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="kc">white</span><span class="p">;</span>
+
+<span class="w">    </span><span class="err">&amp;</span><span class="w"> </span><span class="err">a</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="kc">inherit</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="o">&amp;</span><span class="w"> </span><span class="nt">a</span><span class="p">#</span><span class="nn">title</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">font-weight</span><span class="p">:</span><span class="w"> </span><span class="kc">bold</span><span class="p">;</span>
+<span class="w">        </span><span class="k">text-decoration</span><span class="p">:</span><span class="w"> </span><span class="kc">none</span><span class="p">;</span>
+<span class="w">        </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="kt">%</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="o">&amp;</span><span class="w"> </span><span class="p">.</span><span class="nc">links</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">display</span><span class="p">:</span><span class="w"> </span><span class="kc">inline-block</span><span class="p">;</span>
+<span class="w">        </span><span class="k">list-style-type</span><span class="p">:</span><span class="w"> </span><span class="kc">none</span><span class="p">;</span>
+<span class="w">        </span><span class="k">padding-left</span><span class="p">:</span><span class="w"> </span><span class="kc">inherit</span><span class="p">;</span>
+
+<span class="w">        </span><span class="err">&amp;</span><span class="w"> </span><span class="err">li</span><span class="w"> </span><span class="err">{</span>
+<span class="w">            </span><span class="k">display</span><span class="p">:</span><span class="w"> </span><span class="kc">inline-block</span><span class="p">;</span>
+<span class="w">            </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">1</span><span class="kt">em</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+
+<span class="w">        </span><span class="o">&amp;</span><span class="w"> </span><span class="nt">li</span><span class="w"> </span><span class="nt">a</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="k">text-decoration</span><span class="p">:</span><span class="w"> </span><span class="kc">none</span><span class="p">;</span>
+<span class="w">        </span><span class="p">}</span>
+<span class="w">    </span><span class="err">}</span>
+<span class="err">}</span>
+
+<span class="p">.</span><span class="nc">nav</span><span class="o">,</span><span class="w"> </span><span class="p">.</span><span class="nc">nav</span><span class="w"> </span><span class="p">#</span><span class="nn">title</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">display</span><span class="p">:</span><span class="w"> </span><span class="kc">flex</span><span class="p">;</span>
+<span class="w">    </span><span class="k">align-items</span><span class="p">:</span><span class="w"> </span><span class="kc">center</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="p">.</span><span class="nc">nav</span><span class="w"> </span><span class="p">#</span><span class="nn">logo</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">margin-right</span><span class="p">:</span><span class="w"> </span><span class="mf">0.4</span><span class="kt">em</span><span class="p">;</span>
+<span class="w">    </span><span class="k">height</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="kt">em</span><span class="p">;</span>
+<span class="p">}</span>
+
+
+<span class="p">.</span><span class="nc">content</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="k">margin</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="kt">em</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div>
+
+<h4 id="path-1-blognestedpostindexhtml-blog-nav-indexhtml-or">path 1번째것이 없이  /blog/nested/post/index.html이라면? /blog nav메뉴는 index.html 없이  <code>경로가 있다면 디렉토리</code> or <code>경로조차 없다면 에러</code></h4>
+<div class="codehilite"><pre><span></span><code>python -m http.server --directory build
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">ul</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;links&quot;</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;../&quot;</span><span class="p">&gt;</span>Home<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;../blog&quot;</span><span class="p">&gt;</span>Blog<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+    <span class="p">&lt;</span><span class="nt">li</span><span class="p">&gt;&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;../archive&quot;</span><span class="p">&gt;</span>Archive<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;&lt;/</span><span class="nt">li</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">ul</span><span class="p">&gt;</span>
+</code></pre></div>
+
+<p><img alt="image-20250311123309635" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250311123309635.png"></p>
+<ul>
+<li>
+<p><strong>해당  nav메뉴 경로 <code>/blog/aaa/bbb</code>에 대한 <code>/blog/aaa/index.html</code>이 생성이 안되어있다면, <code>디렉토리</code>가 표시된다.</strong></p>
+<p><img alt="image-20250311123425665" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250311123425665.png"></p>
+</li>
+<li>
+<p><strong><code>경로조차 없다면</code></strong></p>
+<p><img alt="image-20250311123637665" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250311123637665.png"></p>
+</li>
+</ul>
+<h3 id="posts05-posts-archivehtml-indexhtml-template-html">posts[0:5]가 아닌 posts 전체를 모아놓는 archive.html (index.html처럼 template 자체가 html)</h3>
+<ol>
+<li>
+<p>index.html 복붙해서 archive.html을 생성</p>
+<ul>
+<li>posts[0:5] -&gt; posts로 순회</li>
+</ul>
+<p><code>html
+{% block content %}
+&lt;div class="posts-index"&gt;
+    {% for post in posts -%}</code></p>
+</li>
+<li>
+<p>render_index과정과 비슷하니 메서드로 만들어놓고 다른 부분을 고치게 파라미터로 뺀다.</p>
+<p>```python
+def render_html(page, config, env, posts, title='Home'):</p>
+<div class="codehilite"><pre><span></span><code>html_template = env.get_template(page)
+
+if __name__ == &#39;__main__&#39;:
+    index_relative_root_path = get_relative_root_path(page, is_test=True)
+    static_path = os.path.join(index_relative_root_path, &#39;md_templates&#39;, &#39;static&#39;)
+else:
+    index_relative_root_path = get_relative_root_path(page)
+    static_path = os.path.join(index_relative_root_path, &#39;static&#39;)
+
+html = html_template.render(
+    config=config,
+    root_path=index_relative_root_path,
+    static_path=static_path,
+    title=title,
+    posts=posts,
+)
+return html
+</code></pre></div>
+
+<p>```</p>
+<p>```python</p>
+<h2 id="render-index-posts-index">render index -&gt; posts 전체 + index페이지 제목을 넘겨준다.</h2>
+<p>index = render_html('index.html', config, env, posts, title='상세질환 디자인')
+index_path = os.path.join(OUTPUT_DIR, 'index.html')
+with open(index_path, 'w', encoding='utf-8') as f:
+    f.write(index)
+```</p>
+</li>
+<li>
+<p>arhive.html도 마찬가지로 렌더링해준다.</p>
+<p>```python</p>
+<h2 id="render-archive-posts-index">render archive -&gt; posts 전체 + index페이지 제목을 넘겨준다.</h2>
+<p>archive = render_html('archive.html', config, env, posts, title='아카이브')
+archive_path = os.path.join(OUTPUT_DIR, 'archive.html')
+with open(archive_path, 'w', encoding='utf-8') as f:
+    f.write(archive)
+```</p>
+</li>
+<li>
+<p>실행</p>
+<p>```
+python setup.py install
+mdr</p>
+<p>python -m http.server --directory build
+```</p>
+</li>
+<li>
+<p><strong>archive는 <code>/archive</code>로 접속할텐데 <code>그곳에 index.html파일로 존재</code>해야한다.</strong></p>
+<ul>
+<li>실행하면 에러 뜬다.</li>
+</ul>
+</li>
+</ol>
+<h4 id="html-path1-indexhtml">새 페이지라면, 페이지명.html이 아니라 path1개 / index.html로 존재해야한다.</h4>
+<div class="codehilite"><pre><span></span><code><span class="c1"># 새 페이지 -&gt; path1개/index.htmlㅇ이어야한다.</span>
+<span class="c1"># 새 페이지 -&gt; 경로가 없을 수 있으니 path1개의 경로도 만들어놔야한다.</span>
+<span class="c1"># archive_path = os.path.join(OUTPUT_DIR, &#39;archive.html&#39;)</span>
+<span class="n">os</span><span class="o">.</span><span class="n">makedirs</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OUTPUT_DIR</span><span class="p">,</span> <span class="s1">&#39;archive&#39;</span><span class="p">),</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">archive_path</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OUTPUT_DIR</span><span class="p">,</span> <span class="s1">&#39;archive&#39;</span><span class="p">,</span> <span class="s1">&#39;index.html&#39;</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="s1">&#39;아카이브&#39;</span><span class="p">)</span>
+<span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">archive_path</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">archive</span><span class="p">)</span>
+</code></pre></div>
+
+<p><img alt="image-20250312091953246" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250312091953246.png"></p>
+<h3 id="archivehtml">archive.html 연도별 나열 디자인</h3>
+<ol>
+<li>
+<p>jinja문으로 </p>
+<ul>
+<li><strong>post의 attributes.date_parsed 속성을 기준으로 sort</strong><ul>
+<li>지금부터는 date 프론트메터 -&gt; date_parsed가 필수</li>
+</ul>
+</li>
+<li><strong>for문 돌기전에 업뎃변수를 dict로 선언 -&gt; for문 내부에서 prev_year업뎃</strong><ul>
+<li><strong>prev_year를 <code>dict로 for문 내부에서도 업뎃가능</code>하게  0000부터 시작하여 <code>최초 업뎃되게 -1 같은 용도</code></strong>, 역순포스트의 연도를 <strong>같지않다면 계속 업뎃해서, 2025 -&gt; 2024 계속 가게 만듦. <code>같다면 업뎃 안되게 유지</code></strong></li>
+<li><strong><code>if update문 성공</code> == <code>달라질 때 연도 코드 작성</code></strong></li>
+</ul>
+</li>
+</ul>
+<p>```html
+{% extends "base.html" %}
+{% block title %}{{title}}{% endblock %}</p>
+<p>{% block content %}</p>
+<p _="%" endif><div class="archive">
+    {% set posts_sorted = posts | sort(attribute='attributes.date_parsed', reverse=True) %}
+    {% set prev_year = {'value': '0000'} %}
+    {% for post in posts_sorted -%}
+    {% set curr_year = post['attributes']['date_parsed'].strftime('%Y') %}
+    {% if curr_year != prev_year['value'] %}
+    {% if prev_year.update({'value': curr_year}) %}{% endif %}
+    <div class="year">
+        <h3>{{ curr_year }}년</h3>
+    </div></p>
+<div class="codehilite"><pre><span></span><code><span class="nt">&lt;div</span><span class="w"> </span><span class="na">class=</span><span class="s">&quot;post&quot;</span><span class="nt">&gt;</span>
+<span class="w">    </span><span class="nt">&lt;div</span><span class="w"> </span><span class="na">class=</span><span class="s">&quot;title&quot;</span><span class="nt">&gt;</span>
+<span class="w">        </span><span class="cp">{{</span> <span class="nv">post</span><span class="o">[</span><span class="s1">&#39;attributes&#39;</span><span class="o">][</span><span class="s1">&#39;date_parsed&#39;</span><span class="o">]</span><span class="nv">.strftime</span><span class="o">(</span><span class="s1">&#39;%b, %m월&#39;</span><span class="o">)</span> <span class="cp">}}</span>:<span class="w"> </span><span class="nt">&lt;a</span><span class="w"> </span><span class="na">href=</span><span class="s">&quot;</span><span class="cp">{{</span> <span class="nv">post</span><span class="o">[</span><span class="s1">&#39;attributes&#39;</span><span class="o">][</span><span class="s1">&#39;path&#39;</span><span class="o">]</span> <span class="cp">}}</span><span class="s">&quot;</span><span class="nt">&gt;</span><span class="cp">{{</span>
+        <span class="nv">post</span><span class="o">[</span><span class="s1">&#39;attributes&#39;</span><span class="o">][</span><span class="s1">&#39;title&#39;</span><span class="o">]</span><span class="cp">}}</span><span class="nt">&lt;/a&gt;</span>
+<span class="w">    </span><span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="cp">{%</span> <span class="k">endfor</span> <span class="cp">%}</span>
+</code></pre></div>
+
+<p></div>
+{% endblock %}
+```</p>
+</li>
+</ol>
+<h3 id="_1">명령어</h3>
+<div class="codehilite"><pre><span></span><code>python setup.py install
+mdr
+
+python -m http.server --directory build
+</code></pre></div>
+
+<h3 id="jinja">jinja참고</h3>
+<h4 id="jinja2-sort-set-sortattributereversetrue-">jinja2에서 sort: {% set 정렬데이터 = 데이터|sort(attribute='',reverse=True) %} -&gt; 다시 순회</h4>
+<p><img alt="image-20250311090346996" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250311090346996.png"></p>
+<h4 id="ab-for-dict-if-endif-if-update">속성이 여러개면 <code>a.b</code>로 정렬 + for문 내부 업뎃을 위해, dict로 변수 없뎃 + if문 내부에 문서들은 endif끝내기 전에 if update문 성공시에 연도 표시(달라지면 작성)</h4>
+<div class="codehilite"><pre><span></span><code><span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;archive&quot;</span><span class="p">&gt;</span>
+    {% set posts_sorted = posts | sort(attribute=&#39;attributes.date_parsed&#39;, reverse=True) %}
+    {% set prev_year = {&#39;value&#39;: &#39;0000&#39;} %}
+    {% for post in posts_sorted -%}
+    {% set curr_year = post[&#39;attributes&#39;][&#39;date_parsed&#39;].strftime(&#39;%Y&#39;) %}
+    {% if curr_year != prev_year[&#39;value&#39;] %}
+    {% if prev_year.update({&#39;value&#39;: curr_year}) %}{% endif %}
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;year&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">h3</span><span class="p">&gt;</span>{{ curr_year }}년<span class="p">&lt;/</span><span class="nt">h3</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    {% endif %}
+
+
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;post&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;title&quot;</span><span class="p">&gt;</span>
+            {{ post[&#39;attributes&#39;][&#39;date_parsed&#39;].strftime(&#39;%b, %m월&#39;) }}: <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;{{ post[&#39;attributes&#39;][&#39;path&#39;] }}&quot;</span><span class="p">&gt;</span>{{
+            post[&#39;attributes&#39;][&#39;title&#39;]}}<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    {% endfor %}
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+{% endblock %}
+</code></pre></div>
+
+<h3 id="_2">코딩 참고</h3>
+<ul>
+<li>https://strftime.org/</li>
+</ul>
+</div>
+
+<!-- 이전 post / 다음 post -->
+
+<div>
+    이전:
+    <a href="..//about">소개</a>
+</div>
+
+
+<div>
+    다음:
+    <a href="..//blog/nested/post">포스트 메인</a>
+</div>
+
+
+
+<!-- 작성자 -->
+
+
+
+            </div>
+                
+        </div>
+    </div>
+    <div class="footer">
+        
+        <div id="copyright">
+            Copyright &copy; <span id="year"></span>(주) 김석영 주식회사
+        </div>
+        
+        
+        <div id="credit">
+            Made with <a href="https://github.com/pagekeytech/markdown-sitegen">MDR</a> from <a
+                href="https://www.pagekeytech.com/">남룡북매 test</a>
+        </div>
+        
+    </div>
+</div>
+
+<script src="../static/main.js"></script>
+
+<script src="../static/article.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- font -->
+    <link rel="stylesheet" as="style" crossorigin
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css"/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@200..900&display=swap" rel="stylesheet">
+
+
+    <style>
+        :root {
+            --theme-primary: #FC5230;
+            --theme-secondary: #1ECECB;
+                /* --theme-primary를 80% 유지하고 검은색 20% 섞어서 어둡게 */
+            --theme-primary-dark: color-mix(in srgb, var(--theme-primary) 80%, black 20%);
+
+            /* --theme-secondary도 동일하게 적용 */
+            --theme-secondary-dark: color-mix(in srgb, var(--theme-secondary) 80%, black 20%);
+
+            /* 로고 주소 */
+
+            --h3-title-logo-url: url("https://front.chojaeseong.com/images/png/profile/sub/02.png");
+        }
+    </style>
+    <link rel="stylesheet" href="../static/code-highlights.css">
+    <link rel="stylesheet" href="../static/common.css">
+    <link rel="stylesheet" href="../static/style.css">
+    <link rel="stylesheet" href="../static/mixin.css">
+    <link rel="stylesheet" href="../static/article.css">
+
+    <title>2번째 | 조재성 원장</title>
+
+    <!--https://github.dev/Hybridhash/FastAPI-HTMX-->
+    
+    <!-- alinepjs-->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body
+>
+   <!--     x-data="{navFixed: false}"
+        @scroll.window="navFixed = (window.pageYOffset > $refs.nav.getBoundingClientRect().height * 2 ) ? true : false, console.log(navFixed)"-->
+<div id="page-container">
+    <div id="content-wrap">
+        <div class="nav" x-ref="nav"
+        >
+
+<!--             :class="navFixed ? 'position-fixed top-0 left-0 w-100' : 'position-relative'"-->
+
+            <a id="title" href="../">
+                <img id="logo" src="http://hani.chojaeseong.com/images/logo.png"/>조재성 원장
+            </a>
+            <ul class="links">
+                <li><a href="../">Home</a></li>
+                <li><a href="../blog">블로그</a></li>
+                <li><a href="../archive">Archive</a></li>
+                <li><a href="../ads">원내광고</a></li>
+            </ul>
+        </div>
+
+        <div class="content">
+                
+            <div class="layout-center">
+                
+<!-- 제목 -->
+<h1 class="post-title">2번째</h1>
+
+
+<!-- youtube -->
+
+
+
+<!-- 내용 -->
+<div class="article">
+<h3 id="_1">패키지 재설치</h3>
+<!--truncate-->
+<ol>
+<li>
+<p>적용이 잘안되면, <code>외부라이브러리 &gt; mdr-xxx</code>를 삭제하고</p>
+<p><img alt="image-20250309121917401" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250309121917401.png"></p>
+</li>
+<li>
+<p><code>python setup.py install</code>을 수행한다.</p>
+</li>
+<li>
+<p><code>mdr</code>을 통해 docs폴더의 md를 처리했더니</p>
+<p><code>(.venv) PS C:\Users\cho_desktop\PycharmProjects\markdown&gt; mdr                                 
+start 
+'../docs' 폴더가 존재하지 않습니다.</code></p>
+<ul>
+<li><strong>패키지 내부가 기준으로 main실행될때는 패키지폴더가 루트가 되어서, <code>../</code>로 빠져나가야했지만, <code>패키지 설치 후에는 프로젝트 폴더가 기준</code>이 된다</strong></li>
+</ul>
+</li>
+<li>
+<p>경로를 <code>패키지내부 build -&gt; (바깥)프로젝트 docs</code> 찾아가는 것을 <code>같은 폴더 docs찾아가는 것</code>으로 바꿔야한다.</p>
+<ul>
+<li><strong>build폴더는, 없으면 생성되며, <code>패키지내부 &lt;&lt; 프로젝트루트</code> 모두 가질 수 있다.</strong></li>
+</ul>
+<p>```python
+if <strong>name</strong> == '<strong>main</strong>':
+    SOURCE_DIR = '../docs'  # 여기서 실행
+else:
+    SOURCE_DIR = 'docs'  # 패키지 설치후 mdr명령어로 사용자 실행</p>
+<h1 id="output_dir-html">OUTPUT_DIR = '../html'  # 상대경로</h1>
+<p>OUTPUT_DIR = 'build'  # 빌드는 패키지 내부/build 폴더 -&gt; 패키지설치후 root의 build폴더
+```</p>
+</li>
+<li>
+<p>PACKAGE_DIR이 경로가 바뀐다. <strong>똑같이 패키지폴더를 의미한다( <code>내부생성 패키지 vs 외부설치 패키지</code></strong></p>
+<ul>
+<li>main실행시 패키지폴더 -&gt; <code>설치 실행시, 외부패키지폴더</code></li>
+</ul>
+<p><code>PACKAGE_DIR  &gt;&gt; C:\Users\cho_desktop\PycharmProjects\markdown\.venv\Lib\site-packages\mdr-1.0.0-py3.11.egg\markdown_renderer</code></p>
+</li>
+</ol>
+<h3 id="static-build-static-shutil">홈페이지렌더링시 외부패키지 속 static파일 사용 불가 -&gt; build폴더 내부로 static을  shutil로 복사해줘야한다.</h3>
+<ul>
+<li>buiid에서 뒤로갔다 들어가는 template폴더가 아니라</li>
+<li><strong>외부 패키지로 사용하는 경우, <code>mdr명령어로 빌드시 build폴더</code>로 static을 복사해주자.</strong><ul>
+<li>일단, 웹페이지를 띄울 땐, 내부패키지 static이 사용 불가다. 접근방법X</li>
+<li>build에 해주면, 딱히 경로를 뒤로 안가도 되게 된다.</li>
+</ul>
+</li>
+</ul>
+<div class="codehilite"><pre><span></span><code><span class="c1">## copy static files</span>
+<span class="c1"># - 외부에서 패키지로 사용시(main X) static도 build폴더&gt;static으로 복사</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">!=</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">shutil</span><span class="o">.</span><span class="n">copytree</span><span class="p">(</span><span class="n">STATIC_DIR</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">OUTPUT_DIR</span><span class="p">,</span> <span class="s1">&#39;static&#39;</span><span class="p">))</span>
+</code></pre></div>
+
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>setup.py<span class="w"> </span>install
+mdr
+</code></pre></div>
+
+<ul>
+<li>
+<p>기존 삭제도, 내부vs외부를 </p>
+</li>
+<li>
+<p>에러</p>
+<p><code>FileNotFoundError: [WinError 3] 지정된 경로를 찾을 수 없습니다: 'C:\\Users\\cho_desktop\\PycharmProjects\\markdown\\.venv\\Lib\\site-packages\\mdr-1.
+0.0-py3.11.egg\\markdown_renderer\\md_templates\\static'</code></p>
+</li>
+<li>
+<p><strong>패키지 설치시, static폴더가 외부패키지 폴더에 복사가 안되고 있다.</strong></p>
+</li>
+<li>
+<p>manifest.in에 하위폴더도 명시한다.</p>
+<p><code>recursive-include markdown_renderer/md_templates *
+recursive-include markdown_renderer/md_templates/static *</code></p>
+</li>
+<li>
+<p>setup.py의 package_data에서 구조를 바꾼다.</p>
+<p>```python
+include_package_data=True,  # 중요!</p>
+<h1 id="markdown_renderer-md_templates">'markdown_renderer': ['md_templates/*']</h1>
+<p>package_data={
+    'markdown_renderer': ['md_templates/*<em>/</em>']
+}
+```</p>
+<p>```
+python setup.py install
+mdr</p>
+<h1 id="gpt">gpt 명령어</h1>
+<p>python setup.py sdist bdist_wheel
+pip install .
+```</p>
+<p><img alt="image-20250309131542645" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250309131542645.png"></p>
+</li>
+</ul>
+<h3 id="basehtml-packge_root_path-md_templatesstatic-vs-buildstatic">이제 base.html에 쓰이던 packge_root_path도, 내부실행(../md_templates/static) vs 외부설치(build(./)&gt;static)에 따라 다르게 뽑혀야한다.</h3>
+<ul>
+<li>
+<p>내부 실행하여 필드한 것처럼 주소가 진행되어있음.</p>
+<p><img alt="image-20250309131849235" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250309131849235.png"></p>
+</li>
+<li>
+<p>get_package_root_path -&gt; get_root_path로 바꾼다.</p>
+<p>```python
+relative_root_path = get_relative_root_path(relative_path)</p>
+<p>content = content_template.render(
+    # static_dir='../md_templates/static',  # build폴더 path없는 것 기준 static 상대주소 경로
+    root_path=relative_root_path,
+```</p>
+<p><code>html
+&lt;link rel="stylesheet" href="{{ root_path }}md_templates/static/style.css"&gt;</code></p>
+<ul>
+<li><strong>내부빌드일때만, md_templates가 필요해서 서로 다르다.</strong></li>
+</ul>
+<p>```python</p>
+<h1 id="_2">내부/외부 달라서</h1>
+<h1 id="-package_dir-template_dir-static_dir-x">- 내부 package_dir &gt; template_dir &gt; static_dir은 패캐지파일복사 절대경로라 X</h1>
+<h1 id="-build_dir-static">- 외부 build_dir &gt; static</h1>
+<p>if <strong>name</strong> == '<strong>main</strong>':
+    static_path = os.path.join(relative_root_path, 'md_templates', 'static')
+    print(f"내부 빌드 static_path  &gt;&gt; {static_path}")</p>
+<p>else:
+    static_path = os.path.join(relative_root_path, 'static')
+    print(f"외부 빌드 static_path  &gt;&gt; {static_path}")
+```</p>
+<p>```python
+content = content_template.render(
+    # static_dir='../md_templates/static',  # build폴더 path없는 것 기준 static 상대주소 경로
+    root_path=relative_root_path,
+    static_path=static_path,</p>
+<p>```</p>
+<p><code>html
+&lt;link rel="stylesheet" href="{{ static_path }}/style.css"&gt;</code></p>
+<ul>
+<li>결과</li>
+</ul>
+<p><code>내부 빌드 static_path  &gt;&gt; ../md_templates\static</code></p>
+<p>```html
+<link rel="stylesheet" href="C:\Users\cho_desktop\PycharmProjects\markdown\markdown_renderer\md_templates\static/style.css"></p>
+<p>```</p>
+<p>```
+post_relative_path.split('/')  &gt;&gt; ['2 cli 고쳐 프로젝트build + http.server 로 띄우기.html']
+num_dirs  &gt;&gt; 1
+외부빌드 static_path  &gt;&gt; ../static</p>
+<p>post_relative_path.split('/')  &gt;&gt; ['blog', 'nested', 'post', 'index.html']
+num_dirs  &gt;&gt; 4
+외부빌드 static_path  &gt;&gt; ../../../../static
+```</p>
+<p><code>html
+&lt;link rel="stylesheet" href="../static/style.css"&gt;</code></p>
+</li>
+<li>
+<p><strong>외부필드시에는, 한단계 뒤로갈 필요가 없다. build가 root가 되어야하므로 <code>파일1개</code> -&gt; <code>root ../ (X)</code>가 되어야하므로 외부에서는 root를 build로 잡자.</strong></p>
+<p><code>post_relative_path.split('/')  &gt;&gt; ['1 cli.html']
+num_dirs  &gt;&gt; 1
+post_relative_path.split('/')  &gt;&gt; ['2 cli 고쳐 프로젝트build + http.server 로 띄우기.html']
+num_dirs  &gt;&gt; 1
+post_relative_path.split('/')  &gt;&gt; ['blog', 'nested', 'post', 'index.html']
+num_dirs  &gt;&gt; 4
+post_relative_path.split('/')  &gt;&gt; ['about', 'index.html']
+num_dirs  &gt;&gt; 2
+post_relative_path.split('/')  &gt;&gt; ['index.html']
+num_dirs  &gt;&gt; 1</code></p>
+</li>
+<li>
+<p><strong>외부패키지 렌더링시에는 <code>../</code>갯수가 1개 줄게 만들자.</strong></p>
+<ul>
+<li><strong>외부파일이므로, nam main으로 판단 불가 -&gt; 파라미터 주도록 바꾼다.</strong></li>
+</ul>
+<p>```python
+def get_relative_root_path(post_relative_path):</p>
+<div class="codehilite"><pre><span></span><code><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;&#39;</span>
+<span class="cp"># Get the number of slashes</span>
+<span class="n">num_dirs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">len</span><span class="p">(</span><span class="n">list</span><span class="p">(</span><span class="n">filter</span><span class="p">(</span><span class="n">lambda</span><span class="w"> </span><span class="n">x</span><span class="o">:</span><span class="w"> </span><span class="n">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">post_relative_path</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">))))</span>
+
+<span class="cp"># 외부일때는 파일1개 index.html -&gt; ../ 필요없이 그자리가 root</span>
+<span class="cp"># - 그자리 build폴더가 웹서버의 중심디렉토리가 될 것이기 때문.</span>
+<span class="cp"># 내부일 때는 파일1개 index.html -&gt; ../ 의 build 바깥 md_templates 폴더가 root</span>
+<span class="nf">if</span><span class="w"> </span><span class="n">__name__</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s">&#39;__main__&#39;</span><span class="o">:</span>
+<span class="w">    </span><span class="n">num_dirs</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">1</span>
+
+<span class="n">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nf">range</span><span class="p">(</span><span class="n">num_dirs</span><span class="p">)</span><span class="o">:</span>
+<span class="w">    </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="s">&#39;../&#39;</span>
+
+<span class="kr">return</span><span class="w"> </span><span class="n">result</span>
+</code></pre></div>
+
+<p>```</p>
+<p>```python
+def get_relative_root_path(post_relative_path, is_test=True):
+    """
+    외부 배포 말고, 내부에서 빌드할 때 is_test가 들어가서 ../ 갯수 1개 줄이기 
+    """
+    result = ''
+    # Get the number of slashes
+    num_dirs = len(list(filter(lambda x: len(x) &gt; 0, post_relative_path.split('/'))))</p>
+<div class="codehilite"><pre><span></span><code><span class="cp"># 외부일때는 파일1개 index.html -&gt; ../ 필요없이 그자리가 root</span>
+<span class="cp"># - 그자리 build폴더가 웹서버의 중심디렉토리가 될 것이기 때문.</span>
+<span class="cp"># 내부일 때는 파일1개 index.html -&gt; ../ 의 build 바깥 md_templates 폴더가 root</span>
+<span class="nf">if</span><span class="w"> </span><span class="kr">not</span><span class="w"> </span><span class="n">is_test</span><span class="o">:</span>
+<span class="w">    </span><span class="n">num_dirs</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">1</span>
+<span class="cp">#...</span>
+</code></pre></div>
+
+<p>```</p>
+<p><img alt="image-20250309134657036" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250309134657036.png"></p>
+<p><img alt="image-20250309134702815" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250309134702815.png">
+- css 작동중</p>
+</li>
+</ul>
+<h3 id="build">build 디렉토리를 중심으로 기본웹서버 띄우기</h3>
+<div class="codehilite"><pre><span></span><code>python<span class="w"> </span>-m<span class="w"> </span>http.server<span class="w"> </span>--directory<span class="w"> </span>build
+</code></pre></div>
+
+<ul>
+<li>
+<p>크롬창에 <code>localhost:8000</code></p>
+<p><img alt="image-20250309134958765" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250309134958765.png"></p>
+</li>
+<li>
+<p>index.html의 path링크도 잘 타지는 것 같다.</p>
+<p><img alt="image-20250309134850989" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250309134850989.png"></p>
+<p><img alt="image-20250309134843909" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250309134843909.png"></p>
+</li>
+<li>
+<p>md파일은 style.css까지 경로가 맞는데, 기본 index.html은 다르다.</p>
+<ul>
+<li>**md -&gt; post들은 상대경로로 root를 만들었지만, <code>index.html -&gt; jinja렌더링 index.html</code>은 상대경로가 **</li>
+<li><strong>template이 그대로 렌더링 될 때, 또 외부/내부 경로가 <code>./static</code>으로 동일함.</strong></li>
+</ul>
+<p><img alt="image-20250309135632502" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250309135632502.png"></p>
+</li>
+<li>
+<p><strong>상대 루트경로가 현재폴더일 땐, <code>./</code>가 반환되도록 바꿔주고</strong></p>
+<p>```python
+def get_relative_root_path(post_relative_path):</p>
+<div class="codehilite"><pre><span></span><code><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;&#39;</span>
+<span class="cp"># Get the number of slashes</span>
+<span class="n">num_dirs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">len</span><span class="p">(</span><span class="n">list</span><span class="p">(</span><span class="n">filter</span><span class="p">(</span><span class="n">lambda</span><span class="w"> </span><span class="n">x</span><span class="o">:</span><span class="w"> </span><span class="n">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">post_relative_path</span><span class="p">.</span><span class="n">split</span><span class="p">(</span><span class="s">&#39;/&#39;</span><span class="p">))))</span>
+
+<span class="cp"># 외부일때는 파일1개 index.html -&gt; ../ 필요없이 그자리가 root</span>
+<span class="cp"># - 그자리 build폴더가 웹서버의 중심디렉토리가 될 것이기 때문.</span>
+<span class="cp"># 내부일 때는 파일1개 index.html -&gt; ../ 의 build 바깥 md_templates 폴더가 root</span>
+<span class="nf">if</span><span class="w"> </span><span class="n">__name__</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="s">&#39;__main__&#39;</span><span class="o">:</span>
+<span class="w">    </span><span class="n">num_dirs</span><span class="w"> </span><span class="o">-=</span><span class="w"> </span><span class="mi">1</span>
+
+<span class="n">for</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="kr">in</span><span class="w"> </span><span class="nf">range</span><span class="p">(</span><span class="n">num_dirs</span><span class="p">)</span><span class="o">:</span>
+<span class="w">    </span><span class="n">result</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="s">&#39;../&#39;</span>
+
+<span class="cp"># 현재위치일 땐 `./`으로 반환해주기</span>
+<span class="nf">if</span><span class="w"> </span><span class="n">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mi">0</span><span class="o">:</span>
+<span class="w">    </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&#39;./&#39;</span>
+
+<span class="kr">return</span><span class="w"> </span><span class="n">result</span>
+</code></pre></div>
+
+<p>```</p>
+</li>
+<li>
+<p><strong>index렌더링시 index.html 자체의 루트 + static(내부/외부동일)을 건네주자</strong></p>
+<p>```python</p>
+<h2 id="render-index-posts-index">render index -&gt; posts 전체 + index페이지 제목을 넘겨준다.</h2>
+<p>index_template = env.get_template('index.html')</p>
+<h1 id="indexhtml-">index.html의 루트 -&gt; 내부/외부 동일하여 따로 작성하여 넘겨줌</h1>
+<p>index_relative_root_path = get_relative_root_path('index.html')</p>
+<h1 id="printfindex_relative_root_path-index_relative_root_path">print(f"index_relative_root_path  &gt;&gt; {index_relative_root_path}")</h1>
+<h1 id="index_relative_root_path">index_relative_root_path  &gt;&gt; ./</h1>
+<p>index = index_template.render(
+    root_path=index_relative_root_path,
+    static_path=os.path.join(index_relative_root_path, 'static'),
+    title='상세질환정보 디자인',
+    posts=posts,
+)
+```</p>
+<p><img alt="image-20250309140015713" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250309140015713.png"></p>
+<p><img alt="image-20250309140028400" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250309140028400.png"></p>
+</li>
+</ul>
+<h3 id="config-for-basehtml-title-or-navroot">config 설정 for base.html 의 title태그 or nav(root)</h3>
+<ol>
+<li>
+<p><strong><code>docs</code>인 SOURCE_DIR에 <code>.mdr &gt; config.yml</code>을 읽어보고 -&gt; 없으면 <code>패키지 내부 &gt; template폴더 default_config.yml</code>을 사용하게 한다.</strong></p>
+</li>
+<li>
+<p>패키지 &gt; md_templates &gt; <code>default_config.yml</code>을 만든다.</p>
+<ul>
+<li>일단 title만 작성해놓는다.</li>
+</ul>
+<p><img alt="image-20250309222002987" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250309222002987.png"></p>
+</li>
+<li>
+<p>사용자가 입력하는 <code>docs</code>에 <strong>숨김폴더 <code>.mdr</code>폴더 &gt; <code>config.yml</code>을 만들어놓는다.</strong></p>
+<p><img alt="image-20250309222302944" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250309222302944.png"></p>
+</li>
+<li>
+<p>외부 유저입력 docs &gt; .mdr &gt; config.yml부터 읽고 아니면 내부껏을 읽게 코드를 짠다.</p>
+<p>```python
+CONFIG_DIR = '.mdr'  # SOURCE_DIR 내부의 config 폴더</p>
+<h2 id="load-config">Load Config</h2>
+<h1 id="-docs-mdr-configyml">- docs &gt; .mdr &gt; config.yml 읽기. 없으면 설치패키지 내부 폴더에서 가져오기</h1>
+<p>config_file_path = os.path.join(SOURCE_DIR, CONFIG_DIR, 'config.yml')
+if not os.path.exists(config_file_path):
+    config_file_path = os.path.join(TEMPLATE_DIR, 'default_config.yml')</p>
+<p>print(f"config_file_path  &gt;&gt; {config_file_path}")</p>
+<h1 id="config_file_path-docsmdrconfigyml">내부 실행: config_file_path  &gt;&gt; ../docs.mdr\config.yml</h1>
+<h1 id="config_file_path-docsmdrconfigyml_1">외부 실행: config_file_path  &gt;&gt; docs.mdr\config.yml</h1>
+<p>with open(config_file_path, 'r', encoding='utf-8') as f:
+    config = yaml.safe_load(f)
+    # print(f"config  &gt;&gt; {config}")
+    # config  &gt;&gt; {'title': '상세질환 디자인(외부)'}
+```</p>
+</li>
+<li>
+<p>base의 title태그에 들어가니 <strong>모든 template.render()에 다 넘겨줘야한다.</strong></p>
+<p>```python
+content = content_template.render(
+            config=config, </p>
+<p>index = index_template.render(
+    config=config,
+    root_path=index_relative_root_path,
+    static_path=os.path.join(index_relative_root_path, 'static'),
+    title='상세질환정보 디자인',
+    posts=posts,
+)
+```</p>
+<p><code>html
+&lt;head&gt;
+    &lt;meta charset="UTF-8"&gt;
+    &lt;meta http-equiv="X-UA-Compatible" content="IE=edge"&gt;
+    &lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;
+    &lt;link rel="stylesheet" href="{{ static_path }}/style.css"&gt;
+    &lt;title&gt;{% block title %}{% endblock %} | {{ config['title'] }}&lt;/title&gt;
+&lt;/head&gt;</code></p>
+</li>
+<li>
+<p>base.html에  div 및 nav클래스 추가</p>
+<ul>
+<li>root_path, config 사용 </li>
+</ul>
+<p><code>html
+&lt;div class="nav"&gt;
+    &lt;a href="{{ root_path }}"&gt;{{ config['title'] }}&lt;/a&gt;
+&lt;/div&gt;
+&lt;div&gt;
+    {% block content %}
+    {% endblock %}
+&lt;/div&gt;</code></p>
+</li>
+<li>
+<p>**각 post들 뿐만 아니라, 인덱스도 동일하게, root_path + static_path를 계산해줘서 넘겨준다. **</p>
+<p>```python
+    # index.html의 루트 -&gt; 내부/외부 동일하여 따로 작성하여 넘겨줌
+    if <strong>name</strong> == '<strong>main</strong>':
+        index_relative_root_path = get_relative_root_path('index.html', is_test=True)
+        static_path = os.path.join(index_relative_root_path, 'md_templates', 'static')
+    else:
+        index_relative_root_path = get_relative_root_path('index.html')
+        static_path = os.path.join(index_relative_root_path, 'static')</p>
+<div class="codehilite"><pre><span></span><code>index = index_template.render(
+    config=config,
+    root_path=index_relative_root_path,
+    static_path=static_path,
+</code></pre></div>
+
+<p>```</p>
+</li>
+</ol>
+<h3 id="indexhtml">index.html 꾸미기</h3>
+<ul>
+<li>ul + for li 대신 div + for div  들로 가고, date를 추가한다.</li>
+<li><strong>index에서는 jinja에서도 인덱싱<code>[0:5]</code>로 5개만 돌아준다.</strong></li>
+</ul>
+<div class="codehilite"><pre><span></span><code>{% extends &quot;base.html&quot; %}
+
+{% block content %}
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;posts-index&quot;</span><span class="p">&gt;</span>
+    {% for post in posts[0:5] -%}
+    <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;post&quot;</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;title&quot;</span><span class="p">&gt;</span>
+            <span class="p">&lt;</span><span class="nt">a</span> <span class="na">href</span><span class="o">=</span><span class="s">&quot;{{ post[&#39;attributes&#39;][&#39;path&#39;] }}&quot;</span><span class="p">&gt;</span>{{ post[&#39;attributes&#39;][&#39;title&#39;]}}<span class="p">&lt;/</span><span class="nt">a</span><span class="p">&gt;</span>
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+        <span class="p">&lt;</span><span class="nt">div</span> <span class="na">class</span><span class="o">=</span><span class="s">&quot;date&quot;</span><span class="p">&gt;</span>
+            {{ post[&#39;attributes&#39;][&#39;date&#39;] }}
+        <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+    {% endfor %}
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+{% endblock %}
+</code></pre></div>
+
+<p><img alt="image-20250309225812720" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250309225812720.png"></p>
+<div class="codehilite"><pre><span></span><code><span class="c">/* index.html */</span>
+<span class="p">.</span><span class="nc">posts-index</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="err">&amp;</span><span class="w"> </span><span class="err">.post</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="kt">em</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+
+<span class="w">    </span><span class="o">&amp;</span><span class="w"> </span><span class="p">.</span><span class="nc">post</span><span class="w"> </span><span class="p">.</span><span class="nc">title</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mi">150</span><span class="kt">%</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="err">}</span>
+</code></pre></div>
+
+<p><img alt="image-20250311085305626" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250311085305626.png"></p>
+<h3 id="contentshtml">contents.html 꾸미기 (없음, 구조만)</h3>
+<div class="codehilite"><pre><span></span><code>{% extends &quot;base.html&quot; %}
+
+{% block title %}{{ post[&#39;attributes&#39;].get(&#39;title&#39;, None) }}{% endblock %}
+
+{% block content %}
+{{ post[&#39;body&#39;] | safe }}
+{% endblock content %}
+</code></pre></div>
+
+<h3 id="cf">cf)</h3>
+<h4 id="jinja2-sort-set-sortattributereversetrue-">jinja2에서 sort: {% set 정렬데이터 = 데이터|sort(attribute='',reverse=True) %} -&gt; 다시 순회</h4>
+<p><img alt="image-20250311090346996" src="https://raw.githubusercontent.com/is2js/screenshots/main/image-20250311090346996.png"></p>
+</div>
+
+<!-- 이전 post / 다음 post -->
+
+<div>
+    이전:
+    <a href="..//blog/dfa">test1</a>
+</div>
+
+
+<div>
+    다음:
+    <a href="..//blog/4">test4 youtube</a>
+</div>
+
+
+
+<!-- 작성자 -->
+
+
+
+            </div>
+                
+        </div>
+    </div>
+    <div class="footer">
+        
+        <div id="copyright">
+            Copyright &copy; <span id="year"></span>(주) 김석영 주식회사
+        </div>
+        
+        
+        <div id="credit">
+            Made with <a href="https://github.com/pagekeytech/markdown-sitegen">MDR</a> from <a
+                href="https://www.pagekeytech.com/">남룡북매 test</a>
+        </div>
+        
+    </div>
+</div>
+
+<script src="../static/main.js"></script>
+
+<script src="../static/article.js"></script>
+
+</body>
+</html>
